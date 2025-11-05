@@ -683,6 +683,7 @@
 
         /**
          * Carrega o JSON do simulado selecionado e renderiza na tela.
+         * Esta função foi modificada para adicionar o scroll suave para o início do quiz.
          */
         async function loadAndRenderQuiz(filename) {
             const container = document.getElementById('quiz-container');
@@ -759,8 +760,12 @@
 
                 statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
                 
-                // Rola o conteúdo principal para o topo, garantindo que o usuário veja as questões
+                // === CÓDIGO INSERIDO PARA ROLAR PARA O INÍCIO DO SIMULADO ABAIXO DA CAIXA ===
+                
+                // 1. Rola o conteúdo principal para o topo (útil se o '#main-content' tiver um overflow)
                 document.getElementById('main-content').scrollTop = 0; 
+                
+                // 2. Rola a janela para que o início do contêiner de questões seja visível
                 document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             } catch (error) {
@@ -776,31 +781,62 @@
 
 
         /**
-         * Carrega a lista de simulados com base nos arquivos que você tem. (Usando lista estática dos arquivos que você carregou)
+         * Carrega a lista de simulados. (Foi mantida a lógica de fallback para arquivos carregados)
          */
-        function loadSimulados() {
+        async function loadSimulados() {
             const list = document.getElementById('simulado-list');
             
-            // Lista estática baseada nos arquivos JSON que você carregou
-            const availableFiles = [
-                "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                "QUESTOES-AREA-POLICIAL.json",
-                "simulado_100_questoes.json",
-                "100-QUESTOES-POLICIAL.json",
-                "QUESTOES-GERAIS.json.json"
-            ];
-            
-            list.innerHTML = '';
-            availableFiles.forEach(filename => {
-                // Nome amigável na sidebar
-                const cleanName = filename.replace(/\.json$/i, '').replace(/-|\./g, ' '); 
-                
-                const li = document.createElement('li');
-                li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
-                list.appendChild(li);
-            });
-            list.innerHTML += '<li><small style="color:#adb5bd;">(Arquivos listados)</small></li>';
+            try {
+                // Tenta carregar uma lista de arquivos de um manifest JSON (recomendado para projetos maiores)
+                const manifestUrl = DATA_FOLDER + 'simulados_manifest.json';
+                const response = await fetch(manifestUrl);
 
+                if (!response.ok) {
+                    throw new Error(`Não foi possível carregar o arquivo manifest. Tentando fallback.`);
+                }
+                
+                const simuladoFilenames = await response.json(); 
+
+                list.innerHTML = '';
+                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
+                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
+                    return;
+                }
+
+                simuladoFilenames.forEach(filename => {
+                    const cleanName = filename.replace(/\.json$/i, ''); 
+                    
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
+                    `;
+                    list.appendChild(li);
+                });
+                
+            } catch (error) {
+                console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
+                
+                // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
+                const fallbackFiles = [
+                    "SIMULADO-POLICIA-PENAL-JSON.json", 
+                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                    "SIMULADO-DIREITOS-HUMANOS-JSON.json",
+                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
+                    "QUESTOES-AREA-POLICIAL.json",
+                    "simulado_100_questoes.json",
+                    "100-QUESTOES-POLICIAL.json",
+                    "QUESTOES-GERAIS.json.json"
+                ];
+                
+                list.innerHTML = '';
+                fallbackFiles.forEach(filename => {
+                    const cleanName = filename.replace(/\\.json$/i, ''); 
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
+                    list.appendChild(li);
+                });
+                list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
+            }
         }
 
         window.onload = loadSimulados;
