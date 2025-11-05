@@ -123,7 +123,7 @@
             border-left-color: var(--secondary-color);
         }
 
-        /* Botão Análise e Revisão (NOVO NOME) */
+        /* Botão Análise e Revisão */
         .btn-sidebar-report {
             padding: 12px 15px;
             background-color: var(--success-color); 
@@ -429,7 +429,7 @@
     </div>
     
     <script>
-        // A pasta onde o script espera encontrar os arquivos JSON
+        // O CÓDIGO ESPERA ENCONTRAR OS ARQUIVOS JSON NESTA PASTA!
         const DATA_FOLDER = './data/'; 
         let currentQuizData = null;
         let currentSimuladoName = '';
@@ -516,7 +516,7 @@
 
 
         /**
-         * Implementa a interatividade em tempo real: corrige a questão no clique
+         * Implementa a interatividade em tempo real: corrige a questão no clique (MANTIDA)
          */
         function checkAnswer(index, selectedValue) {
             if (!currentQuizData || index >= currentQuizData.length) return;
@@ -720,7 +720,7 @@
         }
 
         /**
-         * Carrega o JSON do simulado selecionado e renderiza na tela. (CORRIGIDA)
+         * Carrega o JSON do simulado selecionado e renderiza na tela. (CORRIGIDA E REFORÇADA)
          */
         async function loadAndRenderQuiz(filename) {
             const container = document.getElementById('quiz-container');
@@ -752,14 +752,14 @@
                 const response = await fetch(url);
 
                 if (!response.ok) {
-                    // MENSAGEM DE ERRO VISÍVEL (CORREÇÃO)
-                    const errorMessage = `ERRO CRÍTICO ao carregar o simulado '${filename}'. Por favor, verifique se o arquivo JSON está na pasta: **${DATA_FOLDER}**`;
+                    // MENSAGEM DE ERRO VISÍVEL SE O ARQUIVO NÃO FOR ENCONTRADO
+                    const errorMessage = `ERRO (404/CORS) ao carregar o simulado '${filename}'. Por favor, verifique se o arquivo JSON está na pasta: **${DATA_FOLDER}**`;
                     
                     container.innerHTML = `
                         <div style="background-color: #ffebeb; border: 2px solid var(--danger-color); padding: 20px; border-radius: 8px; margin-top: 20px;">
-                            <h3 style="color: var(--danger-color); margin-top: 0;">❌ Falha ao Encontrar o Arquivo</h3>
+                            <h3 style="color: var(--danger-color); margin-top: 0;">❌ Falha ao Encontrar ou Carregar o Arquivo</h3>
                             <p>${errorMessage}</p>
-                            <p><strong>Causa provável:</strong> O arquivo JSON não está na pasta esperada ou o nome está incorreto.</p>
+                            <p><strong>Solução:</strong> Crie uma pasta chamada **'data'** e mova o arquivo <strong>${filename}</strong> para dentro dela.</p>
                         </div>
                     `;
                     statusElement.textContent = `Falha ao carregar. Verifique o caminho.`;
@@ -781,11 +781,11 @@
                 } else if (rawData && Array.isArray(rawData.questoes)) { 
                     quizData = rawData.questoes;
                 } else {
-                    throw new Error("Formato do JSON inválido. Não foi possível extrair a lista de questões.");
+                    throw new Error("Formato do JSON inválido. Não foi possível extrair a lista de questões. Estrutura não reconhecida.");
                 }
 
-                if (!quizData || !Array.isArray(quizData)) {
-                    throw new Error("Não foi possível extrair a lista de questões.");
+                if (!quizData || !Array.isArray(quizData) || quizData.length === 0) {
+                    throw new Error("O JSON foi lido, mas a lista de questões está vazia ou incompleta.");
                 }
 
                 currentQuizData = quizData;
@@ -797,15 +797,16 @@
 
                 statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
                 
+                // Rola o conteúdo principal para o topo
                 document.getElementById('main-content').scrollTop = 0; 
+                document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             } catch (error) {
                 console.error("Erro ao carregar o quiz:", error);
                 
-                // Exibe uma mensagem de erro genérica se o erro for no parsing JSON ou outro
-                if (!container.innerHTML.includes('Falha ao Encontrar o Arquivo')) { 
-                    statusElement.textContent = `Falha ao carregar o simulado. Verifique o console.`;
-                    container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold; padding: 20px;">ERRO: ${error.message}. Verifique a estrutura do seu arquivo JSON.</p>`;
+                if (!container.innerHTML.includes('Falha ao Encontrar')) { 
+                    statusElement.textContent = `Falha ao carregar o simulado. Verifique a estrutura JSON.`;
+                    container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold; padding: 20px;">ERRO: ${error.message}. Verifique o formato do seu arquivo JSON.</p>`;
                 }
                 reportButtonSidebar.style.display = 'none';
             }
@@ -813,62 +814,31 @@
 
 
         /**
-         * Carrega a lista de simulados (MANTIDA)
+         * Carrega a lista de simulados com base nos arquivos que você tem. (SIMPLIFICADA)
          */
-        async function loadSimulados() {
+        function loadSimulados() {
             const list = document.getElementById('simulado-list');
-            list.innerHTML = '<li>Carregando lista de simulados...</li>';
+            
+            // Lista estática baseada nos arquivos que você forneceu ou mencionou
+            const availableFiles = [
+                "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                "QUESTOES-AREA-POLICIAL.json",
+                "simulado_100_questoes.json",
+                "100-QUESTOES-POLICIAL.json",
+                "QUESTOES-GERAIS.json.json"
+            ];
+            
+            list.innerHTML = '';
+            availableFiles.forEach(filename => {
+                // Nome amigável na sidebar
+                const cleanName = filename.replace(/\.json$/i, '').replace(/-|\./g, ' '); 
+                
+                const li = document.createElement('li');
+                li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
+                list.appendChild(li);
+            });
+            list.innerHTML += '<li><small style="color:#adb5bd;">(Arquivos listados acima)</small></li>';
 
-            try {
-                const response = await fetch(DATA_FOLDER + 'simulados_manifest.json');
-                
-                if (!response.ok) {
-                    // Se o manifest falhar, tenta o fallback
-                    throw new Error(`Não foi possível carregar o arquivo manifest. Tentando fallback...`);
-                }
-                
-                const simuladoFilenames = await response.json(); 
-
-                list.innerHTML = '';
-                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
-                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
-                    return;
-                }
-
-                simuladoFilenames.forEach(filename => {
-                    const cleanName = filename.replace(/\.json$/i, ''); 
-                    
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
-                    `;
-                    list.appendChild(li);
-                });
-                
-            } catch (error) {
-                console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
-                
-                // Lista estática de fallback (MANTIDA)
-                const fallbackFiles = [
-                    "SIMULADO-POLICIA-PENAL-JSON.json", 
-                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                    "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
-                    "QUESTOES-AREA-POLICIAL.json",
-                    "simulado_100_questoes.json",
-                    "100-QUESTOES-POLICIAL.json",
-                    "QUESTOES-GERAIS.json.json"
-                ];
-                
-                list.innerHTML = '';
-                fallbackFiles.forEach(filename => {
-                    const cleanName = filename.replace(/\.json$/i, ''); 
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
-                    list.appendChild(li);
-                });
-                list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
-            }
         }
 
         window.onload = loadSimulados;
