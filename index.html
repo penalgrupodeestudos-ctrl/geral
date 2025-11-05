@@ -27,7 +27,6 @@
             padding: 0;
             background-color: var(--bg-light);
             color: var(--text-dark);
-            /* display: flex; REMOVIDO PARA CELULAR */
             min-height: 100vh;
         }
 
@@ -430,6 +429,7 @@
     </div>
     
     <script>
+        // A pasta onde o script espera encontrar os arquivos JSON
         const DATA_FOLDER = './data/'; 
         let currentQuizData = null;
         let currentSimuladoName = '';
@@ -439,7 +439,7 @@
             totalQuestions: 0,
             hits: 0,
             errors: 0,
-            disciplineBreakdown: {} // { 'Disciplina': { total: 0, errors: 0 } }
+            disciplineBreakdown: {} 
         };
 
         // ===================================================================
@@ -495,15 +495,12 @@
         // ===================================================================
 
         function updatePerformance(discipline, isCorrect) {
-            // Garante que a disciplina está em maiúsculas e limpa espaços para evitar duplicidade
             discipline = (discipline || 'Geral').toUpperCase().trim(); 
 
-            // Inicializa a disciplina se for a primeira vez
             if (!performance.disciplineBreakdown[discipline]) {
                 performance.disciplineBreakdown[discipline] = { total: 0, errors: 0 };
             }
 
-            // Atualiza totais globais
             performance.totalQuestions++;
             if (isCorrect) {
                 performance.hits++;
@@ -511,7 +508,6 @@
                 performance.errors++;
             }
 
-            // Atualiza totais por disciplina
             performance.disciplineBreakdown[discipline].total++;
             if (!isCorrect) {
                 performance.disciplineBreakdown[discipline].errors++;
@@ -528,7 +524,6 @@
             const q = currentQuizData[index];
             const questionElement = document.querySelector(`.question-card[data-question-number='${q.numero}']`);
             
-            // 1. Verifica se a questão já foi corrigida (previne cliques duplos)
             if (questionElement.classList.contains('question-locked')) {
                 return;
             }
@@ -539,12 +534,10 @@
             const correctLabel = correctInput ? correctInput.closest('.option-label') : null;
             const explanationBox = document.getElementById(`exp-${index}`);
 
-            // 2. Marca a questão como corrigida e a "trava"
             questionElement.classList.add('question-locked'); 
             questionElement.classList.add('answered'); 
             answeredQuestions++;
 
-            // 3. Aplica o feedback visual
             if (correctLabel) {
                 correctLabel.classList.add('correct');
             }
@@ -552,24 +545,19 @@
                 selectedLabel.classList.add('incorrect');
             }
 
-            // 4. Revela a Análise Didática
             if (explanationBox) {
                 explanationBox.style.display = 'block';
             }
 
-            // 5. Atualiza a performance
             updatePerformance(q.disciplina, isCorrect);
 
-            // 6. Verifica se o simulado terminou
             if (answeredQuestions === currentQuizData.length) {
                 document.getElementById('btn-report').style.display = 'block';
                 document.getElementById('quiz-status').textContent = `Simulado concluído! Clique em "Visualizar Relatório Final" ou role para baixo.`;
                 showPerformanceReport(true); 
             } else {
-                // Atualiza o status
                 document.getElementById('quiz-status').textContent = `Progresso: ${answeredQuestions}/${currentQuizData.length} questões respondidas.`;
                 
-                // Rolagem suave para a próxima questão não respondida
                 setTimeout(() => {
                     let nextIndex = index + 1;
                     while (nextIndex < currentQuizData.length) {
@@ -585,7 +573,7 @@
         }
 
         /**
-         * Gera e exibe o relatório de desempenho e as áreas de melhoria.
+         * Gera e exibe o relatório de desempenho e as áreas de melhoria. (MANTIDA)
          */
         function showPerformanceReport(autoScroll = false) {
             const container = document.getElementById('quiz-container');
@@ -596,22 +584,18 @@
                 return;
             }
 
-            // Remove o relatório anterior se existir
             if (reportElement) {
                 reportElement.remove();
             }
 
             const total = currentQuizData.length;
             
-            // Calculo do Desempenho
             const questionsConsidered = answeredQuestions > 0 ? answeredQuestions : 1; 
             const percentage = ((performance.hits / questionsConsidered) * 100).toFixed(2);
             
-            // 1. Identificar Áreas de Melhoria (Disciplinas)
             let disciplineResults = [];
             for (const disc in performance.disciplineBreakdown) {
                 const data = performance.disciplineBreakdown[disc];
-                // Inclui apenas disciplinas com erros para a área de melhoria
                 if (data.errors > 0) { 
                     const errorRate = (data.errors / data.total) * 100;
                     disciplineResults.push({
@@ -623,14 +607,11 @@
                 }
             }
 
-            // Ordena pelo maior percentual de erro
             disciplineResults.sort((a, b) => b.errorRate - a.errorRate);
 
-            // GERA AS OBSERVAÇÕES E FOCOS DE ESTUDO
             let weakAreasHtml = '<h4>🎯 Observações: Áreas de Melhoria e Prioridade de Estudos:</h4>';
             if (disciplineResults.length > 0) {
                 weakAreasHtml += '<p>Com base no seu desempenho, seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
-                // Pega as 5 disciplinas com maior taxa de erro
                 disciplineResults.slice(0, 5).forEach(result => {
                     weakAreasHtml += `
                         <li>
@@ -647,7 +628,6 @@
                 weakAreasHtml += '<p>Continue respondendo as questões para que o sistema possa analisar seu desempenho e identificar suas áreas de melhoria de forma precisa.</p>';
             }
             
-            // 2. Monta o HTML do relatório
             reportElement = document.createElement('div');
             reportElement.id = 'performance-report';
             reportElement.innerHTML = `
@@ -665,7 +645,6 @@
 
             container.appendChild(reportElement);
             
-            // Rola a tela
             if (autoScroll) {
                 reportElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
@@ -673,7 +652,7 @@
 
 
         /**
-         * Renderiza uma única questão no container.
+         * Renderiza uma única questão no container. (MANTIDA)
          */
         function renderQuestion(q, index, name) {
             const container = document.getElementById('quiz-container');
@@ -681,26 +660,22 @@
             questionElement.className = 'question-card';
             questionElement.setAttribute('data-question-number', q.numero);
 
-            // Tratamento de dados para compatibilidade com diferentes JSONs
             const disciplina = q.disciplina || 'Geral';
             let opcoes = q.opcoes;
             const respostaCorreta = q.resposta_correta || q.gabarito; 
             const explicacao = q.explicacao_professor || q.comentario || 'Nenhuma análise detalhada disponível. Reforce o estudo do tema.';
 
 
-            // Título e Pergunta
             const questionHtml = `
                 <h4>Q${q.numero} | ${disciplina}</h4>
                 <p><strong>${q.questao || q.enunciado}</strong></p>
             `;
 
-            // Normaliza opções se vierem como alternativas: [ {letra: 'A', texto: '...'} ]
             if (!opcoes && q.alternativas && Array.isArray(q.alternativas)) {
                 opcoes = {};
                 q.alternativas.forEach(alt => opcoes[alt.letra] = alt.texto);
             }
 
-            // Opções de Resposta
             let optionsHtml = '<div class="options-group">';
             const radioName = `quiz_q${index}`; 
             
@@ -715,7 +690,6 @@
             }
             optionsHtml += '</div>';
 
-            // Explicação do Professor
             const explanationHtml = `
                 <div class="explanation-box" id="exp-${index}">
                     <strong>Análise Didática do Professor:</strong>
@@ -723,7 +697,6 @@
                 </div>
             `;
             
-            // Área de Comentários (Notas) - com botões
             const noteContent = loadNote(name, index);
             const commentSectionHtml = `
                 <div class="comment-section">
@@ -747,7 +720,7 @@
         }
 
         /**
-         * Carrega o JSON do simulado selecionado e renderiza na tela.
+         * Carrega o JSON do simulado selecionado e renderiza na tela. (CORRIGIDA)
          */
         async function loadAndRenderQuiz(filename) {
             const container = document.getElementById('quiz-container');
@@ -771,7 +744,6 @@
             statusElement.textContent = `Carregando: ${currentSimuladoName}`;
             container.innerHTML = `<p>Aguarde, carregando dados de ${currentSimuladoName}...</p>`;
             
-            // Remove o relatório se estiver visível
             let reportElement = document.getElementById('performance-report');
             if (reportElement) reportElement.remove();
 
@@ -780,13 +752,26 @@
                 const response = await fetch(url);
 
                 if (!response.ok) {
-                    throw new Error(`Erro ao buscar o arquivo (Status: ${response.status}). Verifique o nome: ${filename}`);
+                    // MENSAGEM DE ERRO VISÍVEL (CORREÇÃO)
+                    const errorMessage = `ERRO CRÍTICO ao carregar o simulado '${filename}'. Por favor, verifique se o arquivo JSON está na pasta: **${DATA_FOLDER}**`;
+                    
+                    container.innerHTML = `
+                        <div style="background-color: #ffebeb; border: 2px solid var(--danger-color); padding: 20px; border-radius: 8px; margin-top: 20px;">
+                            <h3 style="color: var(--danger-color); margin-top: 0;">❌ Falha ao Encontrar o Arquivo</h3>
+                            <p>${errorMessage}</p>
+                            <p><strong>Causa provável:</strong> O arquivo JSON não está na pasta esperada ou o nome está incorreto.</p>
+                        </div>
+                    `;
+                    statusElement.textContent = `Falha ao carregar. Verifique o caminho.`;
+                    reportButtonSidebar.style.display = 'none';
+                    
+                    throw new Error(errorMessage); 
                 }
                 
                 const rawData = await response.json();
                 let quizData;
 
-                // LÓGICA DE COMPATIBILIDADE PARA EXTRAIR A LISTA DE QUESTÕES
+                // LÓGICA DE COMPATIBILIDADE PARA EXTRAIR A LISTA DE QUESTÕES (MANTIDA)
                 if (Array.isArray(rawData)) {
                     quizData = rawData;
                 } else if (rawData && rawData.simulados_policia_penal && Array.isArray(rawData.simulados_policia_penal) && rawData.simulados_policia_penal.length > 0) {
@@ -812,32 +797,34 @@
 
                 statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
                 
-                // Rola para o topo do conteúdo principal após o carregamento
                 document.getElementById('main-content').scrollTop = 0; 
 
             } catch (error) {
                 console.error("Erro ao carregar o quiz:", error);
-                statusElement.textContent = `Falha ao carregar o simulado: ${error.message}`;
-                container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold;">ERRO: ${error.message}</p>`;
-                reportButtonSidebar.style.display = 'none'; 
+                
+                // Exibe uma mensagem de erro genérica se o erro for no parsing JSON ou outro
+                if (!container.innerHTML.includes('Falha ao Encontrar o Arquivo')) { 
+                    statusElement.textContent = `Falha ao carregar o simulado. Verifique o console.`;
+                    container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold; padding: 20px;">ERRO: ${error.message}. Verifique a estrutura do seu arquivo JSON.</p>`;
+                }
+                reportButtonSidebar.style.display = 'none';
             }
         }
 
 
         /**
-         * Carrega a lista de simulados a partir de um arquivo manifest (simulados_manifest.json)
-         * OU lista de fallback.
+         * Carrega a lista de simulados (MANTIDA)
          */
         async function loadSimulados() {
             const list = document.getElementById('simulado-list');
             list.innerHTML = '<li>Carregando lista de simulados...</li>';
 
             try {
-                // Tenta carregar o manifest
                 const response = await fetch(DATA_FOLDER + 'simulados_manifest.json');
                 
                 if (!response.ok) {
-                    throw new Error(`Não foi possível carregar o arquivo manifest.`);
+                    // Se o manifest falhar, tenta o fallback
+                    throw new Error(`Não foi possível carregar o arquivo manifest. Tentando fallback...`);
                 }
                 
                 const simuladoFilenames = await response.json(); 
@@ -861,7 +848,7 @@
             } catch (error) {
                 console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
                 
-                // Lista estática de fallback
+                // Lista estática de fallback (MANTIDA)
                 const fallbackFiles = [
                     "SIMULADO-POLICIA-PENAL-JSON.json", 
                     "SIMULADO-02-IDCAP-60-QUESTOES.json",
