@@ -202,6 +202,7 @@
             resize: vertical;
             font-family: 'Roboto', sans-serif;
             box-sizing: border-box; 
+            margin-bottom: 10px; /* Espaço antes dos botões */
         }
         
         .comment-section strong {
@@ -209,6 +210,39 @@
             font-size: 0.9rem;
             display: block;
             margin-bottom: 5px;
+        }
+
+        /* Estilos dos Botões de Anotação */
+        .note-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .note-buttons button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .btn-save-note {
+            background-color: var(--success-color);
+            color: var(--text-light);
+        }
+
+        .btn-save-note:hover {
+            opacity: 0.9;
+        }
+
+        .btn-clear-note {
+            background-color: var(--danger-color);
+            color: var(--text-light);
+        }
+
+        .btn-clear-note:hover {
+            opacity: 0.9;
         }
         
         /* Botão Revisão Total (Corrigir Tudo) */
@@ -264,12 +298,41 @@
          * Salva a anotação do usuário no localStorage.
          * A chave é composta por: `notes_${simuladoName}_${questionIndex}`
          */
-        function saveNote(simuladoName, index, content) {
+        function saveNote(simuladoName, index) {
             try {
+                const textarea = document.getElementById(`note-q-${index}`);
+                const content = textarea ? textarea.value : '';
+
+                if (content.trim() === '') {
+                    alert('A anotação está vazia. Use o botão "Excluir" para remover notas salvas.');
+                    return;
+                }
+
                 const key = `notes_${simuladoName}_${index}`;
                 localStorage.setItem(key, content);
+                alert('Anotação gravada com sucesso!');
             } catch (e) {
                 console.error("Erro ao salvar a nota no LocalStorage:", e);
+                alert('Erro ao gravar a anotação. Verifique o console.');
+            }
+        }
+
+        /**
+         * Exclui a anotação do usuário no localStorage e limpa o textarea.
+         */
+        function clearNote(simuladoName, index) {
+            try {
+                const key = `notes_${simuladoName}_${index}`;
+                localStorage.removeItem(key);
+                
+                const textarea = document.getElementById(`note-q-${index}`);
+                if (textarea) {
+                    textarea.value = '';
+                }
+                alert('Anotação excluída com sucesso!');
+            } catch (e) {
+                console.error("Erro ao excluir a nota do LocalStorage:", e);
+                alert('Erro ao excluir a anotação. Verifique o console.');
             }
         }
 
@@ -310,10 +373,8 @@
             let options = q.opcoes;
             if (!options) {
                 options = {};
-                // Tenta carregar de um formato alternativo, se necessário
                 if (q.alternativas && Array.isArray(q.alternativas)) {
                     q.alternativas.forEach(alt => options[alt.letra] = alt.texto);
-                    // Garante que a resposta correta seja adaptada se o gabarito estiver no formato 'gabarito'
                     q.resposta_correta = q.resposta_correta || q.gabarito; 
                 }
             }
@@ -337,16 +398,22 @@
                 </div>
             `;
             
-            // Área de Comentários (Notas) - UTILIZANDO loadNote e saveNote
+            // Área de Comentários (Notas) - UTILIZANDO loadNote e botões Save/Clear
             const noteContent = loadNote(name, index);
             const commentSectionHtml = `
                 <div class="comment-section">
                     <strong>🖊️ Notas Pessoais (Comentários):</strong>
                     <textarea id="note-q-${index}" 
                         placeholder="Use este espaço para anotar o porquê errou, conceitos chave ou pontos de atenção para revisão futura." 
-                        onkeyup="saveNote('${name}', ${index}, this.value)"
-                        onchange="saveNote('${name}', ${index}, this.value)"
                     >${noteContent}</textarea>
+                    <div class="note-buttons">
+                        <button class="btn-save-note" onclick="saveNote('${name}', ${index})">
+                            💾 Gravar Anotação
+                        </button>
+                        <button class="btn-clear-note" onclick="clearNote('${name}', ${index})">
+                            🗑️ Excluir Anotação
+                        </button>
+                    </div>
                 </div>
             `;
             
@@ -406,7 +473,7 @@
 
 
         /**
-         * Carrega o JSON do simulado selecionado e renderiza na tela (Mantendo a compatibilidade).
+         * Carrega o JSON do simulado selecionado e renderiza na tela.
          */
         async function loadAndRenderQuiz(filename) {
             const container = document.getElementById('quiz-container');
@@ -470,17 +537,34 @@
             list.innerHTML = '<li>Carregando lista de simulados...</li>';
 
             try {
+                // Supondo que você tenha um arquivo 'simulados_manifest.json' na pasta 'data' que lista os arquivos JSON dos simulados.
+                // Se não houver, substitua por uma lista estática.
+                // Para fins de demonstração, assumindo que este arquivo existe.
                 const response = await fetch(DATA_FOLDER + 'simulados_manifest.json');
                 
                 if (!response.ok) {
-                    throw new Error(`Não foi possível carregar o arquivo manifest.`);
+                    throw new Error(`Não foi possível carregar o arquivo manifest. Adicionando lista estática para teste.`);
                 }
                 
                 const simuladoFilenames = await response.json(); 
 
                 list.innerHTML = '';
                 if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
-                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
+                    // Lista estática de fallback se o manifest falhar
+                    const fallbackFiles = [
+                        "SIMULADO-POLICIA-PENAL-JSON.json", 
+                        "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                        "QUESTOES-GERAIS.json.json"
+                    ];
+                    
+                    fallbackFiles.forEach(filename => {
+                        const cleanName = filename.replace(/\.json$/i, ''); 
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
+                        list.appendChild(li);
+                    });
+                    
+                    list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
                     return;
                 }
 
@@ -494,12 +578,27 @@
                     list.appendChild(li);
                 });
                 
-                // Mensagem administrativa discreta no console
                 console.info("AVISO ADMINISTRATIVO: Para atualizar a lista de simulados, edite o arquivo /data/simulados_manifest.json.");
 
             } catch (error) {
                 list.innerHTML = `<li><span style="color:var(--danger-color); font-weight:bold;">ERRO</span>: Manifest ausente ou incorreto.</li>`;
                 console.error("Erro ao carregar simulados:", error);
+                
+                // Tenta carregar a lista de testes em caso de erro no manifest
+                const fallbackFiles = [
+                    "SIMULADO-POLICIA-PENAL-JSON.json", 
+                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                    "QUESTOES-GERAIS.json.json"
+                ];
+                
+                list.innerHTML = '';
+                fallbackFiles.forEach(filename => {
+                    const cleanName = filename.replace(/\.json$/i, ''); 
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
+                    list.appendChild(li);
+                });
+                list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
             }
         }
 
