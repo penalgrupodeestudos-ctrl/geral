@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulados Interativos - GitHub Pages</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Plataforma de Alta Performance - Simulados Interativos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS para Interface Moderna (Mantido do código anterior) */
+        /* Variáveis de Tema (Design System Básico) */
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --bg-light: #f8f9fa;
-            --bg-dark: #343a40;
-            --text-dark: #212529;
+            --primary-color: #004d99; /* Azul Profundo */
+            --secondary-color: #fca311; /* Laranja de Destaque */
+            --success-color: #28a745; /* Verde para Acerto */
+            --danger-color: #dc3545; /* Vermelho para Erro */
+            --bg-light: #f9fbfd; /* Fundo Leve */
+            --bg-dark: #212529; /* Barra Lateral Escura */
+            --text-dark: #343a40;
             --text-light: #fff;
-            --border-color: #dee2e6;
+            --border-color: #e9ecef;
+            --card-bg: #ffffff;
         }
 
         body {
@@ -29,352 +30,372 @@
             min-height: 100vh;
         }
 
+        /* CABEÇALHO */
         header {
             background-color: var(--primary-color);
             color: var(--text-light);
             padding: 15px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        /* BARRA LATERAL (Sidebar) */
         #sidebar {
             width: 300px;
             background-color: var(--bg-dark);
             color: var(--text-light);
             padding: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15);
             overflow-y: auto;
             flex-shrink: 0;
+        }
+
+        #sidebar h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--secondary-color);
+            margin-top: 0;
+            border-bottom: 2px solid #3e444a;
+            padding-bottom: 10px;
         }
 
         #simulado-list {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin-top: 20px;
         }
 
         #simulado-list li {
-            background-color: #495057;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             border-radius: 5px;
             overflow: hidden;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         #simulado-list a {
             display: block;
-            flex-grow: 1;
-            padding: 12px;
+            padding: 10px 15px;
             color: var(--text-light);
             text-decoration: none;
+            background-color: #343a40;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, color 0.2s;
+            border-left: 5px solid transparent;
         }
 
         #simulado-list a:hover {
-            background-color: #5a6268;
+            background-color: #495057;
+            border-left-color: var(--secondary-color);
         }
 
+        /* CONTEÚDO PRINCIPAL */
         #main-content {
             flex-grow: 1;
-            padding: 20px;
+            padding: 0;
             overflow-y: auto;
         }
 
         #quiz-container {
-            background-color: var(--text-light);
+            background-color: var(--bg-light);
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 900px;
+            margin: 20px auto;
         }
-
+        
+        /* CARTÃO DA QUESTÃO */
         .question-card {
-            margin-bottom: 25px;
-            padding: 15px;
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .question-card h4 {
+            font-family: 'Montserrat', sans-serif;
             color: var(--primary-color);
             margin-top: 0;
+            font-size: 1.2rem;
         }
-
+        
+        /* OPÇÕES */
         .option-label {
-            display: block;
-            padding: 10px;
-            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 6px 0;
             cursor: pointer;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            transition: background-color 0.2s;
+            border-radius: 6px;
+            transition: background-color 0.2s, border-color 0.2s;
+            position: relative;
         }
 
         .option-label:hover {
             background-color: var(--bg-light);
         }
 
+        /* Bloqueia o clique nas opções após o feedback (evita troca) */
+        .question-locked .option-label {
+            cursor: default; 
+        }
+
+        .question-locked .option-label:hover {
+            background-color: var(--card-bg); /* Volta ao fundo branco */
+        }
+        
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+            pointer-events: none; /* Desabilita clique direto no rádio */
+        }
+        
+        /* Estilos de Feedback */
         .option-label.correct {
             background-color: #e6ffed; /* Light Green */
             border-color: var(--success-color);
+            font-weight: 500;
         }
 
         .option-label.incorrect {
             background-color: #ffebeb; /* Light Red */
             border-color: var(--danger-color);
+            font-weight: 500;
         }
-
-        .explanation {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #fff3cd; /* Light Yellow */
-            border-left: 4px solid #ffc107;
-            font-style: italic;
+        
+        /* ANÁLISE DIDÁTICA DO PROFESSOR */
+        .explanation-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e6f7ff; /* Azul Claro para Destaque */
+            border-left: 5px solid var(--primary-color);
+            border-radius: 4px;
             display: none; /* Escondido por padrão */
         }
-
-        /* Botões */
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: opacity 0.2s;
+        
+        .explanation-box strong {
+            color: var(--primary-color);
+            font-family: 'Montserrat', sans-serif;
+            display: block;
+            margin-bottom: 8px;
         }
 
-        .btn-success {
-            background-color: var(--success-color);
-            color: var(--text-light);
+        /* COMENTÁRIOS DO ALUNO (Área de Notas) - COMPLETO */
+        .comment-section {
+            margin-top: 25px;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 15px;
         }
 
-        .admin-warning {
-            color: #ffc107;
-            background-color: #3e444a;
+        .comment-section textarea {
+            width: 100%;
+            min-height: 80px;
             padding: 10px;
-            border-radius: 5px;
-            margin-top: 15px;
-            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+            font-family: 'Roboto', sans-serif;
+            box-sizing: border-box; 
+        }
+        
+        .comment-section strong {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Botão Revisão Total (Corrigir Tudo) */
+        .btn-check-all {
+            padding: 12px 25px;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s;
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
         }
 
-        .admin-link {
-            color: #007bff;
-            text-decoration: underline;
-            cursor: pointer;
+        .btn-check-all:hover {
+            background-color: #e09210;
         }
+        
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
+    <aside id="sidebar">
         <h2>Simulados</h2>
-        <p class="admin-warning">
-            Para atualizar a lista de simulados, você deve editar o arquivo <code class="admin-link" title="simulados_manifest.json">/data/simulados_manifest.json</code> e recarregar a página.
-        </p>
-        <hr>
-        <h3>Lista de Simulados</h3>
+        <p>Selecione um simulado para iniciar:</p>
         <ul id="simulado-list">
-            <li>Carregando...</li>
+            <li>Carregando simulados...</li>
         </ul>
-    </div>
+        <div id="quiz-status" style="margin-top: 20px; font-size: 0.9rem; color: #adb5bd;">Aguardando seleção.</div>
+    </aside>
 
     <div id="main-content">
         <header>
-            <h1>Plataforma de Simulados Interativos</h1>
+            <h1>Plataforma Interativa</h1>
+            <button class="btn-check-all" onclick="checkAllAnswers()" style="width: auto; margin: 0;">Corrigir Tudo</button>
         </header>
         <div id="quiz-container">
-            <p>Selecione um Simulado na lista lateral para começar.</p>
+            <p>Selecione um simulado na barra lateral para começar.</p>
         </div>
     </div>
-
+    
     <script>
-        // Armazenará os dados do simulado atualmente carregado
+        const DATA_FOLDER = './data/'; // Pasta onde os JSONs estão localizados
         let currentQuizData = null;
-        let currentSimuladoName = null;
-
-        // URL para o arquivo manifest na pasta /data/
-        const MANIFEST_URL = './data/simulados_manifest.json';
-        const DATA_FOLDER = './data/';
-
+        let currentSimuladoName = '';
+        
         /**
-         * 1. Ler pasta /data/ automaticamente (SIMULADO via manifest)
-         * 2. Carrega múltiplos JSON
-         * 3. Novos simulados detectados automaticamente (SIMULADO via manifest)
-         * 10. Recarregar lista dinâmica
+         * Salva a anotação do usuário no localStorage.
+         * A chave é composta por: `notes_${simuladoName}_${questionIndex}`
          */
-        async function loadSimulados() {
-            const list = document.getElementById('simulado-list');
-            list.innerHTML = '<li>Carregando lista...</li>';
-
+        function saveNote(simuladoName, index, content) {
             try {
-                // 1. Tenta buscar o arquivo manifest com a lista de nomes
-                const response = await fetch(MANIFEST_URL);
-                if (!response.ok) {
-                    throw new Error(`Não foi possível carregar o arquivo manifest. Verifique se ${MANIFEST_URL} existe.`);
-                }
-                
-                // Os nomes de arquivo são a lista de simulados
-                const simuladoFilenames = await response.json(); 
-
-                list.innerHTML = '';
-                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
-                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
-                    return;
-                }
-
-                // 2. Popula a lista lateral
-                simuladoFilenames.forEach(filename => {
-                    const cleanName = filename.replace(/\.json$/i, ''); // Remove a extensão para exibição
-                    
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
-                        <div class="simulado-actions">
-                            <button onclick="exportSimulado('${filename}')" title="Exportar JSON">⬇️</button>
-                        </div>
-                    `;
-                    list.appendChild(li);
-                });
-                console.log(`Lista de ${simuladoFilenames.length} simulados carregada.`);
-
-            } catch (error) {
-                console.error("Erro ao carregar simulados:", error);
-                list.innerHTML = `<li>Erro: ${error.message}</li>`;
+                const key = `notes_${simuladoName}_${index}`;
+                localStorage.setItem(key, content);
+            } catch (e) {
+                console.error("Erro ao salvar a nota no LocalStorage:", e);
             }
         }
 
         /**
-         * 6. Exportar como JSON (Função de Cliente)
+         * Carrega a anotação do usuário do localStorage.
          */
-        function exportSimulado(filename) {
-            const url = DATA_FOLDER + filename;
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', url);
-            linkElement.setAttribute('download', filename);
-            linkElement.click();
-
-            alert(`Download do arquivo ${filename} iniciado.`);
-        }
-
-
-        /**
-         * Carrega o JSON do simulado selecionado e renderiza na tela.
-         * @param {string} filename - Nome do arquivo JSON.
-         */
-        async function loadAndRenderQuiz(filename) {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `<p>Carregando simulado ${filename.replace('.json', '')}...</p>`;
-            currentSimuladoName = filename.replace('.json', '');
-
+        function loadNote(simuladoName, index) {
             try {
-                const url = DATA_FOLDER + filename;
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Erro ao buscar o arquivo: ${response.status} ${response.statusText}`);
-                }
-                
-                const quizData = await response.json();
-                currentQuizData = quizData; // Armazena os dados para a correção
-                renderQuizUI(quizData, currentSimuladoName);
-
-            } catch (error) {
-                console.error("Erro ao carregar dados do quiz:", error);
-                container.innerHTML = `<h2 style="color:var(--danger-color);">Erro ao carregar simulado</h2><p>${error.message}</p>`;
+                const key = `notes_${simuladoName}_${index}`;
+                return localStorage.getItem(key) || '';
+            } catch (e) {
+                console.error("Erro ao carregar a nota do LocalStorage:", e);
+                return '';
             }
         }
-
+        
         /**
-         * Renderiza a interface de questões (UI).
-         * @param {Array<Object>} quizData - Array de questões.
-         * @param {string} name - Nome do simulado.
+         * Renderiza uma única questão no container.
+         * Note: 'name' é o nome do arquivo/simulado, usado para criar um namespace no localStorage.
          */
-        function renderQuizUI(quizData, name) {
+        function renderQuestion(q, index, name) {
             const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <h2>Simulado: ${name} (${quizData.length} Questões)</h2>
-                <div id="questions-area"></div>
-                <button class="btn btn-success" onclick="checkAnswers()">Corrigir Simulado</button>
-                <div class="admin-warning">
-                    ⚠️ **Atenção:** Funções de edição de texto (explicações), criação, deleção e renomeação foram **desativadas** por exigirem um servidor (backend). Você deve fazer as edições diretamente nos arquivos JSON.
-                </div>
+            const questionElement = document.createElement('div');
+            questionElement.className = 'question-card';
+            questionElement.setAttribute('data-question-number', q.numero);
+
+            // Título e Pergunta
+            const questionHtml = `
+                <h4>Q${q.numero} | ${q.disciplina}</h4>
+                <p><strong>${q.questao}</strong></p>
             `;
 
-            const questionsArea = document.getElementById('questions-area');
-            quizData.forEach((q, index) => {
-                const qCard = document.createElement('div');
-                qCard.className = 'question-card';
-                qCard.id = `q-${index}`;
-
-                let optionsHtml = '';
-                for (const key in q.opcoes) {
-                    optionsHtml += `
-                        <label class="option-label" for="${name}_q${index}_opt${key}">
-                            <input type="radio" name="${name}_q${index}" id="${name}_q${index}_opt${key}" value="${key}" data-correct="${q.resposta_correta === key}">
-                            ${key}) ${q.opcoes[key]}
-                        </label>
-                    `;
+            // Opções de Resposta
+            let optionsHtml = '<div class="options-group">';
+            const radioName = `quiz_q${index}`; 
+            
+            // Verifica se as opções são um objeto ou um array (para flexibilidade)
+            let options = q.opcoes;
+            if (!options) {
+                options = {};
+                // Tenta carregar de um formato alternativo, se necessário
+                if (q.alternativas && Array.isArray(q.alternativas)) {
+                    q.alternativas.forEach(alt => options[alt.letra] = alt.texto);
+                    // Garante que a resposta correta seja adaptada se o gabarito estiver no formato 'gabarito'
+                    q.resposta_correta = q.resposta_correta || q.gabarito; 
                 }
+            }
 
-                const explanationHtml = `
-                    <div class="explanation" id="exp-${index}">
-                        <strong>Explicação do Professor:</strong>
-                        <div class="explanation-text">${q.explicacao_professor || 'Nenhuma explicação disponível.'}</div>
-                    </div>
+            for (const key in options) {
+                const uniqueId = `${radioName}_opt${key}`;
+                optionsHtml += `
+                    <label class="option-label" for="${uniqueId}">
+                        <input type="radio" name="${radioName}" id="${uniqueId}" value="${key}">
+                        <span>${key}) ${options[key]}</span>
+                    </label>
                 `;
+            }
+            optionsHtml += '</div>';
 
-                qCard.innerHTML = `
-                    <h4>Q${q.numero}. ${q.disciplina}</h4>
-                    <p>${q.questao}</p>
-                    <form id="form-q-${index}">
-                        ${optionsHtml}
-                    </form>
-                    ${explanationHtml}
-                `;
-                questionsArea.appendChild(qCard);
-            });
+            // Explicação do Professor
+            const explanationHtml = `
+                <div class="explanation-box" id="exp-${index}">
+                    <strong>Análise Didática do Professor:</strong>
+                    <p class="explanation-text">${q.explicacao_professor || 'Nenhuma análise detalhada disponível. Reforce o estudo do tema.'}</p>
+                </div>
+            `;
+            
+            // Área de Comentários (Notas) - UTILIZANDO loadNote e saveNote
+            const noteContent = loadNote(name, index);
+            const commentSectionHtml = `
+                <div class="comment-section">
+                    <strong>🖊️ Notas Pessoais (Comentários):</strong>
+                    <textarea id="note-q-${index}" 
+                        placeholder="Use este espaço para anotar o porquê errou, conceitos chave ou pontos de atenção para revisão futura." 
+                        onkeyup="saveNote('${name}', ${index}, this.value)"
+                        onchange="saveNote('${name}', ${index}, this.value)"
+                    >${noteContent}</textarea>
+                </div>
+            `;
+            
+            questionElement.innerHTML = questionHtml + optionsHtml + explanationHtml + commentSectionHtml;
+            container.appendChild(questionElement);
         }
 
         /**
-         * Função para corrigir o simulado e exibir as explicações.
+         * Lógica de Correção/Feedback para todas as questões.
          */
-        function checkAnswers() {
-            if (!currentQuizData) {
-                alert("Nenhum simulado carregado para corrigir.");
+        function checkAllAnswers() {
+            if (!currentQuizData || currentQuizData.length === 0) {
+                alert("Nenhum simulado carregado para correção.");
                 return;
             }
 
             currentQuizData.forEach((q, index) => {
-                const questionElement = document.getElementById(`q-${index}`);
-                const explanationElement = document.getElementById(`exp-${index}`);
-                if (explanationElement) {
-                     explanationElement.style.display = 'block'; // Mostra a explicação
-                }
+                const questionElement = document.querySelector(`.question-card[data-question-number='${q.numero}']`);
+                const explanationBox = document.getElementById(`exp-${index}`);
+                
+                if (!questionElement) return;
 
-                // Reset classes
-                const labels = questionElement.querySelectorAll('.option-label');
-                labels.forEach(label => {
+                // 1. Marca a questão como corrigida e a "trava"
+                questionElement.classList.add('question-locked'); 
+
+                // 2. Marca a resposta correta e a selecionada
+                const radioName = `quiz_q${index}`;
+                const selected = questionElement.querySelector(`input[name='${radioName}']:checked`);
+                let selectedLabel = selected ? selected.closest('.option-label') : null;
+
+                // Remove classes anteriores (importante para recargas)
+                questionElement.querySelectorAll('.option-label').forEach(label => {
                     label.classList.remove('correct', 'incorrect');
                 });
-
-                // Get selected option
-                const selected = questionElement.querySelector(`input[name='${currentSimuladoName}_q${index}']:checked`);
-                let selectedValue = selected ? selected.value : null;
-
-                // Highlight correct answer
-                const correctLabelInput = questionElement.querySelector(`input[value='${q.resposta_correta}']`);
-                if (correctLabelInput) {
-                    correctLabelInput.closest('.option-label').classList.add('correct');
+                
+                // Marca a correta (sempre)
+                const correctInput = questionElement.querySelector(`input[value='${q.resposta_correta}']`);
+                if (correctInput) {
+                    correctInput.closest('.option-label').classList.add('correct');
                 }
 
-                // Highlight incorrect selection
-                if (selectedValue && selectedValue !== q.resposta_correta) {
-                    selected.closest('.option-label').classList.add('incorrect');
+                // Marca a incorreta (se houver)
+                if (selectedLabel && selected.value !== q.resposta_correta) {
+                    selectedLabel.classList.add('incorrect');
+                }
+
+                // 3. Revela a Análise Didática
+                if (explanationBox) {
+                    explanationBox.style.display = 'block';
                 }
             });
 
@@ -383,7 +404,105 @@
             alert("Correção concluída. Verifique as respostas e explicações!");
         }
 
-        // Inicialização: Carrega a lista de simulados ao carregar a página
+
+        /**
+         * Carrega o JSON do simulado selecionado e renderiza na tela (Mantendo a compatibilidade).
+         */
+        async function loadAndRenderQuiz(filename) {
+            const container = document.getElementById('quiz-container');
+            const statusElement = document.getElementById('quiz-status');
+            currentSimuladoName = filename.replace(/\.json$/i, ''); 
+            statusElement.textContent = `Carregando: ${currentSimuladoName}`;
+            container.innerHTML = `<p>Aguarde, carregando dados de ${currentSimuladoName}...</p>`;
+
+            try {
+                const url = DATA_FOLDER + filename;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`Erro ao buscar o arquivo (Status: ${response.status}). Verifique o nome: ${filename}`);
+                }
+                
+                const rawData = await response.json();
+                let quizData;
+
+                // LÓGICA DE COMPATIBILIDADE (Para simular o arquivo JSON aninhado)
+                if (Array.isArray(rawData)) {
+                    quizData = rawData;
+                } else if (rawData && rawData.simulados_policia_penal && Array.isArray(rawData.simulados_policia_penal) && rawData.simulados_policia_penal.length > 0) {
+                    quizData = rawData.simulados_policia_penal[0].questoes;
+                } else if (rawData && rawData.simulados && Array.isArray(rawData.simulados) && rawData.simulados.length > 0) {
+                    quizData = rawData.simulados[0].questoes;
+                } else {
+                    throw new Error("Formato do JSON inválido. Verifique se é um Array de questões ou um Objeto aninhado.");
+                }
+
+
+                if (!quizData || !Array.isArray(quizData)) {
+                    throw new Error("Não foi possível extrair a lista de questões.");
+                }
+
+                currentQuizData = quizData;
+                container.innerHTML = ''; // Limpa o container
+                
+                quizData.forEach((q, index) => {
+                    renderQuestion(q, index, currentSimuladoName);
+                });
+
+                statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
+                
+                // Rolagem suave para o topo da primeira questão
+                document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth' });
+
+
+            } catch (error) {
+                console.error("Erro ao carregar o quiz:", error);
+                statusElement.textContent = `Falha ao carregar o simulado: ${error.message}`;
+                container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold;">ERRO: ${error.message}</p>`;
+            }
+        }
+
+        /**
+         * Carrega a lista de simulados a partir de um arquivo manifest (simulados_manifest.json)
+         */
+        async function loadSimulados() {
+            const list = document.getElementById('simulado-list');
+            list.innerHTML = '<li>Carregando lista de simulados...</li>';
+
+            try {
+                const response = await fetch(DATA_FOLDER + 'simulados_manifest.json');
+                
+                if (!response.ok) {
+                    throw new Error(`Não foi possível carregar o arquivo manifest.`);
+                }
+                
+                const simuladoFilenames = await response.json(); 
+
+                list.innerHTML = '';
+                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
+                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
+                    return;
+                }
+
+                simuladoFilenames.forEach(filename => {
+                    const cleanName = filename.replace(/\.json$/i, ''); 
+                    
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
+                    `;
+                    list.appendChild(li);
+                });
+                
+                // Mensagem administrativa discreta no console
+                console.info("AVISO ADMINISTRATIVO: Para atualizar a lista de simulados, edite o arquivo /data/simulados_manifest.json.");
+
+            } catch (error) {
+                list.innerHTML = `<li><span style="color:var(--danger-color); font-weight:bold;">ERRO</span>: Manifest ausente ou incorreto.</li>`;
+                console.error("Erro ao carregar simulados:", error);
+            }
+        }
+
         window.onload = loadSimulados;
 
     </script>
