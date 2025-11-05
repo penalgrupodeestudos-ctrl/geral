@@ -30,17 +30,31 @@
             min-height: 100vh;
         }
 
-        /* CONFIGURAÇÃO PARA TELAS GRANDES (Desktop/Tablet) */
+        /* ======================================= */
+        /* CONFIGURAÇÃO RESPONSIVA (Layout)        */
+        /* ======================================= */
+
+        /* Padrão para Celular (Barra lateral em cima, Conteúdo em baixo) */
+        #sidebar {
+            width: 100%; 
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
+            overflow-y: auto;
+        }
+        
         @media (min-width: 768px) {
             body {
                 display: flex; /* Volta ao layout lado a lado para telas grandes */
             }
             #sidebar {
                 width: 300px;
-                flex-shrink: 0; /* Impede o encolhimento */
-                height: 100vh; /* Ocupa a altura total */
+                flex-shrink: 0; 
+                height: 100vh; 
                 position: sticky; /* Mantém a barra lateral fixa no topo */
                 top: 0;
+                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15); /* Sombra na lateral */
             }
             #main-content {
                 flex-grow: 1;
@@ -49,8 +63,7 @@
                 flex-direction: row;
             }
         }
-
-
+        
         /* CABEÇALHO */
         header {
             background-color: var(--primary-color);
@@ -76,25 +89,29 @@
             }
         }
 
-
-        /* BARRA LATERAL (Sidebar) - Padrão para Celular (Largura Total) */
-        #sidebar {
-            width: 100%; 
-            background-color: var(--bg-dark);
+        /* Botão Análise e Revisão na Sidebar */
+        .btn-sidebar-report {
+            padding: 12px 15px;
+            background-color: var(--success-color); 
             color: var(--text-light);
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Sombra na parte inferior */
-            overflow-y: auto;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
+            display: none; 
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
         }
 
-        #sidebar h2 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--secondary-color);
-            margin-top: 0;
-            border-bottom: 2px solid #3e444a;
-            padding-bottom: 10px;
+        .btn-sidebar-report:hover {
+            background-color: #1e7e34;
         }
 
+        /* Lista de Simulados */
         #simulado-list {
             list-style: none;
             padding: 0;
@@ -123,41 +140,18 @@
             border-left-color: var(--secondary-color);
         }
 
-        /* Botão Análise e Revisão */
-        .btn-sidebar-report {
-            padding: 12px 15px;
-            background-color: var(--success-color); 
-            color: var(--text-light);
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            transition: background-color 0.2s;
-            display: none; 
-            width: 100%;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        .btn-sidebar-report:hover {
-            background-color: #1e7e34;
-        }
-
-
         /* CONTEÚDO PRINCIPAL */
         #main-content {
-            width: 100%; /* Garante a largura total no celular */
+            width: 100%; 
             padding: 0;
             overflow-y: auto;
         }
 
         #quiz-container {
             background-color: var(--bg-light);
-            padding: 20px; /* Reduz padding no celular */
+            padding: 20px; 
             max-width: 900px;
-            margin: 0 auto; /* Ajusta a margem no celular */
+            margin: 0 auto; 
         }
         @media (min-width: 768px) {
             #quiz-container {
@@ -166,10 +160,10 @@
             }
         }
         
-        /* CARTÃO DA QUESTÃO */
+        /* ... Estilos de Questão e Opções (Mantidos) ... */
         .question-card {
-            margin-bottom: 20px; /* Reduz margem no celular */
-            padding: 15px; /* Reduz padding no celular */
+            margin-bottom: 20px; 
+            padding: 15px; 
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -185,14 +179,13 @@
             font-family: 'Montserrat', sans-serif;
             color: var(--primary-color);
             margin-top: 0;
-            font-size: 1.1rem; /* Menor no celular */
+            font-size: 1.1rem; 
         }
         
-        /* OPÇÕES */
         .option-label {
             display: flex;
             align-items: center;
-            padding: 10px; /* Menor no celular */
+            padding: 10px; 
             margin: 5px 0;
             cursor: pointer;
             border: 1px solid var(--border-color);
@@ -205,14 +198,9 @@
             background-color: var(--bg-light);
         }
 
-        /* Bloqueia o clique nas opções após o feedback (evita troca) */
         .question-locked .option-label {
             cursor: default; 
             pointer-events: none; 
-        }
-
-        .question-locked .option-label:hover {
-            background-color: var(--card-bg); 
         }
         
         .option-label input[type="radio"] {
@@ -234,7 +222,7 @@
         
         /* ANÁLISE DIDÁTICA DO PROFESSOR */
         .explanation-box {
-            margin-top: 15px; /* Menor no celular */
+            margin-top: 15px; 
             padding: 15px;
             background-color: #e6f7ff; 
             border-left: 5px solid var(--primary-color);
@@ -251,14 +239,14 @@
 
         /* COMENTÁRIOS DO ALUNO (Área de Notas) */
         .comment-section {
-            margin-top: 20px; /* Menor no celular */
+            margin-top: 20px; 
             border-top: 1px dashed var(--border-color);
             padding-top: 15px;
         }
 
         .comment-section textarea {
             width: 100%;
-            min-height: 70px; /* Menor no celular */
+            min-height: 70px; 
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -288,7 +276,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: opacity 0.2s;
-            font-size: 0.85rem; /* Menor no celular */
+            font-size: 0.85rem; 
         }
 
         .btn-save-note {
@@ -296,34 +284,26 @@
             color: var(--text-light);
         }
 
-        .btn-save-note:hover {
-            opacity: 0.9;
-        }
-
         .btn-clear-note {
             background-color: var(--danger-color);
             color: var(--text-light);
         }
-
-        .btn-clear-note:hover {
-            opacity: 0.9;
-        }
         
-        /* BOTAO CORRIGIR TUDO (Relatório Final no Header) */
+        /* BOTAO RELATÓRIO FINAL no Header */
         .btn-check-all {
-            padding: 10px 20px; /* Menor no celular */
+            padding: 10px 20px; 
             background-color: var(--secondary-color);
             color: var(--text-dark);
             font-weight: bold;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 10px; /* Espaço no celular */
+            margin-top: 10px; 
             transition: background-color 0.2s;
-            display: block;
-            width: 100%; /* Ocupa largura total no header do celular */
+            display: none;
+            width: 100%; 
             text-align: center;
-            font-size: 0.9rem; /* Menor no celular */
+            font-size: 0.9rem; 
         }
         @media (min-width: 768px) {
             .btn-check-all {
@@ -335,14 +315,10 @@
         }
 
 
-        .btn-check-all:hover {
-            background-color: #e09210;
-        }
-
         /* Relatório de Desempenho */
         #performance-report {
             margin-top: 30px;
-            padding: 20px; /* Menor no celular */
+            padding: 20px; 
             background-color: var(--card-bg);
             border: 2px solid var(--primary-color);
             border-radius: 10px;
@@ -355,12 +331,12 @@
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
             margin-top: 0;
-            font-size: 1.2rem; /* Menor no celular */
+            font-size: 1.2rem; 
         }
 
         .report-summary span {
             display: block;
-            font-size: 1rem; /* Menor no celular */
+            font-size: 1rem; 
             margin-bottom: 8px;
         }
         
@@ -373,7 +349,7 @@
         .report-summary .hit { color: var(--success-color); font-weight: bold; }
         .report-summary .error { color: var(--danger-color); font-weight: bold; }
         .report-summary .percent { color: var(--secondary-color); font-weight: bold; }
-        .report-summary .percent strong { font-size: 1.2rem !important; } /* Apenas a porcentagem */
+        .report-summary .percent strong { font-size: 1.2rem !important; } 
 
         .weak-areas {
             margin-top: 20px;
@@ -381,23 +357,6 @@
             background-color: #fffbe6; 
             border-left: 5px solid var(--warning-color);
             border-radius: 6px;
-        }
-
-        .weak-areas h4 {
-             font-size: 1rem;
-             color: var(--text-dark);
-             margin-top: 0;
-        }
-
-        .weak-areas ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 10px;
-        }
-
-        .weak-areas li {
-            font-weight: 500;
-            margin-bottom: 5px;
         }
         
     </style>
@@ -421,7 +380,7 @@
     <div id="main-content">
         <header>
             <h1>Plataforma de Alta Performance</h1>
-            <button class="btn-check-all" id="btn-report" onclick="showPerformanceReport(true)" style="width: 100%; margin: 0; display: none;">Visualizar Relatório Final</button>
+            <button class="btn-check-all" id="btn-report" onclick="showPerformanceReport(true)">Visualizar Relatório Final</button>
         </header>
         <div id="quiz-container">
             <p>Selecione um simulado na barra lateral para começar.</p>
@@ -443,7 +402,7 @@
         };
 
         // ===================================================================
-        // FUNÇÕES DE ANOTAÇÕES (MANTIDAS)
+        // FUNÇÕES DE ANOTAÇÕES
         // ===================================================================
         function saveNote(simuladoName, index) {
             try {
@@ -491,7 +450,7 @@
         }
 
         // ===================================================================
-        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE (MANTIDAS)
+        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE
         // ===================================================================
 
         function updatePerformance(discipline, isCorrect) {
@@ -516,7 +475,7 @@
 
 
         /**
-         * Implementa a interatividade em tempo real: corrige a questão no clique (MANTIDA)
+         * Implementa a interatividade em tempo real: corrige a questão no clique
          */
         function checkAnswer(index, selectedValue) {
             if (!currentQuizData || index >= currentQuizData.length) return;
@@ -551,13 +510,15 @@
 
             updatePerformance(q.disciplina, isCorrect);
 
-            if (answeredQuestions === currentQuizData.length) {
+            const totalQuestions = currentQuizData.length;
+            if (answeredQuestions === totalQuestions) {
                 document.getElementById('btn-report').style.display = 'block';
                 document.getElementById('quiz-status').textContent = `Simulado concluído! Clique em "Visualizar Relatório Final" ou role para baixo.`;
                 showPerformanceReport(true); 
             } else {
-                document.getElementById('quiz-status').textContent = `Progresso: ${answeredQuestions}/${currentQuizData.length} questões respondidas.`;
+                document.getElementById('quiz-status').textContent = `Progresso: ${answeredQuestions}/${totalQuestions} questões respondidas.`;
                 
+                // Rolagem suave para a próxima questão
                 setTimeout(() => {
                     let nextIndex = index + 1;
                     while (nextIndex < currentQuizData.length) {
@@ -573,7 +534,7 @@
         }
 
         /**
-         * Gera e exibe o relatório de desempenho e as áreas de melhoria. (MANTIDA)
+         * Gera e exibe o relatório de desempenho e as áreas de melhoria.
          */
         function showPerformanceReport(autoScroll = false) {
             const container = document.getElementById('quiz-container');
@@ -590,6 +551,7 @@
 
             const total = currentQuizData.length;
             
+            // Evita divisão por zero se nenhuma questão foi respondida
             const questionsConsidered = answeredQuestions > 0 ? answeredQuestions : 1; 
             const percentage = ((performance.hits / questionsConsidered) * 100).toFixed(2);
             
@@ -652,7 +614,7 @@
 
 
         /**
-         * Renderiza uma única questão no container. (MANTIDA)
+         * Renderiza uma única questão no container.
          */
         function renderQuestion(q, index, name) {
             const container = document.getElementById('quiz-container');
@@ -720,7 +682,7 @@
         }
 
         /**
-         * Carrega o JSON do simulado selecionado e renderiza na tela. (CORRIGIDA E REFORÇADA)
+         * Carrega o JSON do simulado selecionado e renderiza na tela.
          */
         async function loadAndRenderQuiz(filename) {
             const container = document.getElementById('quiz-container');
@@ -752,7 +714,7 @@
                 const response = await fetch(url);
 
                 if (!response.ok) {
-                    // MENSAGEM DE ERRO VISÍVEL SE O ARQUIVO NÃO FOR ENCONTRADO
+                    // MENSAGEM DE ERRO VISÍVEL SE O ARQUIVO NÃO FOR ENCONTRADO (CRÍTICO)
                     const errorMessage = `ERRO (404/CORS) ao carregar o simulado '${filename}'. Por favor, verifique se o arquivo JSON está na pasta: **${DATA_FOLDER}**`;
                     
                     container.innerHTML = `
@@ -771,7 +733,7 @@
                 const rawData = await response.json();
                 let quizData;
 
-                // LÓGICA DE COMPATIBILIDADE PARA EXTRAIR A LISTA DE QUESTÕES (MANTIDA)
+                // LÓGICA DE COMPATIBILIDADE PARA EXTRAIR A LISTA DE QUESTÕES
                 if (Array.isArray(rawData)) {
                     quizData = rawData;
                 } else if (rawData && rawData.simulados_policia_penal && Array.isArray(rawData.simulados_policia_penal) && rawData.simulados_policia_penal.length > 0) {
@@ -797,7 +759,7 @@
 
                 statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
                 
-                // Rola o conteúdo principal para o topo
+                // Rola o conteúdo principal para o topo, garantindo que o usuário veja as questões
                 document.getElementById('main-content').scrollTop = 0; 
                 document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -814,12 +776,12 @@
 
 
         /**
-         * Carrega a lista de simulados com base nos arquivos que você tem. (SIMPLIFICADA)
+         * Carrega a lista de simulados com base nos arquivos que você tem. (Usando lista estática dos arquivos que você carregou)
          */
         function loadSimulados() {
             const list = document.getElementById('simulado-list');
             
-            // Lista estática baseada nos arquivos que você forneceu ou mencionou
+            // Lista estática baseada nos arquivos JSON que você carregou
             const availableFiles = [
                 "SIMULADO-02-IDCAP-60-QUESTOES.json",
                 "QUESTOES-AREA-POLICIAL.json",
@@ -837,7 +799,7 @@
                 li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
                 list.appendChild(li);
             });
-            list.innerHTML += '<li><small style="color:#adb5bd;">(Arquivos listados acima)</small></li>';
+            list.innerHTML += '<li><small style="color:#adb5bd;">(Arquivos listados)</small></li>';
 
         }
 
