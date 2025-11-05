@@ -27,9 +27,30 @@
             padding: 0;
             background-color: var(--bg-light);
             color: var(--text-dark);
-            display: flex;
+            /* display: flex; REMOVIDO PARA CELULAR */
             min-height: 100vh;
         }
+
+        /* CONFIGURAÇÃO PARA TELAS GRANDES (Desktop/Tablet) */
+        @media (min-width: 768px) {
+            body {
+                display: flex; /* Volta ao layout lado a lado para telas grandes */
+            }
+            #sidebar {
+                width: 300px;
+                flex-shrink: 0; /* Impede o encolhimento */
+                height: 100vh; /* Ocupa a altura total */
+                position: sticky; /* Mantém a barra lateral fixa no topo */
+                top: 0;
+            }
+            #main-content {
+                flex-grow: 1;
+            }
+            header {
+                flex-direction: row;
+            }
+        }
+
 
         /* CABEÇALHO */
         header {
@@ -40,23 +61,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-direction: column; /* Empilha no celular */
+            gap: 10px;
         }
 
         header h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.2rem; /* Menor no celular */
             margin: 0;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+             header h1 {
+                font-size: 1.8rem;
+            }
         }
 
-        /* BARRA LATERAL (Sidebar) */
+
+        /* BARRA LATERAL (Sidebar) - Padrão para Celular (Largura Total) */
         #sidebar {
-            width: 300px;
+            width: 100%; 
             background-color: var(--bg-dark);
             color: var(--text-light);
             padding: 20px;
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); /* Sombra na parte inferior */
             overflow-y: auto;
-            flex-shrink: 0;
         }
 
         #sidebar h2 {
@@ -95,10 +124,10 @@
             border-left-color: var(--secondary-color);
         }
 
-        /* Botão Desempenho na Sidebar (NOVO ESTILO) */
+        /* Botão Análise e Revisão (NOVO NOME) */
         .btn-sidebar-report {
             padding: 12px 15px;
-            background-color: var(--success-color); /* Verde para destaque */
+            background-color: var(--success-color); 
             color: var(--text-light);
             font-weight: bold;
             border: none;
@@ -107,7 +136,7 @@
             margin-top: 20px;
             margin-bottom: 20px;
             transition: background-color 0.2s;
-            display: none; /* Escondido por padrão, aparece ao carregar o simulado */
+            display: none; 
             width: 100%;
             text-align: center;
             font-size: 1rem;
@@ -120,22 +149,28 @@
 
         /* CONTEÚDO PRINCIPAL */
         #main-content {
-            flex-grow: 1;
+            width: 100%; /* Garante a largura total no celular */
             padding: 0;
             overflow-y: auto;
         }
 
         #quiz-container {
             background-color: var(--bg-light);
-            padding: 30px;
+            padding: 20px; /* Reduz padding no celular */
             max-width: 900px;
-            margin: 20px auto;
+            margin: 0 auto; /* Ajusta a margem no celular */
+        }
+        @media (min-width: 768px) {
+            #quiz-container {
+                 padding: 30px;
+                 margin: 20px auto;
+            }
         }
         
         /* CARTÃO DA QUESTÃO */
         .question-card {
-            margin-bottom: 30px;
-            padding: 25px;
+            margin-bottom: 20px; /* Reduz margem no celular */
+            padding: 15px; /* Reduz padding no celular */
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -151,15 +186,15 @@
             font-family: 'Montserrat', sans-serif;
             color: var(--primary-color);
             margin-top: 0;
-            font-size: 1.2rem;
+            font-size: 1.1rem; /* Menor no celular */
         }
         
         /* OPÇÕES */
         .option-label {
             display: flex;
             align-items: center;
-            padding: 12px;
-            margin: 6px 0;
+            padding: 10px; /* Menor no celular */
+            margin: 5px 0;
             cursor: pointer;
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -174,7 +209,7 @@
         /* Bloqueia o clique nas opções após o feedback (evita troca) */
         .question-locked .option-label {
             cursor: default; 
-            pointer-events: none; /* Impede novos cliques */
+            pointer-events: none; 
         }
 
         .question-locked .option-label:hover {
@@ -187,25 +222,25 @@
         
         /* Estilos de Feedback */
         .option-label.correct {
-            background-color: #e6ffed !important; /* Light Green */
-            border: 2px solid var(--success-color); /* Borda mais grossa para destaque */
+            background-color: #e6ffed !important; 
+            border: 2px solid var(--success-color); 
             font-weight: 500;
         }
 
         .option-label.incorrect {
-            background-color: #ffebeb !important; /* Light Red */
-            border: 2px solid var(--danger-color); /* Borda mais grossa para destaque */
+            background-color: #ffebeb !important; 
+            border: 2px solid var(--danger-color); 
             font-weight: 500;
         }
         
         /* ANÁLISE DIDÁTICA DO PROFESSOR */
         .explanation-box {
-            margin-top: 20px;
+            margin-top: 15px; /* Menor no celular */
             padding: 15px;
-            background-color: #e6f7ff; /* Azul Claro para Destaque */
+            background-color: #e6f7ff; 
             border-left: 5px solid var(--primary-color);
             border-radius: 4px;
-            display: none; /* Escondido por padrão */
+            display: none; 
         }
         
         .explanation-box strong {
@@ -217,14 +252,14 @@
 
         /* COMENTÁRIOS DO ALUNO (Área de Notas) */
         .comment-section {
-            margin-top: 25px;
+            margin-top: 20px; /* Menor no celular */
             border-top: 1px dashed var(--border-color);
             padding-top: 15px;
         }
 
         .comment-section textarea {
             width: 100%;
-            min-height: 80px;
+            min-height: 70px; /* Menor no celular */
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -254,6 +289,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: opacity 0.2s;
+            font-size: 0.85rem; /* Menor no celular */
         }
 
         .btn-save-note {
@@ -274,22 +310,31 @@
             opacity: 0.9;
         }
         
-        /* BOTAO CORRIGIR TUDO (Relatório Final no Header - Mantido) */
+        /* BOTAO CORRIGIR TUDO (Relatório Final no Header) */
         .btn-check-all {
-            padding: 12px 25px;
+            padding: 10px 20px; /* Menor no celular */
             background-color: var(--secondary-color);
             color: var(--text-dark);
             font-weight: bold;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 30px;
+            margin-top: 10px; /* Espaço no celular */
             transition: background-color 0.2s;
             display: block;
-            width: 100%;
+            width: 100%; /* Ocupa largura total no header do celular */
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.9rem; /* Menor no celular */
         }
+        @media (min-width: 768px) {
+            .btn-check-all {
+                width: auto;
+                margin: 0;
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+
 
         .btn-check-all:hover {
             background-color: #e09210;
@@ -297,8 +342,8 @@
 
         /* Relatório de Desempenho */
         #performance-report {
-            margin-top: 40px;
-            padding: 30px;
+            margin-top: 30px;
+            padding: 20px; /* Menor no celular */
             background-color: var(--card-bg);
             border: 2px solid var(--primary-color);
             border-radius: 10px;
@@ -311,16 +356,17 @@
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
             margin-top: 0;
+            font-size: 1.2rem; /* Menor no celular */
         }
 
         .report-summary span {
             display: block;
-            font-size: 1.1rem;
+            font-size: 1rem; /* Menor no celular */
             margin-bottom: 8px;
         }
         
         .report-summary .score-info {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #6c757d;
             margin-bottom: 15px;
         }
@@ -328,11 +374,12 @@
         .report-summary .hit { color: var(--success-color); font-weight: bold; }
         .report-summary .error { color: var(--danger-color); font-weight: bold; }
         .report-summary .percent { color: var(--secondary-color); font-weight: bold; }
+        .report-summary .percent strong { font-size: 1.2rem !important; } /* Apenas a porcentagem */
 
         .weak-areas {
             margin-top: 20px;
             padding: 15px;
-            background-color: #fffbe6; /* Amarelo muito claro */
+            background-color: #fffbe6; 
             border-left: 5px solid var(--warning-color);
             border-radius: 6px;
         }
@@ -363,7 +410,7 @@
         <p>Selecione um simulado para iniciar:</p>
 
         <button class="btn-sidebar-report" id="btn-sidebar-report" onclick="showPerformanceReport(true)">
-            📈 Desempenho do Aluno
+            📊 Análise e Revisão de Conteúdo
         </button>
 
         <ul id="simulado-list">
@@ -374,8 +421,8 @@
 
     <div id="main-content">
         <header>
-            <h1>Análise e Revisão de Conteúdo</h1>
-            <button class="btn-check-all" id="btn-report" onclick="showPerformanceReport(true)" style="width: auto; margin: 0; display: none;">Visualizar Relatório Final</button>
+            <h1>Plataforma de Alta Performance</h1>
+            <button class="btn-check-all" id="btn-report" onclick="showPerformanceReport(true)" style="width: 100%; margin: 0; display: none;">Visualizar Relatório Final</button>
         </header>
         <div id="quiz-container">
             <p>Selecione um simulado na barra lateral para começar.</p>
@@ -444,7 +491,7 @@
         }
 
         // ===================================================================
-        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE (AJUSTADA)
+        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE (MANTIDAS)
         // ===================================================================
 
         function updatePerformance(discipline, isCorrect) {
@@ -706,7 +753,7 @@
             const container = document.getElementById('quiz-container');
             const statusElement = document.getElementById('quiz-status');
             const reportButtonHeader = document.getElementById('btn-report');
-            const reportButtonSidebar = document.getElementById('btn-sidebar-report'); // Novo botão
+            const reportButtonSidebar = document.getElementById('btn-sidebar-report'); 
 
             
             // RESETAR ESTADOS
@@ -719,7 +766,7 @@
                 disciplineBreakdown: {}
             };
             reportButtonHeader.style.display = 'none'; 
-            reportButtonSidebar.style.display = 'block'; // Mostra o botão da sidebar ao carregar o simulado
+            reportButtonSidebar.style.display = 'block'; 
 
             statusElement.textContent = `Carregando: ${currentSimuladoName}`;
             container.innerHTML = `<p>Aguarde, carregando dados de ${currentSimuladoName}...</p>`;
@@ -765,13 +812,14 @@
 
                 statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
                 
-                document.getElementById('main-content').scrollTop = 0;
+                // Rola para o topo do conteúdo principal após o carregamento
+                document.getElementById('main-content').scrollTop = 0; 
 
             } catch (error) {
                 console.error("Erro ao carregar o quiz:", error);
                 statusElement.textContent = `Falha ao carregar o simulado: ${error.message}`;
                 container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold;">ERRO: ${error.message}</p>`;
-                reportButtonSidebar.style.display = 'none'; // Esconde o botão se der erro
+                reportButtonSidebar.style.display = 'none'; 
             }
         }
 
