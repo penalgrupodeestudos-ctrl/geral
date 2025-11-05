@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise e Revisão de Conteúdo - Simulados Interativos</title>
+    <title>Plataforma de Alta Performance - Simulados Interativos</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Variáveis de Tema (Design System Básico) */
@@ -95,6 +95,29 @@
             border-left-color: var(--secondary-color);
         }
 
+        /* Botão Desempenho/Análise na Sidebar (ESTILO MANTIDO) */
+        .btn-sidebar-report {
+            padding: 12px 15px;
+            background-color: var(--success-color); /* Verde para destaque */
+            color: var(--text-light);
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
+            display: none; /* Escondido por padrão, aparece ao carregar o simulado */
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn-sidebar-report:hover {
+            background-color: #1e7e34;
+        }
+
+
         /* CONTEÚDO PRINCIPAL */
         #main-content {
             flex-grow: 1;
@@ -117,7 +140,7 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.3s; /* Adicionado para efeito visual */
+            transition: border-color 0.3s; 
         }
 
         .question-card.answered {
@@ -251,7 +274,7 @@
             opacity: 0.9;
         }
         
-        /* BOTAO CORRIGIR TUDO (Relatório Final) */
+        /* BOTAO CORRIGIR TUDO (Relatório Final no Header - Mantido) */
         .btn-check-all {
             padding: 12px 25px;
             background-color: var(--secondary-color);
@@ -295,6 +318,12 @@
             font-size: 1.1rem;
             margin-bottom: 8px;
         }
+        
+        .report-summary .score-info {
+            font-size: 0.95rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
 
         .report-summary .hit { color: var(--success-color); font-weight: bold; }
         .report-summary .error { color: var(--danger-color); font-weight: bold; }
@@ -306,6 +335,12 @@
             background-color: #fffbe6; /* Amarelo muito claro */
             border-left: 5px solid var(--warning-color);
             border-radius: 6px;
+        }
+
+        .weak-areas h4 {
+             font-size: 1rem;
+             color: var(--text-dark);
+             margin-top: 0;
         }
 
         .weak-areas ul {
@@ -326,6 +361,11 @@
     <aside id="sidebar">
         <h2>Simulados</h2>
         <p>Selecione um simulado para iniciar:</p>
+
+        <button class="btn-sidebar-report" id="btn-sidebar-report" onclick="showPerformanceReport(true)">
+            📊 Análise e Revisão de Conteúdo
+        </button>
+
         <ul id="simulado-list">
             <li>Carregando simulados...</li>
         </ul>
@@ -334,7 +374,7 @@
 
     <div id="main-content">
         <header>
-            <h1>Análise e Revisão de Conteúdo</h1>
+            <h1>Plataforma de Alta Performance</h1>
             <button class="btn-check-all" id="btn-report" onclick="showPerformanceReport(true)" style="width: auto; margin: 0; display: none;">Visualizar Relatório Final</button>
         </header>
         <div id="quiz-container">
@@ -404,12 +444,12 @@
         }
 
         // ===================================================================
-        // FUNÇÕES DE PERFORMANCE (Interatividade em Tempo Real)
+        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE (MANTIDAS)
         // ===================================================================
 
         function updatePerformance(discipline, isCorrect) {
-            // Garante que a disciplina está em maiúsculas para evitar duplicidade
-            discipline = discipline.toUpperCase().trim(); 
+            // Garante que a disciplina está em maiúsculas e limpa espaços para evitar duplicidade
+            discipline = (discipline || 'Geral').toUpperCase().trim(); 
 
             // Inicializa a disciplina se for a primeira vez
             if (!performance.disciplineBreakdown[discipline]) {
@@ -436,6 +476,8 @@
          * Implementa a interatividade em tempo real: corrige a questão no clique
          */
         function checkAnswer(index, selectedValue) {
+            if (!currentQuizData || index >= currentQuizData.length) return;
+
             const q = currentQuizData[index];
             const questionElement = document.querySelector(`.question-card[data-question-number='${q.numero}']`);
             
@@ -452,7 +494,7 @@
 
             // 2. Marca a questão como corrigida e a "trava"
             questionElement.classList.add('question-locked'); 
-            questionElement.classList.add('answered'); /* Estilo visual de respondida */
+            questionElement.classList.add('answered'); 
             answeredQuestions++;
 
             // 3. Aplica o feedback visual
@@ -475,20 +517,23 @@
             if (answeredQuestions === currentQuizData.length) {
                 document.getElementById('btn-report').style.display = 'block';
                 document.getElementById('quiz-status').textContent = `Simulado concluído! Clique em "Visualizar Relatório Final" ou role para baixo.`;
-                showPerformanceReport(true); // Mostra o relatório automaticamente no final
+                showPerformanceReport(true); 
             } else {
-                // Rola para a próxima questão não respondida
-                let nextIndex = index + 1;
-                while (nextIndex < currentQuizData.length) {
-                    const nextQ = document.querySelector(`.question-card[data-question-number='${currentQuizData[nextIndex].numero}']`);
-                    if (nextQ && !nextQ.classList.contains('question-locked')) {
-                        nextQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        break;
-                    }
-                    nextIndex++;
-                }
                 // Atualiza o status
                 document.getElementById('quiz-status').textContent = `Progresso: ${answeredQuestions}/${currentQuizData.length} questões respondidas.`;
+                
+                // Rolagem suave para a próxima questão não respondida
+                setTimeout(() => {
+                    let nextIndex = index + 1;
+                    while (nextIndex < currentQuizData.length) {
+                        const nextQ = document.querySelector(`.question-card[data-question-number='${currentQuizData[nextIndex].numero}']`);
+                        if (nextQ && !nextQ.classList.contains('question-locked')) {
+                            nextQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            break;
+                        }
+                        nextIndex++;
+                    }
+                }, 200); 
             }
         }
 
@@ -500,7 +545,7 @@
             let reportElement = document.getElementById('performance-report');
             
             if (!currentQuizData || currentQuizData.length === 0) {
-                alert("Nenhum simulado carregado.");
+                alert("Nenhum simulado carregado. Selecione um na barra lateral.");
                 return;
             }
 
@@ -511,15 +556,15 @@
 
             const total = currentQuizData.length;
             
-            // Só calcula o aproveitamento com base nas respondidas para não mostrar 0% no meio do simulado
+            // Calculo do Desempenho
             const questionsConsidered = answeredQuestions > 0 ? answeredQuestions : 1; 
             const percentage = ((performance.hits / questionsConsidered) * 100).toFixed(2);
             
-            // 1. Identificar Áreas de Melhoria (Top 3 por % de Erro)
+            // 1. Identificar Áreas de Melhoria (Disciplinas)
             let disciplineResults = [];
             for (const disc in performance.disciplineBreakdown) {
                 const data = performance.disciplineBreakdown[disc];
-                // Só considera disciplinas que tiveram pelo menos 1 erro
+                // Inclui apenas disciplinas com erros para a área de melhoria
                 if (data.errors > 0) { 
                     const errorRate = (data.errors / data.total) * 100;
                     disciplineResults.push({
@@ -534,11 +579,12 @@
             // Ordena pelo maior percentual de erro
             disciplineResults.sort((a, b) => b.errorRate - a.errorRate);
 
-            let weakAreasHtml = '<h4>🎯 Áreas de Melhoria e Revisão Prioritária:</h4>';
+            // GERA AS OBSERVAÇÕES E FOCOS DE ESTUDO
+            let weakAreasHtml = '<h4>🎯 Observações: Áreas de Melhoria e Prioridade de Estudos:</h4>';
             if (disciplineResults.length > 0) {
-                weakAreasHtml += '<ul>';
-                // Pega as 3 disciplinas com maior taxa de erro
-                disciplineResults.slice(0, 3).forEach(result => {
+                weakAreasHtml += '<p>Com base no seu desempenho, seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
+                // Pega as 5 disciplinas com maior taxa de erro
+                disciplineResults.slice(0, 5).forEach(result => {
                     weakAreasHtml += `
                         <li>
                             **${result.discipline}**: 
@@ -547,33 +593,32 @@
                         </li>
                     `;
                 });
-                weakAreasHtml += '</ul>';
+                weakAreasHtml += '</ul><p>Revise os temas e utilize suas *Notas Pessoais* em cada questão para registrar o aprendizado.</p>';
             } else if (answeredQuestions === total && total > 0) {
-                weakAreasHtml += '<p>🎉 Parabéns! 100% de aproveitamento nas questões respondidas.</p>';
+                weakAreasHtml += '<p>🎉 Parabéns! Excelente desempenho. Seu foco deve ser em manter o nível e revisar suas anotações e os temas mais recentes do edital.</p>';
             } else {
-                weakAreasHtml += '<p>Continue resolvendo as questões para identificar suas áreas de melhoria.</p>';
+                weakAreasHtml += '<p>Continue respondendo as questões para que o sistema possa analisar seu desempenho e identificar suas áreas de melhoria de forma precisa.</p>';
             }
             
             // 2. Monta o HTML do relatório
             reportElement = document.createElement('div');
             reportElement.id = 'performance-report';
             reportElement.innerHTML = `
-                <h3>📊 Relatório de Análise e Revisão de Conteúdo</h3>
+                <h3>📊 Relatório de Análise e Avaliação do Desempenho</h3>
                 <div class="report-summary">
+                    <span class="score-info">**Cada questão vale 1 ponto.**</span>
                     <span>Total de Questões no Simulado: <strong>${total}</strong></span>
                     <span>Questões Respondidas: <strong>${answeredQuestions}</strong></span>
-                    <span class="hit">Acertos: <strong>${performance.hits}</strong></span>
-                    <span class="error">Erros: <strong>${performance.errors}</strong></span>
-                    <span class="percent">Aproveitamento nas Respondidas: <strong>${percentage}%</strong></span>
+                    <span class="hit">✅ Acertos (Pontos): <strong>${performance.hits}</strong></span>
+                    <span class="error">❌ Erros (Pontos Perdidos): <strong>${performance.errors}</strong></span>
+                    <span class="percent">Aproveitamento nas Respondidas: <strong style="font-size: 1.5rem;">${percentage}%</strong></span>
                 </div>
                 <div class="weak-areas">${weakAreasHtml}</div>
-                <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-dark);">
-                    Lembre-se de usar as Notas Pessoais (com o ícone 🖊️) em cada questão para registrar o aprendizado do erro.
-                </p>
             `;
 
             container.appendChild(reportElement);
             
+            // Rola a tela
             if (autoScroll) {
                 reportElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
@@ -590,7 +635,7 @@
             questionElement.setAttribute('data-question-number', q.numero);
 
             // Tratamento de dados para compatibilidade com diferentes JSONs
-            const disciplina = q.disciplina || 'Importado';
+            const disciplina = q.disciplina || 'Geral';
             let opcoes = q.opcoes;
             const respostaCorreta = q.resposta_correta || q.gabarito; 
             const explicacao = q.explicacao_professor || q.comentario || 'Nenhuma análise detalhada disponível. Reforce o estudo do tema.';
@@ -627,7 +672,7 @@
             const explanationHtml = `
                 <div class="explanation-box" id="exp-${index}">
                     <strong>Análise Didática do Professor:</strong>
-                    <p class="explanation-text">**Gabarito: ${respostaCorreta}** - ${explicacao}</p>
+                    <p class="explanation-text">**Gabarito: ${respostaCorreta || 'N/A'}** - ${explicacao}</p>
                 </div>
             `;
             
@@ -660,7 +705,9 @@
         async function loadAndRenderQuiz(filename) {
             const container = document.getElementById('quiz-container');
             const statusElement = document.getElementById('quiz-status');
-            const reportButton = document.getElementById('btn-report');
+            const reportButtonHeader = document.getElementById('btn-report');
+            const reportButtonSidebar = document.getElementById('btn-sidebar-report'); // Novo botão
+
             
             // RESETAR ESTADOS
             currentSimuladoName = filename.replace(/\.json$/i, ''); 
@@ -671,7 +718,8 @@
                 errors: 0,
                 disciplineBreakdown: {}
             };
-            reportButton.style.display = 'none'; // Esconde o botão de relatório no início
+            reportButtonHeader.style.display = 'none'; 
+            reportButtonSidebar.style.display = 'block'; // Mostra o botão da sidebar ao carregar o simulado
 
             statusElement.textContent = `Carregando: ${currentSimuladoName}`;
             container.innerHTML = `<p>Aguarde, carregando dados de ${currentSimuladoName}...</p>`;
@@ -717,26 +765,27 @@
 
                 statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
                 
-                // Rolagem suave para o topo da primeira questão
                 document.getElementById('main-content').scrollTop = 0;
-
 
             } catch (error) {
                 console.error("Erro ao carregar o quiz:", error);
                 statusElement.textContent = `Falha ao carregar o simulado: ${error.message}`;
                 container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold;">ERRO: ${error.message}</p>`;
+                reportButtonSidebar.style.display = 'none'; // Esconde o botão se der erro
             }
         }
 
 
         /**
          * Carrega a lista de simulados a partir de um arquivo manifest (simulados_manifest.json)
+         * OU lista de fallback.
          */
         async function loadSimulados() {
             const list = document.getElementById('simulado-list');
             list.innerHTML = '<li>Carregando lista de simulados...</li>';
 
             try {
+                // Tenta carregar o manifest
                 const response = await fetch(DATA_FOLDER + 'simulados_manifest.json');
                 
                 if (!response.ok) {
@@ -762,18 +811,18 @@
                 });
                 
             } catch (error) {
-                console.error("Erro ao carregar simulados, usando lista de testes:", error);
+                console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
                 
                 // Lista estática de fallback
                 const fallbackFiles = [
                     "SIMULADO-POLICIA-PENAL-JSON.json", 
                     "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                    "QUESTOES-GERAIS.json.json",
                     "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-                    "QUESTOES-AREA-POLICIAL.json",
                     "SIMULADO-IASES-JSON-COM-GABARITO.json",
+                    "QUESTOES-AREA-POLICIAL.json",
                     "simulado_100_questoes.json",
-                    "100-QUESTOES-POLICIAL.json"
+                    "100-QUESTOES-POLICIAL.json",
+                    "QUESTOES-GERAIS.json.json"
                 ];
                 
                 list.innerHTML = '';
