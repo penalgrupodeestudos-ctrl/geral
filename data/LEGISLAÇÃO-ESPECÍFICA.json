@@ -16,7 +16,7 @@
         "E": "Podem acumular o cargo com qualquer outro cargo público."
       },
       "resposta_correta": "B",
-      "explicacao_professor": "A LC 1.059/2023 cria o cargo de Policial Penal e organiza os servidores em Carreira Policial Penal, que é o objeto principal da lei. Eles integram a SEJUS, mas a melhor resposta sobre a carreira é a 'B'."
+      "explicacao_professor": "A LC 1.059/2023 cria o cargo de Policial Penal e organiza os servidores em Carreira Policial Penal (Art. 1º). Embora integrem a SEJUS, o ponto mais específico da criação é a carreira própria."
     },
     {
       "numero": 2,
@@ -30,7 +30,7 @@
         "E": "Estágio probatório de três anos."
       },
       "resposta_correta": "E",
-      "explicacao_professor": "O estágio probatório é uma condição de permanência no cargo após a posse, e não uma fase do concurso público em si. As demais são fases."
+      "explicacao_professor": "O estágio probatório é uma condição de permanência no cargo após a posse, e não uma fase do concurso público em si."
     },
     {
       "numero": 3,
@@ -44,7 +44,7 @@
         "E": "Bolsa de estudos no valor de 70% do subsídio inicial."
       },
       "resposta_correta": "C",
-      "explicacao_professor": "O art. 6º, § 3º da LC 1.059/2023 estabelece o valor da bolsa de estudos em 50% do subsídio inicial do cargo."
+      "explicacao_professor": "O Art. 6º, § 3º da LC 1.059/2023 estabelece o valor da bolsa de estudos em 50% do subsídio inicial do cargo."
     },
     {
       "numero": 4,
@@ -198,8 +198,7 @@
         "E": "Estandarte, lema e hino."
       },
       "resposta_correta": "B",
-      "explicacao_professor": "O Art. 4º da LC 1.061/2023 define como símbolos institucionais a bandeira, o brasão e distintivo, válidos em todo território 
-nacional, a serem estabelecidos em decreto."
+      "explicacao_professor": "CORREÇÃO: O Art. 4º da LC 1.061/2023 define como símbolos institucionais o **hino, a bandeira, o brasão e o distintivo**."
     },
     {
       "numero": 15,
@@ -212,8 +211,8 @@ nacional, a serem estabelecidos em decreto."
         "D": "15 anos de efetivo exercício no cargo.",
         "E": "20 anos de efetivo exercício no cargo."
       },
-      "resposta_correta": "C",
-      "explicacao_professor": "O Art.8º, § 1º, I da LC 1.061/2023 exige, no mínimo, 15 (quinze) anos, para investidura no cargo de Diretor-Geral da Polícia Penal."
+      "resposta_correta": "D",
+      "explicacao_professor": "CORREÇÃO: O Art. 8º, § 1º, I da LC 1.061/2023 exige, no mínimo, **15 (quinze) anos** de efetivo exercício no cargo de Policial Penal para a investidura no cargo de Diretor-Geral da Polícia Penal."
     },
     {
       "numero": 16,
@@ -241,7 +240,7 @@ nacional, a serem estabelecidos em decreto."
         "E": "Cuidar da assistência psicossocial dos servidores."
       },
       "resposta_correta": "B",
-      "explicacao_professor": "A Corregedoria é o órgão responsável pela fiscalização e correição. Sua competência principal (Art. 13, I) é apurar responsabilidades por infrações disciplinares, bem como propor medidas saneadoras."
+      "explicacao_professor": "A Corregedoria é responsável por apurar responsabilidades por infrações disciplinares (Art. 13, I)."
     },
     {
       "numero": 18,
