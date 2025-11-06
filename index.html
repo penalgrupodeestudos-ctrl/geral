@@ -1,383 +1,839 @@
-<script>
-    // Variáveis globais para o funcionamento do quiz
-    let currentSimuladoName = null;
-    let currentQuizData = null;
-    let performance = {
-        totalQuestions: 0,
-        hits: 0,
-        errors: 0,
-        disciplineBreakdown: {}
-    };
-    const SIMULADOS_BASE_PATH = './data/';
-
-    // Função principal para carregar a lista de simulados
-    async function loadSimulados() {
-        const list = document.getElementById('simulado-list');
-        try {
-            // Tenta carregar o manifest principal
-            const response = await fetch(SIMULADOS_BASE_PATH + 'simulados_manifest.json');
-            if (!response.ok) {
-                // Se o manifest falhar, tenta carregar diretamente do cache de arquivos (fallback)
-                throw new Error(`Não foi possível carregar o arquivo manifest. Verifique se ele existe em /data/`);
-            }
-            
-            const simuladoFilenames = await response.json(); 
-
-            list.innerHTML = '';
-            if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
-                list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
-                return;
-            }
-
-            simuladoFilenames.forEach(filename => {
-                const cleanName = filename.replace(/\.json$/i, ''); 
-                
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
-                `;
-                list.appendChild(li);
-            });
-            
-            console.info("AVISO ADMINISTRATIVO: Para atualizar a lista de simulados, edite o arquivo /data/simulados_manifest.json.");
-
-
-        } catch (error) {
-            console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
-            
-            // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
-            const fallbackFiles = [
-                "SIMULADO-POLICIA-PENAL-JSON.json", 
-                "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                "QUESTOES-AREA-POLICIAL.json",
-                "simulado_100_questoes.json",
-                "100-QUESTOES-POLICIAL.json",
-                "LEGISLAÇÃO-ESPECÍFICA.json"
-            ];
-            
-            list.innerHTML = '';
-            fallbackFiles.forEach(filename => {
-                const cleanName = filename.replace(/\.json$/i, ''); 
-                const li = document.createElement('li');
-                li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
-                list.appendChild(li);
-            });
-            list.innerHTML += '<li><small style="text-align:center; padding:10px; color:#adb5bd; display:block;">(Lista de testes carregada)</small></li>';
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Alta Performance - Simulados Interativos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variáveis de Tema (Design System Básico) */
+        :root {
+            --primary-color: #004d99; /* Azul Profundo */
+            --secondary-color: #fca311; /* Laranja de Destaque */
+            --success-color: #28a745; /* Verde para Acerto */
+            --danger-color: #dc3545; /* Vermelho para Erro */
+            --warning-color: #ffc107; /* Amarelo para Atenção */
+            --bg-light: #f9fbfd; /* Fundo Leve */
+            --bg-dark: #212529; /* Barra Lateral Escura */
+            --text-dark: #343a40;
+            --text-light: #fff;
+            --border-color: #e9ecef;
+            --card-bg: #ffffff;
+            --sidebar-accent: #38404a; /* Cor para destacar blocos na sidebar */
         }
-    }
 
-    // Função para carregar e renderizar o quiz
-    async function loadAndRenderQuiz(filename) {
-        currentSimuladoName = filename;
-        document.getElementById('current-simulado-name').textContent = `Carregado: ${filename.replace(/\.json$/i, '')}`;
-        document.getElementById('main-message').style.display = 'none';
-        document.getElementById('performance-report').style.display = 'none';
-        
-        // Exibir uma mensagem de "Carregando" na área principal para feedback
-        const container = document.getElementById('quiz-container');
-        container.innerHTML = `<h2 style="text-align: center; color: var(--primary-color); margin-top: 50px;">Carregando ${filename}...</h2>`;
-        
-        try {
-            const response = await fetch(SIMULADOS_BASE_PATH + filename);
-            if (!response.ok) {
-                throw new Error(`Não foi possível carregar o arquivo: ${filename}`);
-            }
-            const data = await response.json();
-            
-            // Lógica de extração de questões (mantida para compatibilidade)
-            let quizData;
-            if (data.questoes && Array.isArray(data.questoes)) {
-                quizData = data.questoes;
-            } else if (Array.isArray(data)) {
-                quizData = data;
-            } else if (data.simulados_policia_penal && Array.isArray(data.simulados_policia_penal[0].questoes)) {
-                quizData = data.simulados_policia_penal[0].questoes;
-            } else {
-                throw new Error("Não foi possível extrair a lista de questões. Estrutura não reconhecida.");
-            }
-
-            if (!quizData || !Array.isArray(quizData) || quizData.length === 0) {
-                throw new Error("O JSON foi lido, mas a lista de questões está vazia ou incompleta.");
-            }
-
-            currentQuizData = quizData;
-            renderQuiz(quizData, filename.replace(/\.json$/i, ''));
-            document.getElementById('action-buttons-container').style.display = 'block';
-
-        } catch (error) {
-            container.innerHTML = `<p style="color: var(--danger-color); text-align: center; font-weight:bold;">ERRO CRÍTICO: Não foi possível carregar o simulado '${filename}'</p><p style="text-align:center;">Detalhes no console: ${error.message}</p>`;
-            console.error("Erro no carregamento:", error);
-            document.getElementById('action-buttons-container').style.display = 'none';
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
         }
-    }
 
-    // Otimização de renderização de quiz: Usa DocumentFragment para melhor performance.
-    function renderQuiz(questions, name) {
-        const container = document.getElementById('quiz-container');
+        /* ======================================= */
+        /* CONFIGURAÇÃO RESPONSIVA (Layout)        */
+        /* ======================================= */
         
-        // Cabeçalho
-        container.innerHTML = `
-            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">
-                Simulado: ${name}
+        /* Padrão para Celular (Barra lateral em cima) */
+        #sidebar {
+            width: 100%; 
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
+            overflow-y: auto;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                display: flex; /* Layout lado a lado para telas grandes */
+            }
+            #sidebar {
+                width: 300px;
+                flex-shrink: 0; 
+                height: 100vh; 
+                position: sticky;
+                top: 0;
+                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15);
+            }
+            #main-content {
+                flex-grow: 1;
+            }
+             header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* CABEÇALHO */
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column; 
+            gap: 10px;
+        }
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            margin: 0;
+            text-align: center;
+        }
+
+
+        /* ======================================= */
+        /* ESTILOS MODERNIZADOS DA SIDEBAR         */
+        /* ======================================= */
+        
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        /* Título Principal */
+        #sidebar h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem; 
+            margin-bottom: 5px;
+            padding: 0;
+        }
+        
+        /* Subtítulo */
+        #sidebar p {
+            font-size: 0.9rem; 
+            color: #ced4da; 
+            margin-bottom: 20px;
+        }
+
+        /* Destaque para Bloco de PDFs */
+        .pdf-block {
+            background-color: var(--sidebar-accent);
+            padding: 15px 0;
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .pdf-block h3 {
+            font-family: 'Roboto', sans-serif; 
+            font-size: 1.1rem;
+            color: var(--text-light);
+            padding: 0 20px 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0;
+        }
+        
+        /* Link do PDF (Botão de Alto Destaque) */
+        .pdf-block li a {
+            display: block;
+            padding: 15px 20px;
+            background-color: var(--secondary-color) !important; 
+            color: var(--bg-dark) !important; 
+            font-weight: 700 !important;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .pdf-block li a:hover {
+            background-color: #e69100 !important; 
+        }
+        
+        /* Lista de Simulados - Título */
+        .simulados-title {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            margin: 20px 0 15px 0;
+        }
+
+        /* Lista de Simulados */
+        #simulado-list {
+            list-style: none;
+            padding: 0 10px; /* Adiciona padding lateral para afastar os botões da borda */
+            margin: 0;
+        }
+
+        /* ESTILO NOVO E MODERNO PARA BOTÕES DOS SIMULADOS (MANTIDO) */
+        #simulado-list li {
+            margin-bottom: 8px; /* Espaçamento entre os botões */
+        }
+
+        #simulado-list li a {
+            display: block;
+            padding: 12px 15px;
+            color: var(--text-light);
+            text-decoration: none;
+            background-color: var(--sidebar-accent); /* Fundo sutil */
+            cursor: pointer;
+            font-weight: 500;
+            
+            /* Adiciona Borda e Arredondamento */
+            border: 1px solid var(--primary-color); /* Borda sutil azul */
+            border-radius: 8px; /* Cantos arredondados */
+            
+            /* Transições suaves para o efeito de hover */
+            transition: all 0.3s ease; 
+        }
+
+        #simulado-list li a:hover {
+            background-color: var(--primary-color); /* Preenche com azul forte */
+            color: var(--text-light); /* Mantém o texto claro */
+            border-color: var(--secondary-color); /* Borda Laranja de Destaque */
+            transform: translateY(-2px); /* Efeito de elevação sutil */
+            box-shadow: 0 4px 8px rgba(0, 77, 153, 0.3); /* Sombra suave para profundidade */
+        }
+        /* FIM DO NOVO ESTILO */
+
+        /* Botão Análise e Revisão na Sidebar (mantido) */
+        .btn-sidebar-report {
+            padding: 12px 15px;
+            background-color: var(--success-color); 
+            color: var(--text-light);
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 20px;
+            transition: background-color 0.2s;
+            display: none; 
+            width: calc(100% - 40px);
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        /* ESTILOS DO CONTEÚDO PRINCIPAL (MANTIDOS) */
+        #main-content {
+            padding: 20px;
+            width: 100%;
+        }
+
+        #quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .question-number {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .question-discipline {
+            font-size: 0.9rem;
+            color: #6c757d;
+            background-color: #f1f1f1;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .options-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #f8f9fa;
+            border-color: var(--primary-color);
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .option-letter {
+            font-weight: bold;
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+
+        /* Destaque Correto/Incorreto */
+        .option-label.correct {
+            background-color: #d4edda;
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .option-label.incorrect {
+            background-color: #f8d7da;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .option-label.correct .option-letter,
+        .option-label.incorrect .option-letter {
+            color: inherit;
+        }
+
+        .explanation-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #e9f5ff;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .explanation-box strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .explanation-text {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Notas Pessoais */
+        .comment-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .comment-section strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            resize: vertical;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        .note-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .btn-save-note, .btn-delete-note {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-save-note {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .btn-save-note:hover {
+            background-color: #003766;
+        }
+
+        .btn-delete-note {
+            background-color: #f1f1f1;
+            color: var(--text-dark);
+        }
+
+        .btn-delete-note:hover {
+            background-color: #e2e6ea;
+        }
+
+        .btn-check-all {
+            padding: 15px 30px;
+            background-color: var(--danger-color); 
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-check-all:hover {
+            background-color: #c82333;
+            transform: translateY(-1px);
+        }
+
+        /* Relatório de Desempenho */
+        #performance-report {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #performance-report h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        #performance-summary ul, #weak-areas ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #performance-summary li, #weak-areas li {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-left: 4px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <h2>Plataforma</h2>
+            <p>Alta Performance</p>
+        </div>
+
+        <div class="pdf-block">
+            <h3>📂 Materiais de Apoio</h3>
+            <ul style="list-style: none; padding: 0; margin-bottom: 0;">
+                <li>
+                    <a href="./data/pdfs/index.html" target="_blank"> 
+                        ⬇️ ACESSAR PASTA DE DOWNLOADS (PDFs)
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <h2 class="simulados-title">📚 Simulados Carregados</h2>
+        
+        <ul id="simulado-list">
+            <li><a style="text-align: center; opacity: 0.8; font-style: italic;">Carregando simulados...</a></li>
+        </ul>
+
+        <button class="btn-sidebar-report" onclick="renderPerformanceReport()">
+            Análise e Revisão
+        </button>
+
+        <footer style="text-align: center; padding: 20px 20px 10px 20px; border-top: 1px solid #343a40;">
+            <p style="font-size: 0.75rem; color: #adb5bd; margin: 0;">
+                Desenvolvido para Estudos.
+            </p>
+        </footer>
+
+    </div>
+
+    <div id="main-content">
+        <header>
+            <h1 id="quiz-title">Bem-vindo(a) à Plataforma de Simulados Interativos</h1>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                 <span id="current-simulado-name" style="font-size: 1rem; color: var(--warning-color); font-weight: bold;"></span>
+                <button id="toggle-sidebar" class="menu-button" style="display: none;" onclick="toggleSidebar()">
+                    ☰
+                </button>
+            </div>
+           
+        </header>
+
+        <div id="quiz-container">
+            <h2 id="main-message" style="text-align: center; margin-top: 50px; color: var(--primary-color);">
+                Selecione um Simulado na Barra Lateral
             </h2>
-        `;
-        
-        const fragment = document.createDocumentFragment();
+            <p style="text-align: center; color: var(--text-dark); max-width: 600px; margin: 20px auto;">
+                Escolha qualquer arquivo JSON listado à esquerda para começar a praticar. O sistema calculará seu desempenho em tempo real e permitirá que você salve anotações em cada questão.
+            </p>
+        </div>
 
-        questions.forEach((q, index) => {
-            const questionCard = document.createElement('div');
-            questionCard.className = 'question-card';
-            questionCard.id = `q-card-${index}`;
-            questionCard.setAttribute('data-discipline', (q.disciplina || 'Geral').toUpperCase().trim());
-            
-            // Usa innerHTML para montar o conteúdo da questão de forma rápida
-            questionCard.innerHTML = createQuestionHtml(q, index, name);
-            fragment.appendChild(questionCard);
-        });
-        
-        // Adiciona o fragmento inteiro de uma só vez (otimização)
-        container.appendChild(fragment);
+        <div id="action-buttons-container" style="text-align: center; padding: 20px; margin-top: 20px; display: none;">
+            <button class="btn-check-all" onclick="checkAllAnswers()">
+                Corrigir Simulado
+            </button>
+        </div>
 
-        resetPerformance();
-        container.scrollTop = 0;
-    }
+         <div id="performance-report" style="display: none;">
+             <h3>📈 Relatório de Desempenho</h3>
+             <div id="performance-summary"></div>
+             <div id="weak-areas"></div>
+        </div>
 
-    function createQuestionHtml(q, index, name) {
-        const discipline = q.disciplina && q.disciplina.trim() !== '' && q.disciplina.toUpperCase() !== 'IMPORTADO'
-                            ? q.disciplina : 'Geral';
-        
-        let optionsHtml = '';
-        // Flexibilidade para diferentes formatos de opções/alternativas
-        const optionsMap = q.opcoes || (q.alternativas ? q.alternativas.reduce((acc, alt) => {
-            acc[alt.letra] = alt.texto;
-            return acc;
-        }, {}) : {});
+    </div>
 
-        const optionsArray = Object.keys(optionsMap).map(key => ({
-            letra: key,
-            texto: optionsMap[key]
-        }));
-
-        optionsArray.forEach(opt => {
-            optionsHtml += `
-                <label class="option-label">
-                    <input type="radio" name="${name}_q${index}" value="${opt.letra}">
-                    <span class="option-letter">${opt.letra})</span> ${opt.texto}
-                </label>
-            `;
-        });
-
-        // Flexibilidade para diferentes campos de explicação/gabarito
-        const explanation = q.explicacao_professor || q.comentario || 'Nenhuma explicação fornecida.';
-        const respostaCorreta = q.resposta_correta || q.gabarito || 'N/A';
-        const questaoTexto = q.questao || q.enunciado || 'Questão sem texto.';
-
-
-        const explanationSectionHtml = `
-            <div class="explanation-box" id="exp-${index}" style="display:none;">
-                <strong>Análise Didática do Professor:</strong>
-                <p class="explanation-text">**Gabarito: ${respostaCorreta}** - ${explanation}</p>
-            </div>
-        `;
-        
-        const noteContent = loadNote(name, index);
-        const commentSectionHtml = `
-            <div class="comment-section">
-                <strong>🖊️ Notas Pessoais (Comentários):</strong>
-                <textarea id="note-q-${index}" placeholder="Use este espaço para anotar o porquê errou, conceitos chave ou pontos de atenção para revisão futura." >${noteContent}</textarea>
-                <div class="note-buttons">
-                    <button class="btn-save-note" onclick="saveNote('${name}', ${index})">💾 Salvar Nota</button>
-                    <button class="btn-delete-note" onclick="deleteNote('${name}', ${index})">🗑️ Excluir Nota</button>
-                </div>
-            </div>
-        `;
-
-        // Retorna a string HTML completa para ser inserida no 'questionCard.innerHTML'
-        return `
-            <div class="question-header">
-                <span class="question-number">Questão ${q.numero || (index + 1)}</span>
-                <span class="question-discipline">Disciplina: ${discipline}</span>
-            </div>
-            <p class="question-text">${questaoTexto}</p>
-            <form class="options-form">
-                ${optionsHtml}
-            </form>
-            ${explanationSectionHtml}
-            ${commentSectionHtml}
-        `;
-    }
-    
-    function resetPerformance() {
-         performance = {
+    <script>
+        // Variáveis globais para o funcionamento do quiz
+        let currentSimuladoName = null;
+        let currentQuizData = null;
+        let performance = {
             totalQuestions: 0,
             hits: 0,
             errors: 0,
             disciplineBreakdown: {}
         };
-    }
+        const SIMULADOS_BASE_PATH = './data/';
 
-    function checkAllAnswers() {
-        if (!currentQuizData || currentQuizData.length === 0) {
-            alert("Nenhum simulado carregado para correção.");
-            return;
+        // Função principal para carregar a lista de simulados
+        async function loadSimulados() {
+            const list = document.getElementById('simulado-list');
+            try {
+                list.innerHTML = '<li><a style="text-align: center; opacity: 0.8; font-style: italic;">Conectando-se ao manifest...</a></li>';
+
+                // Tenta carregar o manifest principal
+                const response = await fetch(SIMULADOS_BASE_PATH + 'simulados_manifest.json');
+                if (!response.ok) {
+                    throw new Error(`[ERRO DE ARQUIVO] Não foi possível carregar o arquivo manifest. Verifique se ele existe em /data/ e se está no mesmo local que o HTML.`);
+                }
+                
+                const simuladoFilenames = await response.json(); 
+
+                list.innerHTML = '';
+                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
+                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
+                    return;
+                }
+
+                simuladoFilenames.forEach(filename => {
+                    const cleanName = filename.replace(/\.json$/i, ''); 
+                    
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
+                    `;
+                    list.appendChild(li);
+                });
+                
+                console.info("AVISO ADMINISTRATIVO: Para atualizar a lista de simulados, edite o arquivo /data/simulados_manifest.json.");
+
+
+            } catch (error) {
+                console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
+                
+                // Exibe erro na barra lateral e usa fallback
+                list.innerHTML = `<li><a style="text-align: center; color:var(--danger-color); font-weight:bold;">⚠️ ERRO DE CARREGAMENTO (CORS)</a></li>`;
+                
+                // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
+                const fallbackFiles = [
+                    "SIMULADO-POLICIA-PENAL-JSON.json", 
+                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                    "QUESTOES-AREA-POLICIAL.json",
+                    "simulado_100_questoes.json",
+                    "100-QUESTOES-POLICIAL.json",
+                    "LEGISLAÇÃO-ESPECÍFICA.json"
+                ];
+                
+                fallbackFiles.forEach(filename => {
+                    const cleanName = filename.replace(/\.json$/i, ''); 
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName} (TESTE)</a>`;
+                    list.appendChild(li);
+                });
+                list.innerHTML += '<li><small style="text-align:center; padding:10px; color:#adb5bd; display:block;">(Lista de testes carregada)</small></li>';
+            }
         }
 
-        resetPerformance();
-
-        currentQuizData.forEach((q, index) => {
-            const questionElement = document.getElementById(`q-card-${index}`);
-            const explanationElement = document.getElementById(`exp-${index}`);
+        // Função para carregar e renderizar o quiz
+        async function loadAndRenderQuiz(filename) {
+            currentSimuladoName = filename;
+            document.getElementById('current-simulado-name').textContent = `Carregado: ${filename.replace(/\.json$/i, '')}`;
+            document.getElementById('main-message').style.display = 'none';
+            document.getElementById('performance-report').style.display = 'none';
             
-            if (!questionElement || !explanationElement) return;
-
-            const selected = questionElement.querySelector(`input[name='${currentSimuladoName}_q${index}']:checked`);
-            let selectedValue = selected ? selected.value : null;
-            const respostaCorreta = q.resposta_correta || q.gabarito; // Flexibilidade
-            const isCorrect = selectedValue === respostaCorreta;
+            // Exibir uma mensagem de "Carregando" na área principal para feedback
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `<h2 style="text-align: center; color: var(--primary-color); margin-top: 50px;">Carregando ${filename}...</h2>`;
             
-            updatePerformance(q.disciplina, isCorrect);
+            try {
+                const response = await fetch(SIMULADOS_BASE_PATH + filename);
+                if (!response.ok) {
+                    throw new Error(`Não foi possível carregar o arquivo: ${filename}`);
+                }
+                const data = await response.json();
+                
+                // Lógica de extração de questões (mantida para compatibilidade)
+                let quizData;
+                if (data.questoes && Array.isArray(data.questoes)) {
+                    quizData = data.questoes;
+                } else if (Array.isArray(data)) {
+                    quizData = data;
+                } else if (data.simulados_policia_penal && Array.isArray(data.simulados_policia_penal[0].questoes)) {
+                    quizData = data.simulados_policia_penal[0].questoes;
+                } else {
+                    throw new Error("Não foi possível extrair a lista de questões. Estrutura não reconhecida.");
+                }
 
-            // Mostra a explicação
-            explanationElement.style.display = 'block';
+                if (!quizData || !Array.isArray(quizData) || quizData.length === 0) {
+                    throw new Error("O JSON foi lido, mas a lista de questões está vazia ou incompleta.");
+                }
+
+                currentQuizData = quizData;
+                renderQuiz(quizData, filename.replace(/\.json$/i, ''));
+                document.getElementById('action-buttons-container').style.display = 'block';
+
+            } catch (error) {
+                container.innerHTML = `<p style="color: var(--danger-color); text-align: center; font-weight:bold;">ERRO CRÍTICO: Não foi possível carregar o simulado '${filename}'</p><p style="text-align:center;">Detalhes no console: ${error.message}. Tente usar um servidor local.</p>`;
+                console.error("Erro no carregamento:", error);
+                document.getElementById('action-buttons-container').style.display = 'none';
+            }
+        }
+
+        // Otimização de renderização de quiz: Usa DocumentFragment para melhor performance.
+        function renderQuiz(questions, name) {
+            const container = document.getElementById('quiz-container');
             
+            // Cabeçalho
+            container.innerHTML = `
+                <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">
+                    Simulado: ${name}
+                </h2>
+            `;
+            
+            const fragment = document.createDocumentFragment();
 
-            const labels = questionElement.querySelectorAll('.option-label');
-            labels.forEach(label => {
-                label.classList.remove('correct', 'incorrect');
+            questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.id = `q-card-${index}`;
+                questionCard.setAttribute('data-discipline', (q.disciplina || 'Geral').toUpperCase().trim());
+                
+                // Usa innerHTML para montar o conteúdo da questão de forma rápida
+                questionCard.innerHTML = createQuestionHtml(q, index, name);
+                fragment.appendChild(questionCard);
             });
+            
+            // Adiciona o fragmento inteiro de uma só vez (otimização)
+            container.appendChild(fragment);
 
-            let selectedInput = selected ? selected : null;
-
-            // Highlight correct answer
-            const correctLabelInput = questionElement.querySelector(`input[value='${respostaCorreta}']`);
-            if (correctLabelInput) {
-                correctLabelInput.closest('.option-label').classList.add('correct');
-            }
-
-            // Highlight incorrect selection
-            if (selectedInput && selectedValue !== respostaCorreta) {
-                selectedInput.closest('.option-label').classList.add('incorrect');
-            }
-        });
-
-        document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth' });
-        alert("Correção concluída. Verifique as respostas e explicações!");
-    }
-
-    function updatePerformance(discipline, isCorrect) {
-        discipline = (discipline || 'Geral').toUpperCase().trim();
-        if (!performance.disciplineBreakdown[discipline]) {
-            performance.disciplineBreakdown[discipline] = { total: 0, errors: 0 };
-        }
-        
-        performance.totalQuestions++;
-        if (isCorrect) {
-            performance.hits++;
-        } else {
-            performance.errors++;
-        }
-        
-        performance.disciplineBreakdown[discipline].total++;
-        if (!isCorrect) {
-            performance.disciplineBreakdown[discipline].errors++;
-        }
-    }
-    
-    function renderPerformanceReport() {
-        const reportContainer = document.getElementById('performance-report');
-        const summaryContainer = document.getElementById('performance-summary');
-        const weakAreasContainer = document.getElementById('weak-areas');
-        
-        if (performance.totalQuestions === 0) {
-            reportContainer.style.display = 'none';
-            alert("Você precisa responder e corrigir um simulado primeiro para gerar o relatório.");
-            return;
+            resetPerformance();
+            container.scrollTop = 0;
         }
 
-        const hitRate = (performance.hits / performance.totalQuestions) * 100;
-        const errorRate = (performance.errors / performance.totalQuestions) * 100;
+        function createQuestionHtml(q, index, name) {
+            const discipline = q.disciplina && q.disciplina.trim() !== '' && q.disciplina.toUpperCase() !== 'IMPORTADO'
+                                ? q.disciplina : 'Geral';
+            
+            let optionsHtml = '';
+            // Flexibilidade para diferentes formatos de opções/alternativas
+            const optionsMap = q.opcoes || (q.alternativas ? q.alternativas.reduce((acc, alt) => {
+                acc[alt.letra] = alt.texto;
+                return acc;
+            }, {}) : {});
 
-        let summaryHtml = `
-            <h4>📊 Resumo Geral do Simulado:</h4>
-            <ul>
-                <li>**Total de Questões Corrigidas**: ${performance.totalQuestions}</li>
-                <li>**Acertos (✅)**: ${performance.hits} (${hitRate.toFixed(1)}%)</li>
-                <li>**Erros (❌)**: ${performance.errors} (${errorRate.toFixed(1)}%)</li>
-            </ul>
-        `;
-        summaryContainer.innerHTML = summaryHtml;
+            const optionsArray = Object.keys(optionsMap).map(key => ({
+                letra: key,
+                texto: optionsMap[key]
+            }));
 
-        let disciplineResults = [];
-        for (const disc in performance.disciplineBreakdown) {
-            const data = performance.disciplineBreakdown[disc];
-            if (data.total > 0) {
-                const errorRate = (data.errors / data.total) * 100;
-                disciplineResults.push({ discipline: disc, errors: data.errors, total: data.total, errorRate: errorRate });
-            }
-        }
-        
-        disciplineResults.sort((a, b) => b.errorRate - a.errorRate);
-        
-        let weakAreasHtml = '<h4>🎯 Observações: Áreas de Melhoria e Prioridade de Estudos:</h4>';
-        if (disciplineResults.length > 0) {
-             weakAreasHtml += '<p>Seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
-            disciplineResults.slice(0, 5).forEach(result => {
-                weakAreasHtml += ` 
-                    <li> **${result.discipline}**: <span style="color:var(--danger-color);">${result.errors} erros</span> em ${result.total} questões. **Taxa de Erro**: ${result.errorRate.toFixed(1)}%.</li>
+            optionsArray.forEach(opt => {
+                optionsHtml += `
+                    <label class="option-label">
+                        <input type="radio" name="${name}_q${index}" value="${opt.letra}">
+                        <span class="option-letter">${opt.letra})</span> ${opt.texto}
+                    </label>
                 `;
             });
-            weakAreasHtml += '</ul>';
-        } else {
-             weakAreasHtml = '<h4>🎯 Observações:</h4><p>Nenhuma disciplina para revisar. Excelente desempenho!</p>';
+
+            // Flexibilidade para diferentes campos de explicação/gabarito
+            const explanation = q.explicacao_professor || q.comentario || 'Nenhuma explicação fornecida.';
+            const respostaCorreta = q.resposta_correta || q.gabarito || 'N/A';
+            const questaoTexto = q.questao || q.enunciado || 'Questão sem texto.';
+
+
+            const explanationSectionHtml = `
+                <div class="explanation-box" id="exp-${index}" style="display:none;">
+                    <strong>Análise Didática do Professor:</strong>
+                    <p class="explanation-text">**Gabarito: ${respostaCorreta}** - ${explanation}</p>
+                </div>
+            `;
+            
+            const noteContent = loadNote(name, index);
+            const commentSectionHtml = `
+                <div class="comment-section">
+                    <strong>🖊️ Notas Pessoais (Comentários):</strong>
+                    <textarea id="note-q-${index}" placeholder="Use este espaço para anotar o porquê errou, conceitos chave ou pontos de atenção para revisão futura." >${noteContent}</textarea>
+                    <div class="note-buttons">
+                        <button class="btn-save-note" onclick="saveNote('${name}', ${index})">💾 Salvar Nota</button>
+                        <button class="btn-delete-note" onclick="deleteNote('${name}', ${index})">🗑️ Excluir Nota</button>
+                    </div>
+                </div>
+            `;
+
+            // Retorna a string HTML completa para ser inserida no 'questionCard.innerHTML'
+            return `
+                <div class="question-header">
+                    <span class="question-number">Questão ${q.numero || (index + 1)}</span>
+                    <span class="question-discipline">Disciplina: ${discipline}</span>
+                </div>
+                <p class="question-text">${questaoTexto}</p>
+                <form class="options-form">
+                    ${optionsHtml}
+                </form>
+                ${explanationSectionHtml}
+                ${commentSectionHtml}
+            `;
         }
         
-        weakAreasContainer.innerHTML = weakAreasHtml;
-        
-        reportContainer.style.display = 'block';
-        reportContainer.scrollIntoView({ behavior: 'smooth' });
-    }
+        function resetPerformance() {
+            performance = {
+                totalQuestions: 0,
+                hits: 0,
+                errors: 0,
+                disciplineBreakdown: {}
+            };
+        }
 
-
-    function saveNote(simuladoName, index) {
-        try {
-            const textarea = document.getElementById(`note-q-${index}`);
-            const key = `notes_${simuladoName}_${index}`;
-            if (textarea.value.trim() === '') {
-                localStorage.removeItem(key);
-                alert('Nota excluída.');
-            } else {
-                localStorage.setItem(key, textarea.value.trim());
-                alert('Nota salva com sucesso!');
+        function checkAllAnswers() {
+            if (!currentQuizData || currentQuizData.length === 0) {
+                alert("Nenhum simulado carregado para correção.");
+                return;
             }
-        } catch (e) {
-            console.error("Erro ao salvar a nota no LocalStorage:", e);
-            alert('Erro ao salvar a anotação. Verifique o console.');
-        }
-    }
 
-    function deleteNote(simuladoName, index) {
-        try {
-            const key = `notes_${simuladoName}_${index}`;
-            localStorage.removeItem(key);
-            document.getElementById(`note-q-${index}`).value = '';
-            alert('Nota excluída.');
-        } catch (e) {
-            console.error("Erro ao excluir a nota do LocalStorage:", e);
-            alert('Erro ao excluir a anotação. Verifique o console.');
-        }
-    }
+            resetPerformance();
 
-    function loadNote(simuladoName, index) {
-        try {
-            const key = `notes_${simuladoName}_${index}`;
-            return localStorage.getItem(key) || '';
-        } catch (e) {
-            console.error("Erro ao carregar a nota do LocalStorage:", e);
-            return '';
-        }
-    }
-    
-    // Inicialização: Carrega a lista de simulados ao carregar a página
-    window.onload = loadSimulados;
+            currentQuizData.forEach((q, index) => {
+                const questionElement = document.getElementById(`q-card-${index}`);
+                const explanationElement = document.getElementById(`exp-${index}`);
+                
+                if (!questionElement || !explanationElement) return;
 
-</script>
+                const selected = questionElement.querySelector(`input[name='${currentSimuladoName}_q${index}']:checked`);
+                let selectedValue = selected ? selected.value : null;
+                const respostaCorreta = q.resposta_correta || q.gabarito; // Flexibilidade
+                const isCorrect = selectedValue === respostaCorreta;
+                
+                updatePerformance(q.disciplina, isCorrect);
+
+                // Mostra a explicação
+                explanationElement.style.display = 'block';
+                
+
+                const labels = questionElement.querySelectorAll('.option-label');
+                labels.forEach(label => {
+                    label.classList.remove('correct', 'incorrect');
+                });
+
+                let selectedInput = selected ? selected : null;
+
+                // Highlight correct answer
+                const correctLabelInput = questionElement.querySelector(`input[value='${respostaCorreta}']`);
+                if (correctLabelInput) {
+                    correctLabelInput.closest('.option-label').classList.add('correct');
+                }
+
+                // Highlight incorrect selection
+                if (selectedInput && selectedValue !== respostaCorreta) {
+                    selectedInput.closest('.option-label').classList.add('incorrect');
+                }
+            });
+
+            document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth' });
+            alert("Correção concluída. Verifique as respostas e explicações!");
+        }
+
+        function updatePerformance(discipline, isCorrect) {
+            discipline = (discipline || 'Geral').toUpperCase().trim();
+            if (!performance.disciplineBreakdown[discipline]) {
+                performance.disciplineBreakdown[discipline] = { total: 0, errors: 0 };
+            }
+            
+            performance.totalQuestions++;
+            if (isCorrect) {
+                performance.hits++;
+            } else {
+                performance.errors++;
+            }
+            
+            performance.disciplineBreakdown[discipline].total++;
+            if (!isCorrect) {
+                performance.disciplineBreakdown[discipline].errors++;
+            }
+        }
+        
+        function renderPerformanceReport() {
+            const reportContainer = document.getElementById('performance-report');
+            const summaryContainer = document.getElementById('performance-summary');
+            const weakAreasContainer = document.getElementById('weak-areas');
+            
+            if (performance.totalQuestions === 0) {
+                reportContainer.style.display = 'none';
+                alert("Você precisa responder e corrigir um simulado primeiro para gerar o relatório.");
+                return;
+            }
+
+            const hitRate = (performance.hits / performance.totalQuestions) * 100;
+            const errorRate = (performance.errors / performance.totalQuestions) * 100;
+
+            let summaryHtml = `
+                <h4>📊 Resumo Geral do Simulado:</h4>
+                <ul>
+                    <li>**Total de Questões Corrigidas**: ${performance.totalQuestions}</li>
+                    <li>**Acertos (✅)**: ${performance.hits} (${hitRate.toFixed(1)}%)</li>
+                    <li>**Erros (❌)**: ${performance.errors} (${errorRate.toFixed(1)}%)</li>
+                </ul>
+            `;
+            summaryContainer.innerHTML = summaryHtml;
+
+            let disciplineResults = [];
+            for (const disc in performance.disciplineBreakdown) {
+                const data = performance.disciplineBreakdown[disc];
+                if (data.total > 0) {
+                    const errorRate = (data.errors / data.total) * 100;
+                    disciplineResults.push({ discipline: disc, errors: data.errors, total: data.total, errorRate: errorRate });
+                }
+            }
+            
+            disciplineResults.sort((a, b) => b.errorRate - a.errorRate);
+            
+            let weakAreasHtml = '<h4>🎯 Observações: Áreas de Melhoria e Prioridade de Estudos:</h4>';
+            if (disciplineResults.length > 0) {
+                 weakAreasHtml += '<p>Seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
+                disciplineResults.slice(0, 5).forEach(result => {
+                    weakAreasHtml += ` 
+                        <li> **${result.discipline}**: <span style="color:var(--danger-color);">${result.errors} erros</span> em ${result.total} questões. **Taxa de Erro**: ${result.errorRate.toFixed(1)}%.</li>
+                    `;
+                });
+                weakAreasHtml += '</ul>';
+            } else {
+                 weakAreasHtml = '<h4>🎯 Observações:</h4><p>N
