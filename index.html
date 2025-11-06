@@ -720,7 +720,7 @@
             <div class="sidebar-section">
                 <h3 class="section-title">📋 Legislação</h3>
                 <div class="list-item">
-                    <a href="https://raw.githubusercontent.com/penalgrupodeestudos-ctrl/geral/main/data/pdfs/LEI-1.061-POLICIA-PENAL.pdf" target="_blank" class="item-link">
+                    <a href="pdfs/LEI-1.061-POLICIA-PENAL.pdf" target="_blank" class="item-link">
                         <span>📄</span>
                         <span>Lei 1.061/2023 - Polícia Penal</span>
                     </a>
@@ -850,6 +850,352 @@
         </main>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+// ==== SIMULADOS (DINÂMICO VIA MANIFEST) ====
+let simuladosManifest = [];
+let currentQuizData = null;
+let currentQuizFile = null;
+let currentQuestionIndex = 0;
+let acertos = 0;
+let erros = 0;
+let userAnswers = [];
+let anotacoes = {};
+
+// Load Manifest
+async function loadSimuladosFromManifest() {
+    try {
+        const response = await fetch('data/manifest.json');
+        if (!response.ok) throw new Error('Erro ao buscar manifest.json');
+        const data = await response.json();
+        simuladosManifest = data.simulados;
+        renderSimuladosList(simuladosManifest);
+    } catch (error) {
+        document.getElementById('simuladosList').innerHTML = `<div class='loading'>Erro ao carregar lista: ${error.message}</div>`;
+        simuladosManifest = [];
+    }
+}
+
+// Render Simulados List
+function renderSimuladosList(arr) {
+    const el = document.getElementById('simuladosList');
+    el.innerHTML = '';
+    if (!arr.length) {
+        el.innerHTML = '<small>Sem simulados disponíveis.</small>';
+        return;
+    }
+    arr.forEach(filename => {
+        const name = filename.replace(/\.json$/i, '').replace(/-JSON$/i, '').replace(/-/g, ' ');
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.innerHTML = `<a href="#" class="item-link" onclick="loadAndRenderQuiz('${filename}'); return false;">📋 <span>${name}</span></a>`;
+        el.appendChild(div);
+    });
+}
+
+// Load Quiz Data by filename
+async function loadAndRenderQuiz(filename) {
+    try {
+        document.getElementById('welcomeScreen').classList.add('hidden');
+        document.getElementById('quizHeader').classList.remove('hidden');
+        document.getElementById('questionCard').classList.remove('hidden');
+        document.getElementById('finalReport').classList.add('hidden');
+
+        // Marca ativo na sidebar
+        document.querySelectorAll('.item-link').forEach(link => link.classList.remove('active'));
+        event.target.closest('.item-link').classList.add('active');
+
+        // Reset global quiz state
+        currentQuizFile = filename;
+        currentQuestionIndex = 0;
+        acertos = 0;
+        erros = 0;
+        userAnswers = [];
+        anotacoes = {};
+
+        // Tenta fetch
+        const response = await fetch(`data/${filename}`);
+        if (!response.ok) throw new Error('Erro ao buscar quiz JSON');
+        const quizData = await response.json();
+        currentQuizData = quizData;
+        userAnswers = Array(quizData.questoes.length).fill(null);
+
+        document.getElementById('quizTitle').textContent = quizData.titulo || 'Simulado';
+        renderQuestion(0);
+        updatePerformance();
+        updateTopicAnalysis();
+        generateTips();
+        if (window.innerWidth <= 968) document.getElementById('sidebar').classList.remove('open');
+    } catch (error) {
+        alert(`Erro ao carregar simulado: ${filename}`);
+        document.getElementById('main-content').innerHTML = `<div class='loading'>${error.message}</div>`;
+    }
+}
+
+// Render ISSO na main content/ card
+function renderQuestion(idx) {
+    const question = currentQuizData.questoes[idx];
+    currentQuestionIndex = idx;
+    
+    // HEADER
+    document.getElementById('questionNumber').textContent = `QUESTÃO ${idx + 1} DE ${currentQuizData.questoes.length}`;
+    document.getElementById('progressText').textContent = `Questão ${idx + 1} de ${currentQuizData.questoes.length}`;
+    document.getElementById('questionTopic').textContent = question.topico || question.disciplina || 'Geral';
+    document.getElementById('questionText').innerHTML = question.enunciado;
+
+    // Barra de progresso
+    document.getElementById('progressBar').style.width = `${Math.round(((idx + 1) / currentQuizData.questoes.length) * 100)}%`;
+
+    // ANOTAÇÕES
+    document.getElementById('annotationsTextarea').value = getAnnotation(question.id);
+
+    // Feedback/reset
+    document.getElementById('feedbackBox').className = 'hidden';
+    document.getElementById('feedbackBox').innerHTML = '';
+
+    // ALTERNATIVAS
+    const altEl = document.getElementById('alternatives');
+    altEl.innerHTML = '';
+    const alreadyAnswered = userAnswers[idx] !== null;
+    Object.entries(question.alternativas).forEach(([key, val]) => {
+        const b = document.createElement('button');
+        b.className = 'alternative-btn';
+        if (alreadyAnswered) {
+            if (key === question.gabarito) b.classList.add('correct');
+            else if (key === userAnswers[idx]) b.classList.add('incorrect');
+        }
+        b.innerHTML = `<div class='alternative-letter'>${key}</div><div class='alternative-text'>${val}</div>` +
+            (alreadyAnswered && key === question.gabarito ? "<div class='alternative-feedback' style='color: var(--success);'>✅ CORRETO</div>" : '') +
+            (alreadyAnswered && key === userAnswers[idx] && key !== question.gabarito ? "<div class='alternative-feedback' style='color: var(--danger);'>❌ INCORRETO</div>" : '');
+        if (!alreadyAnswered) b.onclick = () => checkAnswerRealtime(key, question.gabarito, question.id, b, question.explicacao);
+        altEl.appendChild(b);
+    });
+
+    updateNavigationButtons();
+}
+
+function checkAnswerRealtime(selected, correct, questionId, btn, explicacao) {
+    if (userAnswers[currentQuestionIndex] !== null) return;
+    const isCorrect = selected === correct;
+    userAnswers[currentQuestionIndex] = selected;
+    if (isCorrect) acertos++;
+    else erros++;
+
+    // Btn visual
+    document.querySelectorAll('.alternative-btn').forEach(b => {
+        const k = b.querySelector('.alternative-letter').textContent;
+        if (k === correct) b.classList.add('correct');
+        else if (k === selected) b.classList.add('incorrect');
+        b.onclick = null;
+        b.style.cursor = 'default';
+    });
+    
+    // Feedback
+    showFeedback(isCorrect, correct, selected, explicacao);
+    updatePerformance();
+    updateTopicAnalysis();
+    generateTips();
+}
+
+function showFeedback(isCorrect, correct, selected, explicacao) {
+    const f = document.getElementById('feedbackBox');
+    f.className = 'feedback-box ' + (isCorrect ? 'success' : 'error');
+    f.classList.remove('hidden');
+    f.innerHTML = `<h3>${isCorrect ? '✅ Parabéns! Resposta Correta!' : '❌ Resposta Incorreta'}</h3>
+        <p><strong>Sua resposta:</strong> ${selected}</p>
+        <p><strong>Resposta correta:</strong> ${correct}</p>
+        <div style='margin-top:10px;'><strong>Explicação:</strong> ${explicacao ? explicacao : 'Sem explicação detalhada.'}</div>`;
+}
+
+function previousQuestion() {
+    if (currentQuestionIndex > 0) renderQuestion(currentQuestionIndex - 1);
+}
+function nextQuestion() {
+    if (currentQuestionIndex < currentQuizData.questoes.length - 1) renderQuestion(currentQuestionIndex + 1);
+}
+function updateNavigationButtons() {
+    document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+    const isLast = currentQuestionIndex === (currentQuizData.questoes.length - 1);
+    document.getElementById('nextBtn').style.display = isLast ? 'none' : 'inline-flex';
+    document.getElementById('finishBtn').style.display = isLast ? 'inline-flex' : 'none';
+}
+
+// Anotações
+function saveAnnotation() {
+    const qid = currentQuizData.questoes[currentQuestionIndex].id;
+    const txt = document.getElementById('annotationsTextarea').value;
+    anotacoes[qid] = txt;
+    const btn = event.target;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ Salvo!';
+    btn.disabled = true;
+    setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 1500);
+}
+function clearAnnotation() {
+    if (!confirm('Tem certeza que deseja limpar suas anotações para esta questão?')) return;
+    const qid = currentQuizData.questoes[currentQuestionIndex].id;
+    document.getElementById('annotationsTextarea').value = '';
+    anotacoes[qid] = '';
+}
+function getAnnotation(questionId) {
+    return anotacoes[questionId] || '';
+}
+
+// Estatística na sidebar
+function updatePerformance() {
+    const total = acertos + erros;
+    const percentual = total ? Math.round((acertos / total) * 100) : 0;
+    document.getElementById('correctCount').textContent = acertos;
+    document.getElementById('incorrectCount').textContent = erros;
+    document.getElementById('percentageDisplay').textContent = percentual + '%';
+    document.getElementById('progressBar').style.width = percentual + '%';
+    // @TODO updateTopicAnalysis & generateTips called elsewhere
+}
+
+function updateTopicAnalysis() {
+    const el = document.getElementById('topicAnalysis');
+    const section = document.getElementById('topicAnalysisSection');
+    if (!currentQuizData || !currentQuizData.questoes) { section.style.display = 'none'; return; }
+    const stats = {};
+    currentQuizData.questoes.forEach((q, idx) => {
+        const topic = q.topico || q.disciplina || 'Geral';
+        if (!stats[topic]) stats[topic] = { correct: 0, total: 0 };
+        if (userAnswers[idx] !== null && userAnswers[idx] === q.gabarito) stats[topic].correct++;
+        stats[topic].total++;
+    });
+    el.innerHTML = '';
+    Object.entries(stats).forEach(([topic, s]) => {
+        const percent = s.total ? Math.round((s.correct / s.total) * 100) : 0;
+        let scoreClass = percent >= 75 ? 'high' : percent >= 50 ? 'medium' : 'low';
+        el.innerHTML += `<div class='topic-item'><span class='topic-name'>${topic}</span><span class='topic-score ${scoreClass}'>${percent}%</span></div>`;
+    });
+    section.style.display = Object.keys(stats).length ? 'block' : 'none';
+}
+
+function generateTips() {
+    const el = document.getElementById('tipsContainer');
+    const section = document.getElementById('tipsSection');
+    let tips = [];
+    const total = acertos + erros;
+    if (!total || !currentQuizData) { section.style.display = 'none'; el.innerHTML = ''; return; }
+    // Por tópico
+    const stats = {};
+    currentQuizData.questoes.forEach((q, idx) => {
+        const topic = q.topico || q.disciplina || 'Geral';
+        if (!stats[topic]) stats[topic] = { correct: 0, total: 0 };
+        if (userAnswers[idx] !== null && userAnswers[idx] === q.gabarito) stats[topic].correct++;
+        stats[topic].total++;
+    });
+    Object.entries(stats).forEach(([topic, s]) => {
+        const percent = s.total ? Math.round((s.correct / s.total) * 100) : 0;
+        if (percent < 50) tips.push(`⚠️ <strong>${topic}</strong> menos de 50% de acertos. Foque sua revisão.`);
+        else if (percent < 75) tips.push(`📍 Mais estudos em <strong>${topic}</strong> (${percent}% acertos)`);
+    });
+    // Geral
+    const percentual = Math.round((acertos / (acertos + erros)) * 100);
+    if (percentual < 70) tips.unshift('💡 Taxa geral abaixo de 70%. Busque aprimorar os erros.');
+    else if (percentual >= 85) tips.unshift('🎯 Excelente! Alto desempenho, mantenha o ritmo!');
+    if (!tips.length) tips.push('✅ Bom desempenho! Continue praticando para manter seu nível.');
+    el.innerHTML = tips.map(t => `<div class='tip-item'>${t}</div>`).join('');
+    section.style.display = 'block';
+}
+
+function finishQuiz() {
+    const total = currentQuizData.questoes.length;
+    const answered = userAnswers.filter(ans => ans !== null).length;
+    if (answered < total && !confirm('Existem questões não respondidas. Finalizar assim mesmo?')) return;
+    showFinalReport();
+}
+function showFinalReport() {
+    document.getElementById('questionCard').classList.add('hidden');
+    document.getElementById('quizHeader').classList.add('hidden');
+    document.getElementById('finalReport').classList.remove('hidden');
+    const total = currentQuizData.questoes.length;
+    const percentual = Math.round((acertos / total) * 100);
+    const grade = percentual;
+    // Tópicos
+    const stats = {};
+    currentQuizData.questoes.forEach((q, idx) => {
+        const topic = q.topico || q.disciplina || 'Geral';
+        if (!stats[topic]) stats[topic] = { correct: 0, total: 0 };
+        if (userAnswers[idx] !== null && userAnswers[idx] === q.gabarito) stats[topic].correct++;
+        stats[topic].total++;
+    });
+
+    let html = `
+        <h2 class='report-title'>🎓 Simulado Concluído!</h2>
+        <div class='report-stats-grid'>
+            <div class='report-stat-box'><div class='report-stat-number' style='color: var(--primary);'>${total}</div><div class='report-stat-label'>Total</div></div>
+            <div class='report-stat-box'><div class='report-stat-number' style='color: var(--success);'>${acertos}</div><div class='report-stat-label'>Acertos</div></div>
+            <div class='report-stat-box'><div class='report-stat-number' style='color: var(--danger);'>${erros}</div><div class='report-stat-label'>Erros</div></div>
+            <div class='report-stat-box'><div class='report-stat-number' style='color: var(--info);'>${percentual}%</div><div class='report-stat-label'>Aproveitamento</div></div>
+            <div class='report-stat-box'><div class='report-stat-number' style='color: ${grade >= 70 ? 'var(--success)' : 'var(--warning)'};'>${grade}</div><div class='report-stat-label'>Nota Final</div></div>
+        </div>
+        <div class='report-section'><h3 class='report-section-title'>📊 Desempenho por Disciplina</h3><div style='display: grid; gap: 12px;'>`;
+    Object.entries(stats).forEach(([topic, s]) => {
+        const percent = s.total ? Math.round((s.correct / s.total) * 100) : 0;
+        const color = percent >= 75 ? 'var(--success)' : percent >= 50 ? 'var(--warning)' : 'var(--danger)';
+        html += `<div style='display: flex; justify-content: space-between; padding: 12px; background: var(--glass-bg); border-radius: 8px;'><span>${topic}</span><span style='font-weight: 700; color: ${color};'>${percent}% (${s.correct}/${s.total})</span></div>`;
+    });
+    html += `</div></div><div class='report-section'><h3 class='report-section-title'>💡 Análise &amp; Recomendações</h3><ul class='tips-list'>`;
+    if (percentual >= 85) {
+        html += `<li>🎯 Excelente desempenho! Continue estudando para manter o alto nível.</li>`;
+    } else if (percentual >= 70) {
+        html += `<li>✅ Bom aproveitamento. Foque nos tópicos mais desafiadores.</li>`;
+    } else if (percentual >= 50) {
+        html += `<li>⚠️ Atenção! Revise os conteúdos com menos de 70% de acertos.</li>`;
+    } else {
+        html += `<li>🔴 Estudo intensivo recomendado. Revise todo conteúdo e refaça este simulado.</li>`;
+    }
+    Object.entries(stats).forEach(([topic, s]) => {
+        const percent = s.total ? Math.round((s.correct / s.total) * 100) : 0;
+        if (percent < 60) html += `<li>📍 ${topic}: apenas ${percent}%. Pratique mais e revise este tópico.</li>`;
+    });
+    if (grade < 85) {
+        html += `<li>🎯 Meta sugerida: 85 pontos. Faça mais simulados esta semana.</li>`;
+    }
+    html += `<li>📚 <strong>Dica:</strong> Revise sempre a Lei 1.061/2023 disponível na barra lateral.</li>
+             <li>💪 <strong>Próximo passo:</strong> Refazer simulado em 3 dias.</li></ul></div><div class='navigation-buttons' style='margin-top:32px;'><button class='btn btn-primary' onclick='restartQuiz()'>🔄 Refazer Simulado</button><button class='btn btn-secondary' onclick='backToHome()'>📋 Escolher Outro</button></div>`;
+    document.getElementById('finalReport').innerHTML = html;
+}
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    acertos = 0;
+    erros = 0;
+    userAnswers = Array(currentQuizData.questoes.length).fill(null);
+    document.getElementById('finalReport').classList.add('hidden');
+    document.getElementById('quizHeader').classList.remove('hidden');
+    document.getElementById('questionCard').classList.remove('hidden');
+    renderQuestion(0);
+    updatePerformance();
+    updateTopicAnalysis();
+    generateTips();
+}
+function backToHome() {
+    currentQuizData = null;
+    currentQuizFile = null;
+    currentQuestionIndex = 0;
+    acertos = 0;
+    erros = 0;
+    userAnswers = [];
+    anotacoes = {};
+    document.getElementById('finalReport').classList.add('hidden');
+    document.getElementById('quizHeader').classList.add('hidden');
+    document.getElementById('questionCard').classList.add('hidden');
+    document.getElementById('welcomeScreen').classList.remove('hidden');
+    document.getElementById('topicAnalysisSection').style.display = 'none';
+    document.getElementById('tipsSection').style.display = 'none';
+    document.querySelectorAll('.item-link').forEach(link => link.classList.remove('active'));
+    updatePerformance();
+}
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+}
+document.addEventListener('DOMContentLoaded', loadSimuladosFromManifest);
+document.addEventListener('keydown', function(e) {
+    if (!currentQuizData) return;
+    if (e.key === 'ArrowLeft') previousQuestion();
+    if (e.key === 'ArrowRight') nextQuestion();
+});
+</script>
 </body>
 </html>
