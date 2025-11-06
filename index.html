@@ -102,6 +102,15 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+        }
+
+        .pdf-list a {
+            cursor: pointer;
+        }
+
+        .pdf-list a:hover {
+            color: #0891b2;
         }
 
         /* PERFORMANCE PANEL */
@@ -507,6 +516,73 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* PDF VIEWER MODAL */
+        .pdf-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .pdf-modal.hidden {
+            display: none;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .pdf-header h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .pdf-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .pdf-container {
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .pdf-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         /* RESPONSIVIDADE */
         @media (max-width: 768px) {
             body {
@@ -531,6 +607,10 @@
             .report-card {
                 padding: 20px;
             }
+
+            .pdf-container {
+                height: 70vh;
+            }
         }
     </style>
 </head>
@@ -539,15 +619,11 @@
     <div id="sidebar">
         <div class="sidebar-header">📚 Simulados</div>
 
-        <!-- LEGISLAÇÃO -->
+        <!-- LEGISLAÇÃO / PDFs -->
         <div class="sidebar-section">
             <div class="section-title">📋 Legislação</div>
-            <ul class="pdf-list">
-                <li>
-                    <a href="pdfs/LEI-1.061-POLICIA-PENAL.pdf" target="_blank">
-                        📄 Lei 1.061/2023
-                    </a>
-                </li>
+            <ul class="pdf-list" id="pdf-list">
+                <li style="text-align: center; color: #cbd5e1; padding: 8px;">Carregando...</li>
             </ul>
         </div>
 
@@ -593,14 +669,103 @@
         </div>
     </div>
 
+    <!-- PDF MODAL -->
+    <div id="pdf-modal" class="pdf-modal hidden">
+        <div class="pdf-header">
+            <h2 id="pdf-title">PDF</h2>
+            <button class="pdf-close" onclick="closePdfModal()">✕</button>
+        </div>
+        <div class="pdf-container">
+            <iframe id="pdf-iframe"></iframe>
+        </div>
+    </div>
+
     <script>
         // VARIÁVEIS GLOBAIS
         const DATA_FOLDER = './data/';
+        const PDF_FOLDER = './pdfs/';
         let currentSimuladoData = null;
         let currentQuestionIndex = 0;
         let acertos = 0;
         let erros = 0;
         let questoesRespondidas = {};
+
+        // ============================================
+        // FUNÇÃO: Carregar Lista de PDFs do Manifest
+        // ============================================
+        async function loadPdfsFromManifest() {
+            try {
+                const response = await fetch(PDF_FOLDER + 'pdfs_manifest.json');
+                if (!response.ok) throw new Error('PDF Manifest não encontrado');
+                const data = await response.json();
+                renderPdfList(data.files);
+            } catch (error) {
+                console.error('Erro ao carregar PDF manifest:', error);
+                // Fallback: lista estática
+                const fallback = [
+                    { name: 'Lei 1.061/2023 - Polícia Penal', file: 'LEI-1.061-POLICIA-PENAL.pdf' }
+                ];
+                renderPdfList(fallback);
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO: Renderizar Lista de PDFs
+        // ============================================
+        function renderPdfList(pdfs) {
+            const list = document.getElementById('pdf-list');
+            list.innerHTML = '';
+
+            pdfs.forEach(pdf => {
+                const li = document.createElement('li');
+                const fileName = typeof pdf === 'string' ? pdf : pdf.file;
+                const displayName = typeof pdf === 'string' ? pdf.replace(/\.pdf$/i, '') : (pdf.name || pdf.file.replace(/\.pdf$/i, ''));
+
+                li.innerHTML = `<a onclick="openPdf('${fileName}', '${displayName}')">📄 ${displayName}</a>`;
+                list.appendChild(li);
+            });
+
+            // Se não houver PDFs
+            if (pdfs.length === 0) {
+                list.innerHTML = '<li style="color: #cbd5e1; font-size: 12px;">Nenhum PDF disponível</li>';
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO: Abrir PDF em Modal
+        // ============================================
+        function openPdf(fileName, displayName) {
+            const modal = document.getElementById('pdf-modal');
+            const iframe = document.getElementById('pdf-iframe');
+            const title = document.getElementById('pdf-title');
+
+            title.textContent = displayName;
+
+            // Usar Google Docs viewer para melhor compatibilidade
+            const pdfUrl = PDF_FOLDER + fileName;
+            iframe.src = 'https://docs.google.com/viewer?url=' + window.location.origin + window.location.pathname.replace('index.html', '') + pdfUrl + '&embedded=true';
+
+            modal.classList.remove('hidden');
+        }
+
+        // ============================================
+        // FUNÇÃO: Fechar Modal de PDF
+        // ============================================
+        function closePdfModal() {
+            const modal = document.getElementById('pdf-modal');
+            const iframe = document.getElementById('pdf-iframe');
+
+            modal.classList.add('hidden');
+            iframe.src = '';
+        }
+
+        // Fechar PDF ao clicar fora
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('pdf-modal');
+            if (event.target === modal) {
+                closePdfModal();
+            }
+        });
 
         // ============================================
         // FUNÇÃO: Carregar Simulados do Manifest
@@ -881,6 +1046,7 @@
         // ============================================
         window.addEventListener('load', function() {
             loadSimuladosFromManifest();
+            loadPdfsFromManifest();
         });
     </script>
 </body>
