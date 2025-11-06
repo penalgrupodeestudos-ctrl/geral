@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise e Revisão de Conteúdo - Simulados Interativos</title>
+    <title>Plataforma de Alta Performance - Simulados Interativos</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Variáveis de Tema (Design System Básico) */
@@ -19,6 +19,7 @@
             --text-light: #fff;
             --border-color: #e9ecef;
             --card-bg: #ffffff;
+            --sidebar-accent: #38404a; /* Cor para destacar blocos na sidebar */
         }
 
         body {
@@ -33,34 +34,34 @@
         /* ======================================= */
         /* CONFIGURAÇÃO RESPONSIVA (Layout)        */
         /* ======================================= */
-
-        /* Padrão para Celular (Barra lateral em cima, Conteúdo em baixo) */
+        
+        /* Padrão para Celular (Barra lateral em cima) */
         #sidebar {
             width: 100%; 
             background-color: var(--bg-dark);
             color: var(--text-light);
-            padding: 20px;
+            padding: 0;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
             overflow-y: auto;
         }
         
         @media (min-width: 768px) {
             body {
-                display: flex; /* Volta ao layout lado a lado para telas grandes */
+                display: flex; /* Layout lado a lado para telas grandes */
             }
             #sidebar {
                 width: 300px;
                 flex-shrink: 0; 
                 height: 100vh; 
-                position: sticky; /* Mantém a barra lateral fixa no topo */
+                position: sticky;
                 top: 0;
-                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15); /* Sombra na lateral */
+                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15);
             }
             #main-content {
                 flex-grow: 1;
             }
-            header {
-                flex-direction: row;
+             header h1 {
+                font-size: 1.8rem;
             }
         }
         
@@ -73,23 +74,124 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-direction: column; /* Empilha no celular */
+            flex-direction: column; 
             gap: 10px;
         }
-
         header h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem; /* Menor no celular */
+            font-size: 1.2rem;
             margin: 0;
             text-align: center;
         }
-        @media (min-width: 768px) {
-             header h1 {
-                font-size: 1.8rem;
-            }
+
+
+        /* ======================================= */
+        /* ESTILOS MODERNIZADOS DA SIDEBAR         */
+        /* ======================================= */
+        
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        /* Título Principal */
+        #sidebar h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem; 
+            margin-bottom: 5px;
+            padding: 0;
+        }
+        
+        /* Subtítulo */
+        #sidebar p {
+            font-size: 0.9rem; 
+            color: #ced4da; 
+            margin-bottom: 20px;
         }
 
-        /* Botão Análise e Revisão na Sidebar */
+        /* Destaque para Bloco de PDFs */
+        .pdf-block {
+            background-color: var(--sidebar-accent);
+            padding: 15px 0;
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .pdf-block h3 {
+            font-family: 'Roboto', sans-serif; 
+            font-size: 1.1rem;
+            color: var(--text-light);
+            padding: 0 20px 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0;
+        }
+        
+        /* Link do PDF (Botão de Alto Destaque) */
+        .pdf-block li a {
+            display: block;
+            padding: 15px 20px;
+            background-color: var(--secondary-color) !important; 
+            color: var(--bg-dark) !important; 
+            font-weight: 700 !important;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .pdf-block li a:hover {
+            background-color: #e69100 !important; 
+        }
+        
+        /* Lista de Simulados - Título */
+        .simulados-title {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            margin: 20px 0 15px 0;
+        }
+
+        /* Lista de Simulados */
+        #simulado-list {
+            list-style: none;
+            padding: 0 10px; /* Adiciona padding lateral para afastar os botões da borda */
+            margin: 0;
+        }
+
+        /* ESTILO NOVO E MODERNO PARA BOTÕES DOS SIMULADOS */
+        #simulado-list li {
+            margin-bottom: 8px; /* Espaçamento entre os botões */
+        }
+
+        #simulado-list li a {
+            display: block;
+            padding: 12px 15px;
+            color: var(--text-light);
+            text-decoration: none;
+            background-color: var(--sidebar-accent); /* Fundo sutil */
+            cursor: pointer;
+            font-weight: 500;
+            
+            /* Adiciona Borda e Arredondamento */
+            border: 1px solid var(--primary-color); /* Borda sutil azul */
+            border-radius: 8px; /* Cantos arredondados */
+            
+            /* Transições suaves para o efeito de hover */
+            transition: all 0.3s ease; 
+        }
+
+        #simulado-list li a:hover {
+            background-color: var(--primary-color); /* Preenche com azul forte */
+            color: var(--text-light); /* Mantém o texto claro */
+            border-color: var(--secondary-color); /* Borda Laranja de Destaque */
+            transform: translateY(-2px); /* Efeito de elevação sutil */
+            box-shadow: 0 4px 8px rgba(0, 77, 153, 0.3); /* Sombra suave para profundidade */
+        }
+        /* FIM DO NOVO ESTILO */
+
+        /* Botão Análise e Revisão na Sidebar (mantido) */
         .btn-sidebar-report {
             padding: 12px 15px;
             background-color: var(--success-color); 
@@ -98,268 +200,257 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin: 20px;
             transition: background-color 0.2s;
             display: none; 
-            width: 100%;
+            width: calc(100% - 40px);
             text-align: center;
             font-size: 1rem;
         }
 
-        .btn-sidebar-report:hover {
-            background-color: #1e7e34;
-        }
-
-        /* Lista de Simulados */
-        #simulado-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        #simulado-list li a {
-            display: block;
-            padding: 10px 20px;
-            color: var(--text-light);
-            text-decoration: none;
-            background-color: transparent;
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s;
-            border-left: 5px solid transparent;
-        }
-
-        #simulado-list li a:hover {
-            background-color: #495057;
-            border-left-color: var(--secondary-color);
-        }
-
-        /* CONTEÚDO PRINCIPAL */
+        /* ESTILOS DO CONTEÚDO PRINCIPAL (MANTIDOS) */
         #main-content {
+            padding: 20px;
             width: 100%;
-            padding: 0;
-            overflow-y: auto;
         }
 
         #quiz-container {
-            background-color: var(--bg-light);
-            padding: 20px;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
-        @media (min-width: 768px) {
-            #quiz-container {
-                padding: 40px;
-            }
-        }
-
-        /* Cartão de Questão */
         .question-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
+            padding: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .question-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
-            font-size: 0.9rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .question-number {
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--primary-color);
         }
 
         .question-discipline {
-            color: var(--secondary-color);
-            font-style: italic;
+            font-size: 0.9rem;
+            color: #6c757d;
+            background-color: #f1f1f1;
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
         .question-text {
             font-size: 1rem;
-            font-weight: 500;
+            line-height: 1.6;
             margin-bottom: 20px;
-            line-height: 1.5;
         }
 
-        /* Opções */
         .options-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
         }
 
         .option-label {
             display: flex;
-            align-items: flex-start;
-            padding: 12px;
-            border: 1px solid var(--border-color);
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border: 1px solid #ced4da;
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.2s, border-color 0.2s;
         }
 
         .option-label:hover {
-            background-color: #f1f1f1;
-            border-color: #ced4da;
+            background-color: #f8f9fa;
+            border-color: var(--primary-color);
         }
 
         .option-label input[type="radio"] {
-            margin-top: 5px;
-            margin-right: 15px;
-            flex-shrink: 0; /* Impede o radio de diminuir */
+            margin-right: 10px;
         }
-        
+
         .option-letter {
             font-weight: bold;
-            margin-right: 8px;
-            flex-shrink: 0;
-        }
-
-        /* Feedback de Correção */
-        .option-label.correct {
-            background-color: #e6ffed; /* Verde muito claro */
-            border-color: var(--success-color);
-            color: #155724;
-            font-weight: 500;
-        }
-
-        .option-label.incorrect {
-            background-color: #f8d7da; /* Vermelho claro */
-            border-color: var(--danger-color);
-            color: #721c24;
-        }
-
-        .explanation-box {
-            border-left: 5px solid var(--primary-color);
-            background-color: #f0f7ff; /* Azul claro para explicação */
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 4px;
-            font-size: 0.95rem;
-        }
-        
-        .explanation-box strong {
+            margin-right: 5px;
             color: var(--primary-color);
         }
 
-        .explanation-text {
-            margin-top: 5px;
-            line-height: 1.4;
-            white-space: pre-wrap; /* Mantém a quebra de linha do texto do JSON, se houver */
-        }
-        
-        /* Botão de Corrigir */
-        .btn-check-all {
-            padding: 15px 30px;
-            background-color: var(--danger-color); 
-            color: var(--text-light);
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            font-size: 1.1rem;
+        /* Destaque Correto/Incorreto */
+        .option-label.correct {
+            background-color: #d4edda;
+            border-color: var(--success-color);
+            color: var(--success-color);
         }
 
-        .btn-check-all:hover {
-            background-color: #c82333;
+        .option-label.incorrect {
+            background-color: #f8d7da;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
         }
-        
-        /* Comentários/Anotações */
+
+        .option-label.correct .option-letter,
+        .option-label.incorrect .option-letter {
+            color: inherit;
+        }
+
+        .explanation-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #e9f5ff;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .explanation-box strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .explanation-text {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Notas Pessoais */
         .comment-section {
             margin-top: 20px;
             padding-top: 15px;
             border-top: 1px dashed var(--border-color);
         }
-        
+
         .comment-section strong {
             display: block;
-            margin-bottom: 10px;
-            color: var(--text-dark);
+            margin-bottom: 8px;
+            color: #6c757d;
             font-size: 0.9rem;
         }
-        
+
         .comment-section textarea {
             width: 100%;
-            height: 80px;
+            min-height: 80px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ced4da;
             border-radius: 4px;
             resize: vertical;
             font-size: 0.9rem;
             box-sizing: border-box;
         }
-        
+
         .note-buttons {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .btn-save-note, .btn-delete-note {
             padding: 8px 15px;
             border: none;
             border-radius: 4px;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
+            transition: background-color 0.2s;
         }
 
         .btn-save-note {
-            background-color: var(--success-color);
+            background-color: var(--primary-color);
             color: var(--text-light);
         }
 
-        .btn-delete-note {
-            background-color: var(--secondary-color);
-            color: var(--text-light);
+        .btn-save-note:hover {
+            background-color: #003766;
         }
-        
-        /* Botão de menu para mobile */
-        .menu-button {
-            background: none;
-            border: none;
+
+        .btn-delete-note {
+            background-color: #f1f1f1;
+            color: var(--text-dark);
+        }
+
+        .btn-delete-note:hover {
+            background-color: #e2e6ea;
+        }
+
+        .btn-check-all {
+            padding: 15px 30px;
+            background-color: var(--danger-color); 
             color: var(--text-light);
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
             cursor: pointer;
-            margin-right: 10px;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-check-all:hover {
+            background-color: #c82333;
+            transform: translateY(-1px);
+        }
+
+        /* Relatório de Desempenho */
+        #performance-report {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #performance-report h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        #performance-summary ul, #weak-areas ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #performance-summary li, #weak-areas li {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-left: 4px solid var(--border-color);
         }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <h2 style="font-family: 'Montserrat', sans-serif; font-size: 1.8rem; text-align: center; margin-bottom: 5px;">
-            Plataforma 
-        </h2>
-        <p style="font-family: 'Roboto', sans-serif; font-size: 0.9rem; text-align: center; color: #ced4da; margin-bottom: 20px;">
-            Alta Performance
-        </p>
+        <div class="sidebar-header">
+            <h2>Plataforma</h2>
+            <p>Alta Performance</p>
+        </div>
 
-        <h3 style="font-family: 'Roboto', sans-serif; font-size: 1.2rem; margin: 20px 0 10px 0; padding-left: 20px; color: var(--secondary-color);">
-            📂 Materiais de Apoio
-        </h3>
-        <ul style="list-style: none; padding: 0; margin-bottom: 30px;">
-            <li>
-                <a href="./data/pdfs/" target="_blank" style="display: block; padding: 10px 20px; color: var(--text-light); text-decoration: none; background-color: #343a40; cursor: pointer; transition: background-color 0.2s, color 0.2s; border-left: 5px solid var(--secondary-color); font-weight: bold;">
-                    🔗 Pasta de PDFs (GitHub Data)
-                </a>
-            </li>
-        </ul>
-        <h2 style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; text-align: center; margin-bottom: 20px;">
-            📚 Simulados Carregados
-        </h2>
+        <div class="pdf-block">
+            <h3>📂 Materiais de Apoio</h3>
+            <ul style="list-style: none; padding: 0; margin-bottom: 0;">
+                <li>
+                    <a href="./data/pdfs/index.html" target="_blank"> 
+                        ⬇️ ACESSAR PASTA DE DOWNLOADS (PDFs)
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <h2 class="simulados-title">📚 Simulados Carregados</h2>
         
         <ul id="simulado-list">
             <li><a style="text-align: center; opacity: 0.8; font-style: italic;">Carregando simulados...</a></li>
@@ -369,7 +460,7 @@
             Análise e Revisão
         </button>
 
-        <footer style="text-align: center; padding-top: 20px; border-top: 1px solid #343a40;">
+        <footer style="text-align: center; padding: 20px 20px 10px 20px; border-top: 1px solid #343a40;">
             <p style="font-size: 0.75rem; color: #adb5bd; margin: 0;">
                 Desenvolvido para Estudos.
             </p>
@@ -413,9 +504,7 @@
     </div>
 
     <script>
-        // ===================================================================
-        // VARIÁVEIS GLOBAIS
-        // ===================================================================
+        // Variáveis globais para o funcionamento do quiz
         let currentSimuladoName = null;
         let currentQuizData = null;
         let performance = {
@@ -424,24 +513,16 @@
             errors: 0,
             disciplineBreakdown: {}
         };
-
-        // ===================================================================
-        // CONFIGURAÇÃO DE ROTA (Onde buscar os simulados JSON)
-        // ===================================================================
         const SIMULADOS_BASE_PATH = './data/';
 
-        // ===================================================================
-        // FUNÇÕES DE CARREGAMENTO DE ARQUIVOS
-        // ===================================================================
-
-        // Função principal para carregar o arquivo manifest e listar os simulados
+        // Função principal para carregar a lista de simulados
         async function loadSimulados() {
             const list = document.getElementById('simulado-list');
             try {
-                // 1. Tentar carregar a lista de arquivos (manifest)
+                // Tenta carregar o manifest principal
                 const response = await fetch(SIMULADOS_BASE_PATH + 'simulados_manifest.json');
                 if (!response.ok) {
-                    throw new Error(`Não foi possível carregar o arquivo manifest.`);
+                    throw new Error(`Não foi possível carregar o arquivo manifest. Verifique se ele existe em /data/`);
                 }
                 
                 const simuladoFilenames = await response.json(); 
@@ -453,7 +534,6 @@
                 }
 
                 simuladoFilenames.forEach(filename => {
-                    // CORREÇÃO: Removida a barra extra que impedia o funcionamento
                     const cleanName = filename.replace(/\.json$/i, ''); 
                     
                     const li = document.createElement('li');
@@ -463,38 +543,34 @@
                     list.appendChild(li);
                 });
                 
-                // Mensagem administrativa discreta no console
                 console.info("AVISO ADMINISTRATIVO: Para atualizar a lista de simulados, edite o arquivo /data/simulados_manifest.json.");
 
 
             } catch (error) {
                 console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
                 
-                // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
+                // Lista estática de fallback (Deve ser ajustada com seus nomes de arquivo JSON reais!)
                 const fallbackFiles = [
                     "SIMULADO-POLICIA-PENAL-JSON.json", 
                     "SIMULADO-02-IDCAP-60-QUESTOES.json",
                     "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
                     "QUESTOES-AREA-POLICIAL.json",
                     "simulado_100_questoes.json",
                     "100-QUESTOES-POLICIAL.json",
-                    "QUESTOES-GERAIS.json.json"
                 ];
                 
                 list.innerHTML = '';
                 fallbackFiles.forEach(filename => {
-                    // CORREÇÃO: Removida a barra extra que impedia o funcionamento
                     const cleanName = filename.replace(/\.json$/i, ''); 
                     const li = document.createElement('li');
-                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
+                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName} (TESTE)</a>`;
                     list.appendChild(li);
                 });
-                list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
+                list.innerHTML += '<li><small style="text-align:center; padding:10px; color:#adb5bd; display:block;">(Lista de testes carregada)</small></li>';
             }
         }
 
-        // Função para carregar o quiz JSON
+        // Função para carregar e renderizar o quiz
         async function loadAndRenderQuiz(filename) {
             currentSimuladoName = filename;
             document.getElementById('current-simulado-name').textContent = `Carregado: ${filename.replace(/\.json$/i, '')}`;
@@ -508,16 +584,13 @@
                 }
                 const data = await response.json();
                 
-                // Extrai a lista de questões do objeto JSON
+                // Lógica de extração de questões (mantida para compatibilidade)
                 let quizData;
                 if (data.questoes && Array.isArray(data.questoes)) {
-                    // Padrão 1: { ..., "questoes": [...] }
                     quizData = data.questoes;
                 } else if (Array.isArray(data)) {
-                    // Padrão 2: É um array de questões [ {..}, {..} ]
                     quizData = data;
                 } else if (data.simulados_policia_penal && Array.isArray(data.simulados_policia_penal[0].questoes)) {
-                    // Padrão 3: { simulados_policia_penal: [ { questoes: [...] } ] } (Exemplo de JSON aninhado)
                     quizData = data.simulados_policia_penal[0].questoes;
                 } else {
                     throw new Error("Não foi possível extrair a lista de questões. Estrutura não reconhecida.");
@@ -533,15 +606,11 @@
 
             } catch (error) {
                 const container = document.getElementById('quiz-container');
-                container.innerHTML = `<p style="color: var(--danger-color); text-align: center;">Erro ao carregar o simulado: ${error.message}</p>`;
+                container.innerHTML = `<p style="color: var(--danger-color); text-align: center; font-weight:bold;">ERRO CRÍTICO: Não foi possível carregar o simulado '${filename}'</p><p style="text-align:center;">Detalhes no console: ${error.message}</p>`;
                 console.error("Erro no carregamento:", error);
                 document.getElementById('action-buttons-container').style.display = 'none';
             }
         }
-
-        // ===================================================================
-        // FUNÇÕES DE RENDERING E INTERFACE
-        // ===================================================================
 
         function renderQuiz(questions, name) {
             const container = document.getElementById('quiz-container');
@@ -556,26 +625,24 @@
                 container.innerHTML += questionHtml;
             });
 
-            // Reseta a performance e carrega as anotações
             resetPerformance();
-            // Reseta a rolagem para o topo
             container.scrollTop = 0;
         }
 
         function createQuestionHtml(q, index, name) {
-            // Tenta obter o nome da disciplina, tratando casos como "Importado" ou vazio
             const discipline = q.disciplina && q.disciplina.trim() !== '' && q.disciplina.toUpperCase() !== 'IMPORTADO'
                                ? q.disciplina : 'Geral';
             
             let optionsHtml = '';
-            // Cria um array de opções no formato { letra: 'A', texto: 'Opção A' }
-            const optionsArray = Object.keys(q.opcoes || {}).map(key => ({
-                letra: key,
-                texto: q.opcoes[key]
-            }));
+            const optionsMap = q.opcoes || q.alternativas.reduce((acc, alt) => {
+                acc[alt.letra] = alt.texto;
+                return acc;
+            }, {});
 
-            // Embaralha as opções (Recurso opcional, mas útil)
-            // optionsArray.sort(() => Math.random() - 0.5); 
+            const optionsArray = Object.keys(optionsMap).map(key => ({
+                letra: key,
+                texto: optionsMap[key]
+            }));
 
             optionsArray.forEach(opt => {
                 optionsHtml += `
@@ -586,13 +653,14 @@
                 `;
             });
 
-            const explanation = q.explicacao_professor || 'Nenhuma explicação fornecida.';
-            const respostaCorreta = q.resposta_correta || 'N/A';
+            const explanation = q.explicacao_professor || q.comentario || 'Nenhuma explicação fornecida.';
+            const respostaCorreta = q.resposta_correta || q.gabarito || 'N/A';
+            const questaoTexto = q.questao || q.enunciado || 'Questão sem texto.';
 
             const explanationSectionHtml = `
                 <div class="explanation-box" id="exp-${index}" style="display:none;">
                     <strong>Análise Didática do Professor:</strong>
-                    <p class="explanation-text">**Gabarito: ${respostaCorreta || 'N/A'}** - ${explanation}</p>
+                    <p class="explanation-text">**Gabarito: ${respostaCorreta}** - ${explanation}</p>
                 </div>
             `;
             
@@ -614,7 +682,7 @@
                         <span class="question-number">Questão ${q.numero || (index + 1)}</span>
                         <span class="question-discipline">Disciplina: ${discipline}</span>
                     </div>
-                    <p class="question-text">${q.questao}</p>
+                    <p class="question-text">${questaoTexto}</p>
                     <form class="options-form">
                         ${optionsHtml}
                     </form>
@@ -624,10 +692,6 @@
             `;
         }
         
-        // ===================================================================
-        // FUNÇÕES DE CORREÇÃO
-        // ===================================================================
-
         function resetPerformance() {
              performance = {
                 totalQuestions: 0,
@@ -643,7 +707,7 @@
                 return;
             }
 
-            resetPerformance(); // Zera o contador antes de iniciar a correção
+            resetPerformance();
 
             currentQuizData.forEach((q, index) => {
                 const questionElement = document.getElementById(`q-card-${index}`);
@@ -653,46 +717,38 @@
 
                 const selected = questionElement.querySelector(`input[name='${currentSimuladoName}_q${index}']:checked`);
                 let selectedValue = selected ? selected.value : null;
-                const isCorrect = selectedValue === q.resposta_correta;
+                const respostaCorreta = q.resposta_correta || q.gabarito;
+                const isCorrect = selectedValue === respostaCorreta;
                 
-                // 1. Atualizar Performance
                 updatePerformance(q.disciplina, isCorrect);
 
-                // 2. Mostrar Explicação e Feedback
-                if (explanationElement.style.display === 'none' || explanationElement.style.display === '') {
-                    explanationElement.style.display = 'block'; // Mostra a explicação
-                }
+                // Mostra a explicação
+                explanationElement.style.display = 'block';
+                
 
-                // Reset classes
                 const labels = questionElement.querySelectorAll('.option-label');
                 labels.forEach(label => {
                     label.classList.remove('correct', 'incorrect');
                 });
 
-                // Get selected option
                 let selectedInput = selected ? selected : null;
 
                 // Highlight correct answer
-                const correctLabelInput = questionElement.querySelector(`input[value='${q.resposta_correta}']`);
+                const correctLabelInput = questionElement.querySelector(`input[value='${respostaCorreta}']`);
                 if (correctLabelInput) {
                     correctLabelInput.closest('.option-label').classList.add('correct');
                 }
 
                 // Highlight incorrect selection
-                if (selectedInput && selectedValue !== q.resposta_correta) {
+                if (selectedInput && selectedValue !== respostaCorreta) {
                     selectedInput.closest('.option-label').classList.add('incorrect');
                 }
             });
 
-            // Rolagem suave para o topo da primeira questão
             document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth' });
             alert("Correção concluída. Verifique as respostas e explicações!");
         }
 
-        // ===================================================================
-        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE
-        // ===================================================================
-        
         function updatePerformance(discipline, isCorrect) {
             discipline = (discipline || 'Geral').toUpperCase().trim();
             if (!performance.disciplineBreakdown[discipline]) {
@@ -749,7 +805,7 @@
             
             let weakAreasHtml = '<h4>🎯 Observações: Áreas de Melhoria e Prioridade de Estudos:</h4>';
             if (disciplineResults.length > 0) {
-                 weakAreasHtml += '<p>Com base no seu desempenho, seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
+                 weakAreasHtml += '<p>Seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
                 disciplineResults.slice(0, 5).forEach(result => {
                     weakAreasHtml += ` 
                         <li> **${result.discipline}**: <span style="color:var(--danger-color);">${result.errors} erros</span> em ${result.total} questões. **Taxa de Erro**: ${result.errorRate.toFixed(1)}%.</li>
@@ -766,10 +822,6 @@
             reportContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
-
-        // ===================================================================
-        // FUNÇÕES DE NOTAS PESSOAIS (LocalStorage)
-        // ===================================================================
 
         function saveNote(simuladoName, index) {
             try {
@@ -810,31 +862,6 @@
             }
         }
         
-        // ===================================================================
-        // FUNÇÃO DE TOGGLE (PARA MOBILE)
-        // ===================================================================
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const toggleButton = document.getElementById('toggle-sidebar');
-            
-            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
-                sidebar.style.display = 'block';
-                // Em telas maiores, isso não deve acontecer, mas previne problemas
-                if (window.innerWidth < 768) {
-                     sidebar.style.position = 'absolute';
-                     sidebar.style.zIndex = '1000';
-                     sidebar.style.height = 'auto';
-                     toggleButton.textContent = '✕';
-                }
-            } else {
-                if (window.innerWidth < 768) {
-                    sidebar.style.display = 'none';
-                    toggleButton.textContent = '☰';
-                }
-            }
-        }
-
         // Inicialização: Carrega a lista de simulados ao carregar a página
         window.onload = loadSimulados;
 
