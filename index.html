@@ -1,796 +1,276 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulados Interativos - PPES</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Variáveis de Tema (Design System Básico) */
-        :root {
-            --primary-color: #004d99; /* Azul Profundo */
-            --secondary-color: #fca311; /* Laranja de Destaque */
-            --success-color: #28a745; /* Verde para Acerto */
-            --danger-color: #dc3545; /* Vermelho para Erro */
-            --warning-color: #ffc107; /* Amarelo para Atenção */
-            --bg-light: #f9fbfd; /* Fundo Leve */
-            --bg-dark: #212529; /* Barra Lateral Escura */
-            --text-dark: #343a40;
-            --text-light: #fff;
-            --border-color: #e9ecef;
-            --card-bg: #ffffff;
-        }
-
-        /* Estilos Globais e Layout */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            min-height: 100vh;
-        }
-
-        /* Padrão para Celular (Barra lateral em cima, Conteúdo em baixo) */
-        #sidebar {
-            width: 100%; 
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
-            overflow-y: auto;
-        }
-        
-        @media (min-width: 768px) {
-            body {
-                display: flex; /* Volta ao layout lado a lado para telas grandes */
-            }
-            #sidebar {
-                width: 300px;
-                flex-shrink: 0; 
-                height: 100vh; 
-                position: sticky; /* Mantém a barra lateral fixa no topo */
-                top: 0;
-                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15); /* Sombra na lateral */
-            }
-            #content {
-                flex-grow: 1;
-                padding: 30px;
-                max-width: calc(100% - 300px);
-                overflow-y: auto;
-            }
-            /* Esconde o botão de Placar na sidebar em telas grandes, já que ele estará no topo do #content */
-             #show-desempenho {
-                display: none !important;
-            }
-        }
-        
-        #content {
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        /* Cabeçalho da Sidebar */
-        #sidebar h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5em;
-            margin-bottom: 30px;
-            text-align: center;
-            color: var(--secondary-color);
-        }
-
-        /* Lista de Simulados */
-        #simulados-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        #simulados-list li {
-            margin-bottom: 10px;
-        }
-
-        #simulados-list a {
-            display: block;
-            background-color: #343a40;
-            color: var(--text-light);
-            padding: 10px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.9em;
-            word-wrap: break-word; 
-        }
-
-        #simulados-list a:hover:not(.active) {
-            background-color: var(--primary-color);
-        }
-        
-        #simulados-list a.active {
-            background-color: var(--secondary-color);
-            color: var(--text-dark);
-            font-weight: bold;
-        }
-
-        /* Botões de Ação na Sidebar */
-        .sidebar-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .sidebar-actions button {
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Montserrat', sans-serif;
-            transition: opacity 0.2s;
-        }
-
-        #show-desempenho {
-            background-color: var(--secondary-color);
-            color: var(--text-dark);
-        }
-
-        /* --- Score Board (Desempenho) --- */
-        #score-board {
-            background-color: var(--card-bg);
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-        .score-item {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.1em;
-            padding: 0 15px;
-        }
-        .score-item h4 {
-            margin: 0 0 5px 0;
-            font-size: 0.9em;
-            color: var(--text-dark);
-        }
-        .score-item span {
-            font-size: 1.5em;
-            font-weight: 700;
-        }
-        .acertos span { color: var(--success-color); }
-        .erros span { color: var(--danger-color); }
-        .percentual span { color: var(--primary-color); }
-        .pendentes span { color: var(--warning-color); }
-
-        /* Botão de Reiniciar no Topo do Conteúdo */
-        #top-actions {
-            display: flex;
-            justify-content: flex-end; /* Alinha o botão para a direita */
-            margin-bottom: 20px;
-        }
-
-        #top-actions #reset-quiz-button {
-            background-color: var(--danger-color);
-            color: var(--text-light);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Montserrat', sans-serif;
-            opacity: 0.8; 
-            transition: opacity 0.2s;
-            display: none; /* Escondido por padrão */
-        }
-        
-        #top-actions #reset-quiz-button:hover {
-            opacity: 1; 
-        }
-
-        /* Estilo do Botão de Anotações (Colorido) */
-        .notes-area {
-            margin-top: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fcfcfc;
-        }
-        .notes-area textarea {
-            width: 98%;
-            min-height: 80px;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            margin-bottom: 5px;
-            resize: vertical;
-        }
-        .notes-area button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-right: 5px;
-            transition: background-color 0.2s;
-        }
-        .notes-area .save-btn {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-        }
-        .notes-area .save-btn:hover {
-            background-color: #003366;
-        }
-        .notes-area .clear-btn {
-            background-color: var(--danger-color);
-            color: var(--text-light);
-        }
-        .notes-area .clear-btn:hover {
-            background-color: #a00000;
-        }
-
-        /* Demais estilos mantidos do original */
-        .quiz-title {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-        }
-
-        .question-card {
-            background-color: var(--card-bg);
-            padding: 20px;
-            margin-bottom: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        .question-header h3 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--secondary-color);
-            margin-top: 0;
-            font-size: 1.1em;
-        }
-        
-        .question-header p {
-            font-size: 1em;
-            line-height: 1.5;
-            margin-bottom: 15px;
-            white-space: pre-wrap; /* Mantém quebras de linha */
-        }
-
-        .options-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .option {
-            background-color: #f8f9fa;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            font-size: 0.95em;
-            line-height: 1.4;
-        }
-
-        .option:hover:not(.answered) {
-            background-color: #e9ecef; 
-        }
-
-        .option-key {
-            font-weight: bold;
-            margin-right: 10px;
-            color: var(--primary-color);
-            flex-shrink: 0;
-        }
-
-        .option.answered {
-            pointer-events: none; 
-        }
-        
-        .option.correct-answer, .option.correct-answer-revealed {
-            background-color: var(--success-color) !important; 
-            color: var(--text-light);
-            font-weight: bold;
-        }
-
-        .option.wrong-answer {
-            background-color: var(--danger-color) !important; 
-            color: var(--text-light);
-        }
-
-        .option.correct-answer .option-key,
-        .option.correct-answer-revealed .option-key,
-        .option.wrong-answer .option-key {
-            color: var(--text-light);
-        }
-
-        .comment-box {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid;
-        }
-        
-        .comment-box h4 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text-dark);
-            margin-top: 0;
-            font-size: 1em;
-        }
-        
-        .comment-box strong {
-            font-weight: 700;
-        }
-
-        .text-base-card {
-            background-color: #f1f8ff; 
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            border-left: 5px solid var(--primary-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        .text-base-card p {
-            white-space: pre-wrap; 
-            font-style: italic;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulados Estratégia Universal</title>
+<style>
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background: #f5f7fa;
+  display: flex;
+  flex-direction: row;
+}
+aside {
+  width: 280px;
+  background: #003366;
+  color: white;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+aside h2 {
+  text-align: center;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+#simulados-list a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 4px 0;
+  background: #004d99;
+  cursor: pointer;
+}
+#simulados-list a:hover {
+  background: #0066cc;
+}
+#desempenho {
+  background: #002b50;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 14px;
+}
+#quiz-area {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+}
+.question-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+}
+.question-card h3 {
+  margin-top: 0;
+  color: #003366;
+}
+.options-list {
+  list-style: none;
+  padding: 0;
+}
+.option {
+  padding: 8px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.option:hover {
+  background: #eaf2ff;
+}
+.option.answered {
+  pointer-events: none;
+}
+.correct-answer {
+  background: #c7f9cc !important;
+  border-color: #27ae60;
+}
+.wrong-answer {
+  background: #ffd6d6 !important;
+  border-color: #e74c3c;
+}
+.correct-answer-revealed {
+  border: 2px solid #27ae60;
+}
+.comment-box {
+  display: none;
+  margin-top: 10px;
+  background: #f4f4f4;
+  border-left: 4px solid #004d99;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.text-base {
+  background: white;
+  padding: 15px;
+  border-left: 4px solid #004d99;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+.notas {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ccc;
+  margin-top: 10px;
+}
+.notas textarea {
+  width: 100%;
+  height: 80px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  padding: 5px;
+  resize: none;
+}
+button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.salvar {
+  background: #2ecc71;
+  color: white;
+}
+.excluir {
+  background: #e74c3c;
+  color: white;
+}
+</style>
 </head>
 <body>
+<aside>
+  <h2>📚 Simulados</h2>
+  <ul id="simulados-list"></ul>
+  <div id="desempenho">
+    <h3>📊 Desempenho</h3>
+    <p>Acertos: <span id="acertos">0</span></p>
+    <p>Erros: <span id="erros">0</span></p>
+    <p>Dicas: <span id="dicas">Revise temas com mais erros</span></p>
+  </div>
+</aside>
 
-    <div id="sidebar">
-        <h1>Simulados PP ES</h1>
-        <ul id="simulados-list">
-            </ul>
-        <hr style="border-color: #444; margin: 20px 0;">
-        <div class="sidebar-actions">
-            <button id="show-desempenho" onclick="displayScore()">Ver Placar</button>
+<div id="quiz-area">
+  <h2>Selecione um simulado à esquerda</h2>
+</div>
+
+<script>
+let acertos = 0;
+let erros = 0;
+
+// === CARREGAR QUALQUER JSON DE SIMULADO ===
+async function loadQuiz(filename) {
+  try {
+    const response = await fetch(`./data/${encodeURIComponent(filename)}`);
+    const raw = await response.json();
+    const keys = ["questoes", "perguntas", "itens", "questions"];
+    let questoes = [];
+
+    if (Array.isArray(raw)) questoes = raw;
+    else for (const k of keys) if (Array.isArray(raw[k])) questoes = raw[k];
+    if (!questoes.length) throw new Error("Nenhuma questão encontrada.");
+
+    const texto = (typeof raw.texto_base === "string" ? raw.texto_base : "") || 
+                   (typeof raw.texto === "string" ? raw.texto : "");
+    const titulo = raw.titulo || filename;
+    renderQuiz(titulo, texto, questoes);
+  } catch (e) {
+    document.getElementById("quiz-area").innerHTML = `<h3 style='color:red;'>Erro: ${e.message}</h3>`;
+  }
+}
+
+// === EXIBIR QUESTÕES ===
+function renderQuiz(titulo, texto, questoes) {
+  const quiz = document.getElementById("quiz-area");
+  quiz.innerHTML = `<h2>${titulo}</h2>`;
+
+  // ✅ Corrigido: só adiciona texto base se for texto válido
+  if (texto && typeof texto === "string" && texto.trim() !== "") {
+    quiz.innerHTML += `<div class='text-base'><strong>Texto Base:</strong><p>${texto.replace(/\n/g, "<br>")}</p></div>`;
+  }
+
+  questoes.forEach((q, i) => {
+    const id = q.id || q.numero || i + 1;
+    const enunciado = q.enunciado || q.questao || q.pergunta || q.texto || "Questão sem enunciado.";
+    const alternativas = q.alternativas || q.opcoes || q.options || {};
+    const correta = (q.resposta_correta || q.resposta || "").toString().toLowerCase();
+    const comentario = q.comentario || q.explicacao_professor || "Comentário não disponível.";
+
+    let opHTML = "";
+    if (Array.isArray(alternativas)) {
+      const letras = ["a", "b", "c", "d", "e"];
+      opHTML = alternativas.map((alt, idx) => `
+        <li class='option' data-opt='${letras[idx]}'
+            onclick='checkAnswer(${id}, "${letras[idx]}", "${correta}", \`${comentario}\`)'>
+            <strong>${letras[idx].toUpperCase()})</strong> ${alt}</li>`).join("");
+    } else {
+      opHTML = Object.entries(alternativas).map(([key, val]) => `
+        <li class='option' data-opt='${key.toLowerCase()}'
+            onclick='checkAnswer(${id}, "${key.toLowerCase()}", "${correta}", \`${comentario}\`)'>
+            <strong>${key.toUpperCase()})</strong> ${val}</li>`).join("");
+    }
+
+    quiz.innerHTML += `
+      <div class='question-card' id='questao-${id}'>
+        <h3>Questão ${id}</h3>
+        <p>${enunciado}</p>
+        <ul class='options-list'>${opHTML}</ul>
+        <div class='comment-box' id='comentario-${id}'></div>
+        <div class='notas'>
+          <label>📝 Notas Pessoais:</label>
+          <textarea id='nota-${id}' placeholder='Anote aqui...'></textarea><br>
+          <button class='salvar' onclick='salvarNota(${id})'>💾 Gravar</button>
+          <button class='excluir' onclick='excluirNota(${id})'>🗑️ Excluir</button>
         </div>
-    </div>
+      </div>`;
+  });
+}
 
-    <div id="content">
-        <div id="top-actions">
-            <button id="reset-quiz-button" onclick="resetQuiz()">🔄 Reiniciar Simulado</button>
-        </div>
+// === CORRIGIR RESPOSTAS ===
+function checkAnswer(id, opt, correta, comentario) {
+  const qEl = document.querySelectorAll(`#questao-${id} .option`);
+  qEl.forEach(e => {
+    const alt = e.getAttribute("data-opt");
+    if (alt === correta) e.classList.add("correct-answer-revealed");
+    if (alt === opt) e.classList.add(opt === correta ? "correct-answer" : "wrong-answer");
+    e.classList.add("answered");
+  });
 
-        <div id="score-board" style="display: none;">
-            </div>
+  const comment = document.getElementById(`comentario-${id}`);
+  comment.style.display = "block";
+  comment.innerHTML = `<strong>${opt === correta ? "✅ Correto!" : "❌ Errado!"}</strong><br>
+  <b>Gabarito:</b> ${correta.toUpperCase()}<br>${comentario}`;
 
-        <div id="quiz-container">
-            <h2 class="quiz-title">Selecione um Simulado</h2>
-            <p>Selecione um dos simulados na barra lateral para começar. **Para que o sistema carregue automaticamente todos os seus arquivos JSON**, você deve criar um arquivo chamado **`simulados-manifest.json`** na pasta `data/`.</p>
-        </div>
-    </div>
+  if (opt === correta) acertos++; else erros++;
+  document.getElementById("acertos").textContent = acertos;
+  document.getElementById("erros").textContent = erros;
+}
 
-    <script>
-        // Variáveis globais
-        let currentQuizData = []; 
-        let activeFilename = ''; 
-        // Armazena as respostas do usuário {questionId: {selectedOption: 'a', isCorrect: true}, ...}
-        let userAnswers = {}; 
+// === NOTAS PESSOAIS ===
+function salvarNota(id) {
+  const texto = document.getElementById(`nota-${id}`).value;
+  localStorage.setItem(`nota-${id}`, texto);
+  alert("💾 Anotação salva!");
+}
+function excluirNota(id) {
+  localStorage.removeItem(`nota-${id}`);
+  document.getElementById(`nota-${id}`).value = "";
+  alert("🗑️ Anotação excluída!");
+}
 
-        // --- Funções de Carregamento e Renderização ---
-
-        async function loadAndRenderQuiz(filename) {
-            document.activeElement.blur();
-            activeFilename = filename; 
-            
-            // Tenta carregar respostas e anotações anteriores ANTES de limpar
-            loadUserAnswers();
-            
-            // Atualiza o estado visual do simulado na barra lateral
-            document.querySelectorAll('#simulados-list a').forEach(a => {
-                a.classList.remove('active');
-                if (a.getAttribute('onclick').includes(`'${filename}'`)) {
-                    a.classList.add('active');
-                }
-            });
-
-            try {
-                // CORREÇÃO ESSENCIAL PARA GITHUB: Usa encodeURIComponent
-                const response = await fetch(`./data/${encodeURIComponent(filename)}`);
-                
-                if (!response.ok) {
-                    throw new Error(`Erro de rede ao carregar. Código: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Trata diferentes formatos de JSON (lista direta ou objeto com chave 'questoes')
-                if (Array.isArray(data)) {
-                    currentQuizData = data;
-                } else if (data.questoes && Array.isArray(data.questoes)) {
-                    currentQuizData = data.questoes;
-                } else {
-                    throw new Error("Formato JSON inválido: O arquivo não é um array nem contém a chave 'questoes'.");
-                }
-                
-                renderQuiz(data);
-                loadNotes(); 
-
-                // Exibe o botão de reiniciar no topo do conteúdo
-                document.getElementById('reset-quiz-button').style.display = 'block';
-
-                // Exibe o placar (inicialmente zero ou com dados salvos)
-                displayScore();
-
-            } catch (error) {
-                alert(`Erro ao carregar simulado '${filename}'.\n\nVerifique:\n1. Se o arquivo está na pasta 'data/'\n2. Se o nome do arquivo está EXATO\n3. Se a sintaxe JSON está correta.\n\nDetalhes: ${error.message}`);
-                console.error("Erro no loadAndRenderQuiz:", error);
-                document.getElementById('quiz-container').innerHTML = `
-                    <h2 style="color: var(--danger-color);">Falha ao Carregar Simulado</h2>
-                    <p>Verifique se o ficheiro <strong>${filename}</strong> está na pasta <strong>data/</strong> e se o nome está exato. Consulte a consola do navegador para detalhes técnicos.</p>
-                `;
-                document.getElementById('score-board').style.display = 'none';
-                document.getElementById('reset-quiz-button').style.display = 'none';
-            }
-        }
-
-        function renderQuiz(data) {
-            const quizContainer = document.getElementById('quiz-container');
-            const title = data.titulo || data.titulo_bloco || 'Simulado';
-            
-            quizContainer.innerHTML = `<h2 class="quiz-title">${title}</h2>`;
-            
-            currentQuizData.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-card';
-                // Aceita 'id' ou 'numero' para a identificação da questão
-                const qId = q.id || q.numero; 
-                
-                if (!qId) return; 
-
-                questionDiv.id = `question-${qId}`;
-
-                // CORREÇÃO ESSENCIAL DE FLEXIBILIDADE: Procura por 'questao' ou 'pergunta'
-                let currentQuestionText = q.questao || q.pergunta; 
-
-                // Lógica robusta para exibir Texto Base
-                if (currentQuestionText && currentQuestionText.includes('TEXTO BASE')) {
-                     const textBaseMarker = "**[TEXTO BASE";
-                     // O marcador de início de questão pode variar. Procuramos por 'Questão X'
-                     const questionMarkerPattern = /Questão\s+\d+/i; 
-
-                     const textBaseParts = currentQuestionText.split(textBaseMarker);
-                     
-                     if(textBaseParts.length > 1) {
-                        let textBaseContent = textBaseParts[1];
-                        
-                        const match = textBaseContent.match(questionMarkerPattern);
-                        let questionStart = match ? textBaseContent.indexOf(match[0]) : -1;
-                        
-                        if (questionStart > 0) {
-                             textBaseContent = textBaseContent.substring(0, questionStart).trim();
-                             currentQuestionText = textBaseParts[1].substring(questionStart).trim();
-                        } else {
-                             // Se não encontrar o marcador 'Questão X', assume que tudo após o marcador é a questão
-                             currentQuestionText = q.questao || q.pergunta; 
-                             textBaseContent = textBaseParts[1].trim(); 
-                        }
-
-                        const textBaseDiv = document.createElement('div');
-                        textBaseDiv.className = 'text-base-card';
-                        // Adiciona quebras de linha (<br>)
-                        textBaseDiv.innerHTML = `
-                            <h4 style="color: var(--primary-color);">[TEXTO BASE PARA INTERPRETAÇÃO]</h4>
-                            <p>${textBaseContent.replace(/\n/g, '<br>')}</p>
-                            <hr>
-                        `;
-                        quizContainer.appendChild(textBaseDiv);
-                     }
-                }
-
-
-                // Estrutura HTML de cada questão
-                questionDiv.innerHTML = `
-                    <div class="question-header">
-                        <h3>Questão ${qId}</h3>
-                        <p>${currentQuestionText.replace(/\n/g, '<br>')}</p>
-                    </div>
-                    <ul class="options-list" data-question-id="${qId}">
-                        ${Object.entries(q.opcoes).map(([key, value]) => `
-                            <li class="option" data-option="${key.toLowerCase()}" onclick="checkAnswer(${qId}, '${key.toLowerCase()}')">
-                                <span class="option-key">${key.toUpperCase()})</span> 
-                                <span class="option-text">${value}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                    <div class="comment-box" id="comment-${qId}" style="display: none;"></div>
-                    <div class="notes-area">
-                        <h4>✏️ Minhas Anotações:</h4>
-                        <textarea id="note-${qId}" placeholder="Escreva suas anotações aqui..." oninput=""></textarea>
-                        <button class="save-btn" onclick="saveNote(${qId})">Gravar Anotação</button>
-                        <button class="clear-btn" onclick="clearNote(${qId})">Limpar Anotação</button>
-                    </div>
-                `;
-                quizContainer.appendChild(questionDiv);
-                
-                // Aplica a resposta salva se existir
-                if (userAnswers[qId]) {
-                    const selectedOption = userAnswers[qId].selectedOption;
-                    const isCorrect = userAnswers[qId].isCorrect;
-                    applyAnswerStyle(qId, selectedOption, isCorrect);
-                }
-            });
-            
-            document.getElementById('content').scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        // --- Função para Reiniciar o Simulado ---
-
-        function resetQuiz() {
-            if (!activeFilename) {
-                alert("Nenhum simulado ativo para reiniciar.");
-                return;
-            }
-            
-            if (confirm(`Tem certeza que deseja **REINICIAR** o simulado '${activeFilename}'? \n\nIsso irá APAGAR todas as suas respostas salvas (acertos e erros) para este simulado.`)) {
-                // 1. Apaga as respostas do LocalStorage
-                localStorage.removeItem(`answers_${activeFilename}`);
-                userAnswers = {}; // Reseta a variável global
-                
-                // 2. Recarrega o simulado do zero (sem as respostas salvas)
-                loadAndRenderQuiz(activeFilename);
-                
-                alert("Simulado reiniciado com sucesso!");
-            }
-        }
-
-
-        // --- Funções de Anotações (Local Storage) ---
-
-        function saveNote(questionId) {
-            const textarea = document.getElementById(`note-${questionId}`);
-            if (textarea && activeFilename) {
-                const notes = JSON.parse(localStorage.getItem(`notes_${activeFilename}`) || '{}');
-                notes[questionId] = textarea.value;
-                localStorage.setItem(`notes_${activeFilename}`, JSON.stringify(notes));
-                alert(`Anotação da Questão ${questionId} salva!`);
-            }
-        }
-
-        function loadNotes() {
-            if (activeFilename) {
-                const notes = JSON.parse(localStorage.getItem(`notes_${activeFilename}`) || '{}');
-                for (const qId in notes) {
-                    const textarea = document.getElementById(`note-${qId}`);
-                    if (textarea) {
-                        textarea.value = notes[qId];
-                    }
-                }
-            }
-        }
-
-        function clearNote(questionId) {
-            if (confirm(`Tem certeza que deseja limpar a anotação da Questão ${questionId}?`)) {
-                const textarea = document.getElementById(`note-${questionId}`);
-                if (textarea && activeFilename) {
-                    textarea.value = '';
-                    const notes = JSON.parse(localStorage.getItem(`notes_${activeFilename}`) || '{}');
-                    delete notes[questionId];
-                    localStorage.setItem(`notes_${activeFilename}`, JSON.stringify(notes));
-                    alert(`Anotação da Questão ${questionId} excluída!`);
-                }
-            }
-        }
-
-
-        // --- Funções de Desempenho e Resposta ---
-
-        function loadUserAnswers() {
-            if (activeFilename) {
-                const savedAnswers = localStorage.getItem(`answers_${activeFilename}`);
-                if (savedAnswers) {
-                    userAnswers = JSON.parse(savedAnswers);
-                } else {
-                    userAnswers = {}; // Reseta se não houver respostas salvas para este simulado
-                }
-            }
-        }
-
-        function saveUserAnswers() {
-            if (activeFilename) {
-                localStorage.setItem(`answers_${activeFilename}`, JSON.stringify(userAnswers));
-            }
-        }
-
-        function applyAnswerStyle(questionId, selectedOption, isCorrect) {
-            const questionElement = document.getElementById(`question-${questionId}`);
-            const optionsList = questionElement.querySelector('.options-list');
-            const question = currentQuizData.find(q => (q.id == questionId || q.numero == questionId));
-            
-            if (!question) return;
-
-            // Aceita 'resposta' ou 'resposta_correta'
-            const correctAnswer = (question.resposta_correta || question.resposta || '').toLowerCase(); 
-
-            optionsList.classList.add('answered'); 
-            
-            const options = optionsList.querySelectorAll('.option');
-            options.forEach(option => {
-                const optionKey = option.getAttribute('data-option');
-                
-                if (optionKey === selectedOption) {
-                    option.classList.add(isCorrect ? 'correct-answer' : 'wrong-answer');
-                } else if (optionKey === correctAnswer) {
-                    option.classList.add('correct-answer-revealed'); 
-                }
-                
-                option.onclick = null;
-            });
-
-            // Exibe o comentário
-            const commentBox = document.getElementById(`comment-${questionId}`);
-            if (commentBox) {
-                commentBox.style.display = 'block';
-                commentBox.style.backgroundColor = isCorrect ? '#e8f7ec' : '#f7e8e8'; 
-                commentBox.style.borderColor = isCorrect ? 'var(--success-color)' : 'var(--danger-color)';
-                
-                let commentHTML = `<h4>${isCorrect ? '✅ Resposta Correta!' : '❌ Sua Resposta Está Incorreta.'}</h4>`;
-                commentHTML += `<p><strong>Gabarito: </strong> Opção ${correctAnswer.toUpperCase()}</p>`;
-                
-                // Pega o comentário, aceitando diferentes chaves (comentario, explicacao_professor)
-                let commentContent = question.comentario || question.explicacao_professor || 'Comentário não disponível.';
-                
-                // Trata o comentário se for um objeto, embora o formato atual seja string
-                if (typeof commentContent === 'object' && commentContent !== null) {
-                    commentContent = commentContent[correctAnswer.toUpperCase()] || 'Comentário detalhado não disponível.';
-                } 
-                
-                commentHTML += `<div class="comment-content">${commentContent.replace(/\n/g, '<br>')}</div>`;
-                commentBox.innerHTML = commentHTML;
-            }
-        }
-
-
-        function checkAnswer(questionId, selectedOption) {
-            const question = currentQuizData.find(q => (q.id == questionId || q.numero == questionId));
-            if (!question) return;
-
-            const correctAnswer = (question.resposta_correta || question.resposta || '').toLowerCase(); 
-
-            if (!correctAnswer || correctAnswer === 'n/a' || correctAnswer === 'undefined') {
-                alert(`Erro: Gabarito não definido no JSON para a Questão ${questionId}.`);
-                return;
-            }
-
-            const isCorrect = selectedOption.toLowerCase() === correctAnswer;
-
-            // Armazena a resposta do usuário
-            userAnswers[questionId] = { selectedOption, isCorrect };
-            saveUserAnswers();
-            
-            // Aplica os estilos
-            applyAnswerStyle(questionId, selectedOption, isCorrect);
-            
-            // Atualiza o placar
-            displayScore();
-        }
-
-        function displayScore() {
-            const scoreBoard = document.getElementById('score-board');
-            
-            if (currentQuizData.length === 0) {
-                scoreBoard.style.display = 'none';
-                return;
-            }
-            
-            scoreBoard.style.display = 'flex';
-            
-            const totalQuestions = currentQuizData.length;
-            let correctCount = 0;
-            let wrongCount = 0;
-            
-            for (const qId in userAnswers) {
-                // Certifica-se de que a questão existe no quiz atual antes de contar
-                const qExists = currentQuizData.some(q => (q.id == qId || q.numero == qId));
-                if (!qExists) continue;
-                
-                if (userAnswers[qId].isCorrect) {
-                    correctCount++;
-                } else {
-                    wrongCount++;
-                }
-            }
-            
-            const pendingCount = totalQuestions - (correctCount + wrongCount);
-            const percentage = totalQuestions > 0 ? ((correctCount / totalQuestions) * 100).toFixed(1) : 0;
-            
-            scoreBoard.innerHTML = `
-                <div class="score-item acertos">
-                    <h4>Acertos</h4>
-                    <span>${correctCount}</span>
-                </div>
-                <div class="score-item erros">
-                    <h4>Erros</h4>
-                    <span>${wrongCount}</span>
-                </div>
-                <div class="score-item pendentes">
-                    <h4>Pendentes</h4>
-                    <span>${pendingCount}</span>
-                </div>
-                <div class="score-item percentual">
-                    <h4>% Acerto</h4>
-                    <span>${percentage}%</span>
-                </div>
-            `;
-        }
-
-
-        // --- Função de Carregamento da Lista Lateral (AGORA DINÂMICA) ---
-
-        async function loadSimulados() {
-            const list = document.getElementById('simulados-list');
-            let filesToLoad = [];
-            const manifestFilename = 'simulados-manifest.json';
-            
-            // Lista de fallback (para caso o manifesto não exista ou falhe)
-            const fallbackFiles = [
-                "ESTRATEGIA.json",
-                "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-                "SIMULADO-IASES-JSON-COM-GABARITO.json",
-                "SIMULADO-POLICIA-PENAL02-JSON.json",
-                "SIMULADO-POLICIA-PENAL-JSON.json",
-                "QUESTOES-GERAIS.json",
-                "QUESTOES-AREA-POLICIAL.json",
-                "SIMULADO-IDCAP-60-QUESTOES.json",
-                "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                "SIMULADO-03-IDCAP-60-QUESTOES.json",
-                "LEGISLAÇÃO-ESPECÍFICA.json",
-                "SIMULADO-ATUALIDADES-83-QUESTOES.json",
-                "NOVO SIMULADOS POLICIA PENAL 08.11.2025.json"
-            ];
-
-            try {
-                // Tenta carregar a lista de arquivos de um arquivo manifest (RECOMENDADO)
-                const response = await fetch(`./data/${manifestFilename}`);
-                if (response.ok) {
-                    const manifest = await response.json();
-                    // Verifica se o manifesto é um array de strings
-                    if (Array.isArray(manifest) && manifest.every(f => typeof f === 'string')) {
-                        filesToLoad = manifest;
-                        console.log(`Lista de simulados carregada de ${manifestFilename}.`);
-                    } else {
-                        console.warn(`${manifestFilename} está inválido. Usando fallback.`);
-                        filesToLoad = fallbackFiles;
-                    }
-                } else {
-                    console.warn(`Manifesto (${manifestFilename}) não encontrado ou erro de rede. Usando lista de fallback.`);
-                    filesToLoad = fallbackFiles;
-                }
-            } catch (error) {
-                console.error("Erro ao tentar carregar manifesto, usando fallback:", error);
-                filesToLoad = fallbackFiles;
-            }
-
-            list.innerHTML = '';
-            
-            // Renderiza a lista obtida (seja do manifesto ou do fallback)
-            filesToLoad.forEach(filename => {
-                let cleanName = filename.replace(/\.(json|txt)$/i, ''); 
-                cleanName = cleanName.replace(/SIMULADO-|QUESTOES-|NOVO /g, '').trim();
-                
-                const li = document.createElement('li');
-                li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
-                list.appendChild(li);
-            });
-            
-            const sourceText = filesToLoad === fallbackFiles ? 'Lista de testes (fallback)' : 'Lista dinâmica (Manifesto)';
-            list.innerHTML += `<li><small style="color:#adb5bd; padding-top: 10px; display: block;">(${sourceText} Carregada)</small></li>`;
-        }
-
-        window.onload = loadSimulados;
-    </script>
+// === LISTAR SIMULADOS ===
+function carregarLista() {
+  const nomes = ["ESTRATEGIA.json","ESTRATEGIA (6).json","SIMULADO_POLICIA_PENAL.json"];
+  const list = document.getElementById("simulados-list");
+  nomes.forEach(n => {
+    const li = document.createElement("li");
+    li.innerHTML = `<a onclick="loadQuiz('${n}')">${n.replace(".json","")}</a>`;
+    list.appendChild(li);
+  });
+}
+window.onload = carregarLista;
+</script>
 </body>
 </html>
