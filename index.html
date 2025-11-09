@@ -1,1053 +1,276 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise e Revisão de Conteúdo - Simulados Interativos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Variáveis de Tema (Design System Básico) */
-        :root {
-            --primary-color: #1e40af;
-            --secondary-color: #7c3aed;
-            --success-color: #16a34a;
-            --danger-color: #dc2626;
-            --warning-color: #ea580c;
-            --bg-light: #f9fbfd;
-            --bg-dark: #0f172a;
-            --bg-secondary: #1e293b;
-            --text-dark: #343a40;
-            --text-light: #f8fafc;
-            --border-color: #e9ecef;
-            --card-bg: #0f172a;
-            --card-border: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-        }
-
-        /* SIDEBAR */
-        #sidebar {
-            width: 350px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 24px;
-            overflow-y: auto;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            flex-shrink: 0;
-        }
-
-        .sidebar-header {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--text-light);
-            text-align: center;
-        }
-
-        .sidebar-section {
-            margin-bottom: 32px;
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #cbd5e1;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .simulado-list, .pdf-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .simulado-list li, .pdf-list li {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .simulado-list li:hover, .pdf-list li:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateX(4px);
-        }
-
-        .simulado-list a, .pdf-list a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .pdf-list a {
-            cursor: pointer;
-        }
-
-        .pdf-list a:hover {
-            color: #0891b2;
-        }
-
-        /* PERFORMANCE PANEL */
-        .performance-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .performance-stat {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-light);
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #cbd5e1;
-            text-transform: uppercase;
-        }
-
-        .stat-success .stat-value {
-            color: var(--success-color);
-        }
-
-        .stat-danger .stat-value {
-            color: var(--danger-color);
-        }
-
-        .stat-info .stat-value {
-            color: #0891b2;
-        }
-
-        /* MAIN CONTENT */
-        #main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .question-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            margin-bottom: 24px;
-        }
-
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .question-number {
-            font-size: 13px;
-            color: #0891b2;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .question-title {
-            font-size: 14px;
-            color: #cbd5e1;
-            font-weight: 500;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 24px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            transition: width 0.3s ease;
-        }
-
-        .question-text {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 24px;
-            color: var(--text-light);
-        }
-
-        /* ANOTAÇÕES */
-        .annotations-section {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        .annotations-section label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #cbd5e1;
-            text-transform: uppercase;
-        }
-
-        .annotation-textarea {
-            width: 100%;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--text-light);
-            font-family: 'Roboto', sans-serif;
-            font-size: 13px;
-            resize: vertical;
-            margin-bottom: 12px;
-        }
-
-        .annotation-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .annotation-textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .annotation-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .annotation-buttons button {
-            flex: 1;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px;
-            color: var(--text-light);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .annotation-buttons button:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* ALTERNATIVAS */
-        .alternatives {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .alternative-btn {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 1.6;
-            transition: all 0.3s ease;
-            text-align: left;
-            font-family: inherit;
-        }
-
-        .alternative-btn:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateX(4px);
-        }
-
-        .alternative-letter {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .alternative-btn.correct {
-            background: rgba(22, 163, 74, 0.2);
-            border-color: var(--success-color);
-        }
-
-        .alternative-btn.correct .alternative-letter {
-            background: rgba(22, 163, 74, 0.4);
-            color: var(--success-color);
-        }
-
-        .alternative-btn.incorrect {
-            background: rgba(220, 38, 38, 0.2);
-            border-color: var(--danger-color);
-        }
-
-        .alternative-btn.incorrect .alternative-letter {
-            background: rgba(220, 38, 38, 0.4);
-            color: var(--danger-color);
-        }
-
-        .alternative-btn:disabled {
-            cursor: not-allowed;
-        }
-
-        /* FEEDBACK */
-        .feedback-area {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 4px solid var(--primary-color);
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            display: none;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .feedback-area.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        .feedback-correct {
-            border-left-color: var(--success-color);
-            background: rgba(22, 163, 74, 0.1);
-        }
-
-        .feedback-incorrect {
-            border-left-color: var(--danger-color);
-            background: rgba(220, 38, 38, 0.1);
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* NAVEGAÇÃO */
-        .navigation {
-            display: flex;
-            gap: 12px;
-            justify-content: space-between;
-        }
-
-        .btn-nav, .btn-finish {
-            padding: 12px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-nav:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .btn-finish {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            border-color: var(--secondary-color);
-        }
-
-        .btn-finish:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
-        }
-
-        .btn-nav:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* RELATÓRIO */
-        .report-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .report-card {
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .report-card h1 {
-            font-size: 28px;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .report-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .stat-box {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .stat-box-value {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .stat-box-label {
-            font-size: 12px;
-            color: #cbd5e1;
-            text-transform: uppercase;
-        }
-
-        .report-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            flex-direction: column;
-        }
-
-        .report-buttons button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .report-buttons button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
-        }
-
-        .report-buttons button.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* PDF VIEWER MODAL */
-        .pdf-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-
-        .pdf-modal.hidden {
-            display: none;
-        }
-
-        .pdf-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 900px;
-            margin-bottom: 12px;
-            color: white;
-        }
-
-        .pdf-header h2 {
-            font-size: 18px;
-            margin: 0;
-        }
-
-        .pdf-close {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .pdf-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .pdf-container {
-            width: 100%;
-            max-width: 900px;
-            height: 80vh;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .pdf-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* RESPONSIVIDADE */
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-
-            #sidebar {
-                width: 100%;
-                max-height: 40vh;
-                border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            #main-content {
-                padding: 20px;
-            }
-
-            .question-card {
-                padding: 20px;
-            }
-
-            .report-card {
-                padding: 20px;
-            }
-
-            .pdf-container {
-                height: 70vh;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulados Interativos</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background-color: #004d99;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+}
+main {
+  display: flex;
+  flex-wrap: wrap;
+}
+aside {
+  width: 25%;
+  background: #e9f0fb;
+  padding: 15px;
+  border-right: 2px solid #cbd6e2;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+aside h2 {
+  text-align: center;
+  color: #004d99;
+}
+#simulados-list a {
+  display: block;
+  background: #fff;
+  margin: 5px 0;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 6px;
+  border: 1px solid #cbd6e2;
+  color: #004d99;
+  cursor: pointer;
+}
+#simulados-list a:hover {
+  background: #cde0ff;
+}
+section {
+  flex: 1;
+  padding: 20px;
+}
+.quiz-title {
+  text-align: center;
+  color: #004d99;
+}
+.text-base-card {
+  background: #fff;
+  padding: 15px;
+  border-left: 4px solid #004d99;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+.question-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 5px #ccc;
+}
+.question-header h3 {
+  color: #004d99;
+  margin: 0 0 10px;
+}
+.options-list {
+  list-style: none;
+  padding: 0;
+}
+.option {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+.option:hover {
+  background: #f0f7ff;
+}
+.option.answered {
+  pointer-events: none;
+}
+.correct-answer {
+  background: #c7f9cc;
+  border-color: #27ae60;
+}
+.wrong-answer {
+  background: #ffd6d6;
+  border-color: #e74c3c;
+}
+.correct-answer-revealed {
+  border: 2px solid #27ae60;
+}
+.comment-box {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+  background: #fafafa;
+}
+</style>
 </head>
 <body>
-    <!-- SIDEBAR -->
-    <div id="sidebar">
-        <div class="sidebar-header">📚 Simulados</div>
 
-        <!-- LEGISLAÇÃO / PDFs -->
-        <div class="sidebar-section">
-            <div class="section-title">📋 Legislação</div>
-            <ul class="pdf-list" id="pdf-list">
-                <li style="text-align: center; color: #cbd5e1; padding: 8px;">Carregando...</li>
-            </ul>
+<header>
+  <h1>Simulados Interativos</h1>
+</header>
+
+<main>
+  <aside>
+    <h2>Seus Simulados</h2>
+    <ul id="simulados-list"></ul>
+  </aside>
+
+  <section id="quiz-container">
+    <h2>Escolha um simulado à esquerda</h2>
+  </section>
+</main>
+
+<script>
+/* ============================================
+   SUPORTE UNIVERSAL A JSON DE SIMULADOS
+   Aceita qualquer formato e nome de chave.
+   ============================================ */
+
+let currentQuizData = [];
+
+// --- Função de carregamento universal ---
+async function loadAndRenderQuiz(filename) {
+  try {
+    const response = await fetch(`./data/${encodeURIComponent(filename)}`);
+    const rawData = await response.json();
+
+    // Detecta onde estão as questões
+    if (Array.isArray(rawData)) {
+      currentQuizData = rawData;
+    } else {
+      const possibleKeys = ["questoes", "perguntas", "itens", "questions", "questao"];
+      for (const key of possibleKeys) {
+        if (Array.isArray(rawData[key])) {
+          currentQuizData = rawData[key];
+          break;
+        }
+      }
+      if (!currentQuizData.length) {
+        throw new Error("Nenhuma lista de questões detectada no arquivo JSON.");
+      }
+    }
+
+    const textoBase = rawData.texto_base || rawData.texto || rawData.base_texto || "";
+    renderQuiz(rawData.titulo || filename, textoBase, currentQuizData);
+  } catch (error) {
+    document.getElementById("quiz-container").innerHTML = `
+      <h2 style="color:red;">Erro ao carregar ${filename}</h2>
+      <p>${error.message}</p>`;
+    console.error(error);
+  }
+}
+
+// --- Renderização adaptável ---
+function renderQuiz(title, textoBase, questoes) {
+  const quizContainer = document.getElementById("quiz-container");
+  quizContainer.innerHTML = `<h2 class="quiz-title">${title}</h2>`;
+
+  if (textoBase) {
+    quizContainer.innerHTML += `
+      <div class="text-base-card">
+        <h4>[TEXTO BASE]</h4>
+        <p>${textoBase.replace(/\n/g, "<br>")}</p>
+      </div>`;
+  }
+
+  questoes.forEach((q, i) => {
+    const id = q.id || q.numero || i + 1;
+    const enunciado = q.enunciado || q.questao || q.pergunta || q.texto || "Questão sem enunciado.";
+    const alternativas = q.alternativas || q.opcoes || q.options || {};
+    const resposta = (q.resposta_correta || q.resposta || "").toString().toLowerCase();
+    const comentario = q.comentario || q.explicacao_professor || "Sem comentário.";
+
+    // Gera opções
+    let optionsHTML = "";
+    if (Array.isArray(alternativas)) {
+      const letras = ["a", "b", "c", "d", "e"];
+      optionsHTML = alternativas.map((alt, idx) => `
+        <li class="option" data-option="${letras[idx]}"
+            onclick="checkAnswer(${id}, '${letras[idx]}')">
+          <span class="option-key">${letras[idx].toUpperCase()})</span> ${alt}
+        </li>`).join("");
+    } else {
+      optionsHTML = Object.entries(alternativas).map(([key, val]) => `
+        <li class="option" data-option="${key.toLowerCase()}"
+            onclick="checkAnswer(${id}, '${key.toLowerCase()}')">
+          <span class="option-key">${key.toUpperCase()})</span> ${val}
+        </li>`).join("");
+    }
+
+    quizContainer.innerHTML += `
+      <div class="question-card" id="question-${id}">
+        <div class="question-header">
+          <h3>Questão ${id}</h3>
+          <p>${enunciado}</p>
         </div>
+        <ul class="options-list">${optionsHTML}</ul>
+        <div class="comment-box" id="comment-${id}" style="display:none;"></div>
+      </div>`;
+  });
+}
 
-        <!-- SIMULADOS -->
-        <div class="sidebar-section">
-            <div class="section-title">📝 Simulados</div>
-            <ul class="simulado-list" id="simulado-list">
-                <li>Carregando...</li>
-            </ul>
-        </div>
+// --- Verificação de resposta ---
+function checkAnswer(id, option) {
+  const q = currentQuizData.find(x => (x.id == id || x.numero == id));
+  if (!q) return;
 
-        <!-- PERFORMANCE -->
-        <div class="sidebar-section">
-            <div class="section-title">📊 Seu Desempenho</div>
-            <div class="performance-box">
-                <div class="performance-stat stat-success">
-                    <span class="stat-value" id="acertos">0</span>
-                    <span class="stat-label">Acertos</span>
-                </div>
-                <div class="performance-stat stat-danger">
-                    <span class="stat-value" id="erros">0</span>
-                    <span class="stat-label">Erros</span>
-                </div>
-            </div>
-            <div class="performance-box">
-                <div class="performance-stat stat-info">
-                    <span class="stat-value" id="percentual">0%</span>
-                    <span class="stat-label">Acertos</span>
-                </div>
-                <div class="performance-stat">
-                    <span class="stat-value" id="nota-final">0</span>
-                    <span class="stat-label">Nota</span>
-                </div>
-            </div>
-        </div>
-    </div>
+  const correct = (q.resposta_correta || q.resposta || "").toLowerCase();
+  const isCorrect = option === correct;
 
-    <!-- MAIN CONTENT -->
-    <div id="main-content">
-        <div id="welcome-message" style="text-align: center; padding: 40px; color: #cbd5e1;">
-            <h2 style="font-size: 24px; margin-bottom: 16px;">👋 Bem-vindo ao Sistema de Simulados</h2>
-            <p>Selecione um simulado na barra lateral para começar</p>
-        </div>
-    </div>
+  const options = document.querySelectorAll(`#question-${id} .option`);
+  options.forEach(opt => {
+    const key = opt.getAttribute("data-option");
+    if (key === correct) opt.classList.add("correct-answer-revealed");
+    if (key === option) opt.classList.add(isCorrect ? "correct-answer" : "wrong-answer");
+    opt.classList.add("answered");
+  });
 
-    <!-- PDF MODAL -->
-    <div id="pdf-modal" class="pdf-modal hidden">
-        <div class="pdf-header">
-            <h2 id="pdf-title">PDF</h2>
-            <button class="pdf-close" onclick="closePdfModal()">✕</button>
-        </div>
-        <div class="pdf-container">
-            <iframe id="pdf-iframe"></iframe>
-        </div>
-    </div>
+  const commentBox = document.getElementById(`comment-${id}`);
+  const comment = q.comentario || q.explicacao_professor || "Comentário não disponível.";
+  commentBox.style.display = "block";
+  commentBox.style.borderColor = isCorrect ? "green" : "red";
+  commentBox.innerHTML = `
+    <h4>${isCorrect ? "✅ Correto!" : "❌ Errado!"}</h4>
+    <p><strong>Gabarito:</strong> ${correct.toUpperCase()}</p>
+    <p>${comment}</p>`;
+}
 
-    <script>
-        // VARIÁVEIS GLOBAIS
-        const DATA_FOLDER = './data/';
-        const PDF_FOLDER = './pdfs/';
-        let currentSimuladoData = null;
-        let currentQuestionIndex = 0;
-        let acertos = 0;
-        let erros = 0;
-        let questoesRespondidas = {};
+// --- Lista simulados ---
+async function loadSimulados() {
+  const list = document.getElementById("simulados-list");
+  list.innerHTML = "";
 
-        // ============================================
-        // FUNÇÃO: Carregar Lista de PDFs do Manifest
-        // ============================================
-        async function loadPdfsFromManifest() {
-            try {
-                const response = await fetch(PDF_FOLDER + 'pdfs_manifest.json');
-                if (!response.ok) throw new Error('PDF Manifest não encontrado');
-                const data = await response.json();
-                renderPdfList(data.files);
-            } catch (error) {
-                console.error('Erro ao carregar PDF manifest:', error);
-                // Fallback: lista estática
-                const fallback = [
-                    { name: 'Lei 1.061/2023 - Polícia Penal', file: 'LEI-1.061-POLICIA-PENAL.pdf' }
-                ];
-                renderPdfList(fallback);
-            }
-        }
+  // Se não houver backend, defina os nomes manualmente:
+  const simulados = [
+  "SIMULADO-DIREITOS-HUMANOS-JSON.json",
+  "SIMULADO-IASES-JSON-COM-GABARITO.json",
+  "SIMULADO-POLICIA-PENAL02-JSON.json",
+  "SIMULADO-POLICIA-PENAL-JSON.json",
+  "QUESTOES-AREA-POLICIAL.json",
+  "SIMULADO-IDCAP-60-QUESTOES.json"
+  "SIMULADO-03-IDCAP-60-QUESTOES.json",
+  "LEGISLAÇÃO-ESPECÍFICA.json",
+  "SIMULADO-ATUALIDADES-83-QUESTOES.json",
+  "QUESTOES-GERAIS.json", 
+  "ESTRATEGIA.json"
+];
 
-        // ============================================
-        // FUNÇÃO: Renderizar Lista de PDFs
-        // ============================================
-        function renderPdfList(pdfs) {
-            const list = document.getElementById('pdf-list');
-            list.innerHTML = '';
+  simulados.forEach(name => {
+    const li = document.createElement("li");
+    li.innerHTML = `<a onclick="loadAndRenderQuiz('${name}')">${name.replace(".json", "")}</a>`;
+    list.appendChild(li);
+  });
+}
 
-            pdfs.forEach(pdf => {
-                const li = document.createElement('li');
-                const fileName = typeof pdf === 'string' ? pdf : pdf.file;
-                const displayName = typeof pdf === 'string' ? pdf.replace(/\.pdf$/i, '') : (pdf.name || pdf.file.replace(/\.pdf$/i, ''));
-
-                li.innerHTML = `<a onclick="openPdf('${fileName}', '${displayName}')">📄 ${displayName}</a>`;
-                list.appendChild(li);
-            });
-
-            // Se não houver PDFs
-            if (pdfs.length === 0) {
-                list.innerHTML = '<li style="color: #cbd5e1; font-size: 12px;">Nenhum PDF disponível</li>';
-            }
-        }
-
-        // ============================================
-        // FUNÇÃO: Abrir PDF em Modal
-        // ============================================
-        function openPdf(fileName, displayName) {
-            const modal = document.getElementById('pdf-modal');
-            const iframe = document.getElementById('pdf-iframe');
-            const title = document.getElementById('pdf-title');
-
-            title.textContent = displayName;
-
-            // Usar Google Docs viewer para melhor compatibilidade
-            const pdfUrl = PDF_FOLDER + fileName;
-            iframe.src = 'https://docs.google.com/viewer?url=' + window.location.origin + window.location.pathname.replace('index.html', '') + pdfUrl + '&embedded=true';
-
-            modal.classList.remove('hidden');
-        }
-
-        // ============================================
-        // FUNÇÃO: Fechar Modal de PDF
-        // ============================================
-        function closePdfModal() {
-            const modal = document.getElementById('pdf-modal');
-            const iframe = document.getElementById('pdf-iframe');
-
-            modal.classList.add('hidden');
-            iframe.src = '';
-        }
-
-        // Fechar PDF ao clicar fora
-        document.addEventListener('click', function(event) {
-            const modal = document.getElementById('pdf-modal');
-            if (event.target === modal) {
-                closePdfModal();
-            }
-        });
-
-        // ============================================
-        // FUNÇÃO: Carregar Simulados do Manifest
-        // ============================================
-        async function loadSimuladosFromManifest() {
-            try {
-                const response = await fetch(DATA_FOLDER + 'simulados_manifest.json');
-                if (!response.ok) throw new Error('Manifest não encontrado');
-                const data = await response.json();
-                renderSimuladosList(data.simulados);
-            } catch (error) {
-                console.error('Erro ao carregar manifest:', error);
-                // Fallback: lista estática
-                const fallback = [
-                    "LEGISLAÇÃO-ESPECÍFICA.json",
-                    "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
-                    "SIMULADO-POLICIA-PENAL-JSON.json",
-                    "SIMULADO-POLICIA-PENAL02-JSON.json"
-                ];
-                renderSimuladosList(fallback);
-            }
-        }
-
-        // ============================================
-        // FUNÇÃO: Renderizar Lista de Simulados
-        // ============================================
-        function renderSimuladosList(simulados) {
-            const list = document.getElementById('simulado-list');
-            list.innerHTML = '';
-
-            simulados.forEach(filename => {
-                const cleanName = filename.replace(/\.json$/i, '').replace(/-JSON$/i, '');
-                const li = document.createElement('li');
-                li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')" style="cursor: pointer;">📄 ${cleanName}</a>`;
-                list.appendChild(li);
-            });
-        }
-
-        // ============================================
-        // FUNÇÃO: Carregar e Renderizar Quiz
-        // ============================================
-        async function loadAndRenderQuiz(filename) {
-            try {
-                const response = await fetch(DATA_FOLDER + filename);
-                if (!response.ok) throw new Error(`Erro ao carregar ${filename}`);
-                currentSimuladoData = await response.json();
-
-                // RESET
-                currentQuestionIndex = 0;
-                acertos = 0;
-                erros = 0;
-                questoesRespondidas = {};
-
-                // Se for array, transformar em objeto com questões
-                if (Array.isArray(currentSimuladoData)) {
-                    currentSimuladoData = {
-                        titulo: filename.replace(/\.json$/i, '').replace(/-JSON$/i, ''),
-                        questoes: currentSimuladoData
-                    };
-                }
-
-                renderQuestion(0);
-                updatePerformance();
-            } catch (error) {
-                console.error('Erro ao carregar simulado:', error);
-                alert('Erro ao carregar simulado: ' + filename);
-            }
-        }
-
-        // ============================================
-        // FUNÇÃO: Renderizar Questão
-        // ============================================
-        function renderQuestion(index) {
-            if (!currentSimuladoData || index >= currentSimuladoData.questoes.length) return;
-
-            const q = currentSimuladoData.questoes[index];
-            const mainContent = document.getElementById('main-content');
-
-            // Normalizar campo de questão (questao → enunciado)
-            const enunciado = q.enunciado || q.questao || '';
-            const alternativas = q.alternativas || q.opcoes || {};
-            const gabarito = q.gabarito || q.resposta_correta || '';
-
-            const html = `
-                <div class="question-card">
-                    <div class="question-header">
-                        <span class="question-number">Questão ${index + 1} de ${currentSimuladoData.questoes.length}</span>
-                        <span class="question-title">${currentSimuladoData.titulo}</span>
-                    </div>
-
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${((index + 1) / currentSimuladoData.questoes.length) * 100}%"></div>
-                    </div>
-
-                    <p class="question-text">${enunciado}</p>
-
-                    <!-- ANOTAÇÕES -->
-                    <div class="annotations-section">
-                        <label>📝 Suas Anotações:</label>
-                        <textarea 
-                            id="annotation-${q.numero}" 
-                            class="annotation-textarea"
-                            placeholder="Adicione suas anotações aqui..."
-                        >${getAnnotation(q.numero)}</textarea>
-                        <div class="annotation-buttons">
-                            <button onclick="saveAnnotation(${q.numero})">💾 Salvar</button>
-                            <button onclick="clearAnnotation(${q.numero})">🗑️ Limpar</button>
-                        </div>
-                    </div>
-
-                    <!-- ALTERNATIVAS -->
-                    <div class="alternatives">
-                        ${Object.entries(alternativas).map(([letra, texto]) => `
-                            <button 
-                                class="alternative-btn" 
-                                onclick="checkAnswer('${letra}', '${gabarito}', ${q.numero})"
-                                id="btn-${q.numero}-${letra}"
-                            >
-                                <span class="alternative-letter">${letra}</span>
-                                <span>${texto}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-
-                    <!-- FEEDBACK -->
-                    <div id="feedback-${q.numero}" class="feedback-area"></div>
-
-                    <!-- NAVEGAÇÃO -->
-                    <div class="navigation">
-                        <button class="btn-nav" onclick="previousQuestion()" ${index === 0 ? 'disabled' : ''}>← Anterior</button>
-                        <button class="btn-nav" onclick="nextQuestion()" ${index === currentSimuladoData.questoes.length - 1 ? 'disabled' : ''}>Próxima →</button>
-                        <button class="btn-finish" onclick="finishQuiz()">🏁 Finalizar</button>
-                    </div>
-                </div>
-            `;
-
-            mainContent.innerHTML = html;
-            currentQuestionIndex = index;
-        }
-
-        // ============================================
-        // FUNÇÃO: Verificar Resposta (Tempo Real)
-        // ============================================
-        function checkAnswer(selected, correct, questaoNum) {
-            const isCorrect = selected === correct;
-            const btnId = `btn-${questaoNum}-${selected}`;
-            const btn = document.getElementById(btnId);
-            const feedbackDiv = document.getElementById(`feedback-${questaoNum}`);
-            const q = currentSimuladoData.questoes[currentQuestionIndex];
-            const explicacao = q.explicacao_professor || q.explicacao || '';
-
-            // Desabilitar todos os botões
-            document.querySelectorAll(`[id^="btn-${questaoNum}"]`).forEach(b => b.disabled = true);
-
-            if (isCorrect) {
-                acertos++;
-                btn.classList.add('correct');
-                feedbackDiv.innerHTML = `<strong>✅ Correto!</strong><br>${explicacao}`;
-                feedbackDiv.classList.add('show', 'feedback-correct');
-            } else {
-                erros++;
-                btn.classList.add('incorrect');
-                const correctBtn = document.getElementById(`btn-${questaoNum}-${correct}`);
-                correctBtn.classList.add('correct');
-                feedbackDiv.innerHTML = `<strong>❌ Incorreto!</strong><br>Resposta correta: <strong>${correct}</strong><br>${explicacao}`;
-                feedbackDiv.classList.add('show', 'feedback-incorrect');
-            }
-
-            questoesRespondidas[questaoNum] = selected;
-            updatePerformance();
-        }
-
-        // ============================================
-        // FUNÇÃO: Salvar Anotação
-        // ============================================
-        function saveAnnotation(questaoNum) {
-            const textarea = document.getElementById(`annotation-${questaoNum}`);
-            localStorage.setItem(`anotacao_${questaoNum}`, textarea.value);
-            alert('✅ Anotação salva!');
-        }
-
-        // ============================================
-        // FUNÇÃO: Carregar Anotação
-        // ============================================
-        function getAnnotation(questaoNum) {
-            return localStorage.getItem(`anotacao_${questaoNum}`) || '';
-        }
-
-        // ============================================
-        // FUNÇÃO: Limpar Anotação
-        // ============================================
-        function clearAnnotation(questaoNum) {
-            document.getElementById(`annotation-${questaoNum}`).value = '';
-            localStorage.removeItem(`anotacao_${questaoNum}`);
-        }
-
-        // ============================================
-        // FUNÇÃO: Atualizar Performance
-        // ============================================
-        function updatePerformance() {
-            const total = acertos + erros;
-            const percentual = total > 0 ? Math.round((acertos / total) * 100) : 0;
-            const nota = currentSimuladoData ? Math.round((acertos / currentSimuladoData.questoes.length) * 100) : 0;
-
-            document.getElementById('acertos').textContent = acertos;
-            document.getElementById('erros').textContent = erros;
-            document.getElementById('percentual').textContent = percentual + '%';
-            document.getElementById('nota-final').textContent = nota;
-        }
-
-        // ============================================
-        // FUNÇÃO: Navegação
-        // ============================================
-        function nextQuestion() {
-            if (currentQuestionIndex < currentSimuladoData.questoes.length - 1) {
-                renderQuestion(currentQuestionIndex + 1);
-            }
-        }
-
-        function previousQuestion() {
-            if (currentQuestionIndex > 0) {
-                renderQuestion(currentQuestionIndex - 1);
-            }
-        }
-
-        // ============================================
-        // FUNÇÃO: Finalizar Quiz
-        // ============================================
-        function finishQuiz() {
-            const total = currentSimuladoData.questoes.length;
-            const percentual = Math.round((acertos / total) * 100);
-            const nota = Math.round((acertos / total) * 100);
-
-            const reportHtml = `
-                <div class="report-modal">
-                    <div class="report-card">
-                        <h1>🎓 Simulado Concluído!</h1>
-
-                        <div class="report-stats">
-                            <div class="stat-box">
-                                <div class="stat-box-value" style="color: var(--success-color);">${acertos}</div>
-                                <div class="stat-box-label">Acertos</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-box-value" style="color: var(--danger-color);">${erros}</div>
-                                <div class="stat-box-label">Erros</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-box-value">${percentual}%</div>
-                                <div class="stat-box-label">Desempenho</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-box-value">${nota}/100</div>
-                                <div class="stat-box-label">Nota Final</div>
-                            </div>
-                        </div>
-
-                        <div style="background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 8px; margin-bottom: 24px; font-size: 14px; line-height: 1.6;">
-                            <p><strong>📊 Análise:</strong></p>
-                            <p>${percentual >= 85 ? '✅ Excelente desempenho! Continue assim!' : percentual >= 70 ? '👍 Bom desempenho, mas há espaço para melhoria.' : '📚 Recomendamos revisar o conteúdo.'}</p>
-                            <p style="margin-top: 12px;"><strong>💡 Sugestão:</strong> ${percentual < 70 ? 'Refaça este simulado e revise os conceitos.' : 'Teste seus conhecimentos com outro simulado!'}</p>
-                        </div>
-
-                        <div class="report-buttons">
-                            <button onclick="location.reload()">🔄 Novo Simulado</button>
-                            <button class="secondary" onclick="document.querySelector('.report-modal').remove()">← Voltar</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', reportHtml);
-        }
-
-        // ============================================
-        // INICIALIZAÇÃO
-        // ============================================
-        window.addEventListener('load', function() {
-            loadSimuladosFromManifest();
-            loadPdfsFromManifest();
-        });
-    </script>
+window.onload = loadSimulados;
+</script>
 </body>
 </html>
