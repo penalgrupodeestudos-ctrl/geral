@@ -1,4 +1,4 @@
-{
+
   "simulados": [
     "SIMULADO-DIREITOS-HUMANOS-JSON.json",
     "SIMULADO-IASES-JSON-COM-GABARITO.json",
@@ -12,6 +12,7 @@
      "ESTRATEGIA.json",
     "LEGISLAÇÃO-ESPECÍFICA.json"
   ]
-}
+
+
 
 
