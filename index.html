@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulados Interativos - Formato ESTRATEGIA</title>
+    <title>Simulados Interativos - Formato ESTRATEGIA (Manifesto Atualizado)</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Variáveis de Tema (Design System Básico) */
@@ -234,7 +234,7 @@
         <div id="quiz-container">
             <h1>Selecione um Simulado</h1>
             <p>Por favor, selecione um arquivo JSON na lista lateral para iniciar o simulado interativo.</p>
-            <p>Certifique-se de que seus arquivos JSON estão na pasta **simulados** e seguem o formato ESTRATEGIA (8) com as chaves: `enunciado`, `alternativas` (array), `resposta_correta` e `comentario`.</p>
+            <p>Certifique-se de que seus arquivos JSON estão na pasta **simulados** e seguem o formato ESTRATEGIA (8) com as chaves: `enunciado` (ou `questao`/`pergunta`), `alternativas` (ou `opcoes`), `resposta_correta` (ou `resposta`) e `comentario` (ou `explicacao_professor`).</p>
         </div>
     </div>
 
@@ -245,65 +245,112 @@
         let currentQuizData = null;
         let userAnswers = {}; // {q_id: 'a', q_id: 'b', ...}
         
-        // Função para simular o carregamento de arquivos do servidor (navegador)
-        // Isso funciona **somente** se o arquivo HTML for aberto em um navegador moderno (que permite 'file://' para AJAX local)
+        // --- MANIFESTO DE ARQUIVOS JSON (ATUALIZADO) ---
+        const fileNamesManifest = [
+            "SIMULADO-DIREITOS-HUMANOS-JSON.json",
+            "SIMULADO-IASES-JSON-COM-GABARITO.json",
+            "SIMULADO-POLICIA-PENAL02-JSON.json",
+            "SIMULADO-POLICIA-PENAL-JSON.json",
+            "QUESTOES-AREA-POLICIAL.json",
+            "SIMULADO-IDCAP-60-QUESTOES.json",
+            "SIMULADO-03-IDCAP-60-QUESTOES.json",
+            "LEGISLAÇÃO-ESPECÍFICA.json",
+            "SIMULADO-ATUALIDADES-83-QUESTOES.json",
+            "QUESTOES-GERAIS.json", 
+            "ESTRATEGIA.json"
+        ];
+        // ------------------------------------------------
+
+        // Função para carregar o JSON (com tentativas de formatação)
         async function fetchSimulado(filename) {
             const path = SIMULADOS_FOLDER + filename;
             try {
-                // Tenta carregar o JSON (requer que o arquivo esteja na pasta 'simulados/')
                 const response = await fetch(path);
                 if (!response.ok) {
                     throw new Error(`Erro ao carregar o arquivo: ${response.statusText}`);
                 }
-                const data = await response.json();
+                const rawData = await response.json();
                 
-                // Mapeamento/Ajuste de estrutura (para garantir a conformidade)
-                if (data.questoes && Array.isArray(data.questoes)) {
-                    // Já no formato desejado (ESTRATEGIA 8)
-                    return data;
-                } 
-                
-                // Tentar converter de outros formatos comuns, se necessário
-                // Exemplo: Se o formato for o que tinha 'pergunta' e 'opcoes' como objeto
-                if (data.titulo && data.questoes && typeof data.questoes[0].pergunta === 'string') {
-                    console.warn("Detectado formato antigo. Convertendo...");
-                    data.questoes = data.questoes.map(q => {
-                        const newQ = {
-                            numero: q.id || q.numero,
-                            enunciado: q.questao || q.pergunta,
-                            alternativas: [],
-                            resposta_correta: (q.resposta_correta || q.resposta).toLowerCase(),
-                            comentario: q.comentario || q.explicacao_professor
-                        };
-                        
-                        // Converte objeto de opções para array
-                        if (q.opcoes) {
-                             Object.entries(q.opcoes).forEach(([key, value]) => {
-                                newQ.alternativas.push(`${key.toLowerCase()}) ${value}`);
-                            });
-                        }
-                        return newQ;
-                    });
-                    return data;
+                // 1. Tenta identificar o array de questões
+                let questoes = rawData.questoes || rawData.simulados?.[0]?.questoes;
+                let titulo = rawData.titulo || rawData.nome || rawData.titulo_bloco;
+                let descricao = rawData.descricao || rawData.instrucoes;
+
+                if (!questoes && rawData.Questão) { // Formato 'Questão 1', 'Questão 2', etc.
+                    questoes = Object.values(rawData).filter(item => item && (item.enunciado || item.questao));
                 }
                 
-                // Caso não reconheça
-                throw new Error("Formato JSON não compatível. Por favor, utilize o Conversor.");
+                if (!questoes || !Array.isArray(questoes)) {
+                    // Se não for um array no topo, tenta tratar como um array de questões soltas (como o QUESTOES-AREA-POLICIAL.json)
+                    if (Array.isArray(rawData)) {
+                         questoes = rawData;
+                         titulo = titulo || filename.replace(/\.(json|txt)$/i, '');
+                    } else {
+                        throw new Error("Estrutura JSON não reconhecida. Falta o array 'questoes'.");
+                    }
+                }
+                
+                // 2. Mapeamento e ajuste de estrutura para o formato interativo (ESTRATEGIA 8)
+                const processedQuestions = questoes.map((q, index) => {
+                    let alternativas = [];
+                    let enunciado = q.enunciado || q.questao || q.pergunta || '';
+                    let comentario = q.comentario || q.explicacao_professor;
+
+                    // Ajuste de Alternativas (opções -> alternativas)
+                    if (q.opcoes && typeof q.opcoes === 'object') {
+                         Object.entries(q.opcoes).forEach(([key, value]) => {
+                            alternativas.push(`${key.toLowerCase()}) ${value}`);
+                        });
+                    } else if (Array.isArray(q.alternativas)) {
+                        alternativas = q.alternativas;
+                    } else if (q.alternativas && typeof q.alternativas === 'object') {
+                         Object.entries(q.alternativas).forEach(([key, value]) => {
+                            alternativas.push(`${key.toLowerCase()}) ${value}`);
+                        });
+                    }
+
+                    // Se a questão for em um formato muito simples (tipo o simulado ATUALIDADES VALIDO TESTE 2100.json)
+                     if (Object.keys(q).some(key => key.startsWith('Questão'))) {
+                         enunciado = q.enunciado;
+                         comentario = q.comentario;
+                         alternativas = Object.entries(q.opcoes).map(([key, value]) => `${key.toLowerCase()}) ${value}`);
+                     }
+
+
+                    return {
+                        numero: q.numero || q.id || (index + 1),
+                        enunciado: enunciado,
+                        alternativas: alternativas,
+                        resposta_correta: (q.resposta_correta || q.resposta || '').toLowerCase().trim(),
+                        comentario: comentario,
+                        disciplina: q.disciplina || ''
+                    };
+                }).filter(q => q.enunciado && q.alternativas.length > 0); // Filtra questões inválidas
+
+                if (processedQuestions.length === 0) {
+                     throw new Error("Nenhuma questão válida encontrada no arquivo.");
+                }
+
+                return {
+                    titulo: titulo || filename.replace(/\.(json|txt)$/i, ''),
+                    descricao: descricao || 'Simulado Interativo (Formato ESTRATEGIA)',
+                    questoes: processedQuestions
+                };
 
             } catch (error) {
                 console.error("Falha ao carregar simulado:", error);
-                QUIZ_CONTAINER.innerHTML = `<h1>Erro de Carregamento</h1><p style="color:var(--danger-color);">Não foi possível carregar o arquivo **${filename}**. Motivo: ${error.message}. Verifique se o arquivo está na pasta **simulados** e se está no formato JSON válido (ESTRATEGIA 8).</p>`;
+                QUIZ_CONTAINER.innerHTML = `<h1>Erro de Carregamento</h1><p style="color:var(--danger-color);">Não foi possível carregar o arquivo **${filename}**. Motivo: ${error.message}. Verifique se o arquivo está na pasta **simulados** e se o formato JSON é minimamente compatível.</p>`;
                 return null;
             }
         }
 
         // Função para carregar e renderizar o Quiz
         async function loadAndRenderQuiz(filename, element) {
-            // Remove a classe 'active' de todos os links e adiciona ao link clicado
             document.querySelectorAll('#simulado-list a').forEach(a => a.classList.remove('active'));
             if (element) element.classList.add('active');
             
-            userAnswers = {}; // Limpa respostas anteriores
+            userAnswers = {}; 
+            QUIZ_CONTAINER.innerHTML = '<h1>Carregando...</h1><p>Aguarde, processando o arquivo JSON.</p>';
             currentQuizData = await fetchSimulado(filename);
             
             if (!currentQuizData) return;
@@ -314,34 +361,33 @@
         // Função principal de Renderização
         function renderQuiz(data) {
             let html = `
-                <h1>${data.titulo || 'Simulado Sem Título'}</h1>
-                <h2>${data.descricao || 'Simulado Interativo (Formato ESTRATEGIA)'}</h2>
+                <h1>${data.titulo}</h1>
+                <h2>${data.descricao}</h2>
                 <div id="questions-list">
             `;
             
-            // Renderiza cada questão
             data.questoes.forEach((q, index) => {
                 const questionId = `q${index + 1}`;
+                const disciplina = q.disciplina ? `**[${q.disciplina}]** ` : '';
+
                 html += `
                     <div class="question-card" id="${questionId}">
-                        <p class="enunciado">**${q.numero || (index + 1)}. ** ${q.enunciado}</p>
+                        <p class="enunciado">**${q.numero}. ** ${disciplina} ${q.enunciado}</p>
                         <div class="alternativas-container">
                 `;
                 
-                // Renderiza as alternativas
                 q.alternativas.forEach(altText => {
-                    const match = altText.match(/^([a-e])\)([\s\S]*)/i);
+                    // Tenta extrair a chave (a, b, c...)
+                    const match = altText.match(/^([a-eA-E])\)[\s\S]*/);
                     const altKey = match ? match[1].toLowerCase() : 'x';
-                    const altContent = match ? altText : altText; // Se falhar, usa o texto completo
                     
                     html += `
                         <div class="alternativa" data-question-id="${questionId}" data-answer="${altKey}" onclick="selectAnswer('${questionId}', '${altKey}', this)">
-                            ${altContent}
+                            ${altText}
                         </div>
                     `;
                 });
                 
-                // Comentário (Gabarito)
                 html += `
                         </div>
                         <div class="feedback" id="feedback-${questionId}">
@@ -368,18 +414,14 @@
         // --- Funções de Interatividade ---
 
         window.selectAnswer = (questionId, answerKey, element) => {
-            // Deseleciona todas as alternativas para a questão
             document.querySelectorAll(`[data-question-id="${questionId}"]`).forEach(alt => {
                 alt.classList.remove('selected', 'correct', 'wrong');
             });
             
-            // Seleciona a alternativa clicada
             element.classList.add('selected');
             
-            // Armazena a resposta do usuário
             userAnswers[questionId] = answerKey;
             
-            // Esconde feedback ao selecionar nova resposta
             document.getElementById(`feedback-${questionId}`).classList.remove('visible');
             document.getElementById('result-summary').style.display = 'none';
         }
@@ -392,37 +434,32 @@
                 const questionId = `q${index + 1}`;
                 const userAnswer = userAnswers[questionId];
                 const correctAnswer = q.resposta_correta.toLowerCase().trim();
-                const questionElement = document.getElementById(questionId);
                 const feedbackElement = document.getElementById(`feedback-${questionId}`);
                 
                 // Mostra o gabarito comentado
                 feedbackElement.classList.add('visible');
                 
-                // Limpa classes anteriores de feedback na questão
+                // Limpa classes de feedback de todas as alternativas da questão
                 document.querySelectorAll(`[data-question-id="${questionId}"]`).forEach(alt => {
-                    alt.classList.remove('correct', 'wrong', 'selected');
+                    alt.classList.remove('correct', 'wrong');
                 });
                 
+                // Marca a correta com destaque
+                const correctElement = document.querySelector(`[data-question-id="${questionId}"][data-answer="${correctAnswer}"]`);
+                if (correctElement) {
+                    correctElement.classList.add('correct');
+                }
+
                 if (userAnswer) {
                     const selectedElement = document.querySelector(`[data-question-id="${questionId}"][data-answer="${userAnswer}"]`);
                     
                     if (userAnswer === correctAnswer) {
-                        selectedElement.classList.add('correct');
                         correctCount++;
+                        // Mantém 'correct'
                     } else {
+                        selectedElement.classList.remove('selected');
                         selectedElement.classList.add('wrong');
-                        // Marca a correta
-                        const correctElement = document.querySelector(`[data-question-id="${questionId}"][data-answer="${correctAnswer}"]`);
-                        if (correctElement) {
-                            correctElement.classList.add('correct');
-                        }
                     }
-                } else {
-                     // Marca a correta para questões não respondidas
-                     const correctElement = document.querySelector(`[data-question-id="${questionId}"][data-answer="${correctAnswer}"]`);
-                        if (correctElement) {
-                            correctElement.classList.add('correct');
-                        }
                 }
             });
 
@@ -448,33 +485,16 @@
             });
         }
         
-        // --- Carregamento da Lista de Arquivos ---
+        // --- Carregamento da Lista de Arquivos (Manifesto) ---
         
         function loadSimuladosList() {
-            // Este é um hack para listar arquivos locais que só funciona em alguns ambientes ou se 
-            // você tiver um servidor web local. Para uso simples, a melhor forma é ter a lista de nomes.
-            
-            // Usando nomes de arquivos conhecidos do upload do usuário como Fallback
-            const fileNames =  [
-    "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-    "SIMULADO-IASES-JSON-COM-GABARITO.json",
-    "SIMULADO-POLICIA-PENAL02.json",
-    "SIMULADO-POLICIA-PENAL.json",
-    "QUESTOES-GERAIS.json",
-    "AREA-POLICIAL.json",
-    "SIMULADO-IDCAP-60-QUESTOES.json",
-    "SIMULADO-02-IDCAP-60-QUESTOES.json",
-    "SIMULADO-03-IDCAP-60-QUESTOES.json",
-     "ESTRATEGIA.json",
-    "LEGISLAÇÃO-ESPECÍFICA.json"
-  ]
-            ];
-
             SIMULADO_LIST.innerHTML = '';
             
-            fileNames.forEach(filename => {
+            fileNamesManifest.forEach(filename => {
                 // Nome limpo para exibição na lista
-                const cleanName = filename.replace(/\.(json|txt)$/i, '').replace(/[\(\)]/g, '').trim(); 
+                let cleanName = filename.replace(/\.(json|txt)$/i, '');
+                // Tenta remover prefixos comuns
+                cleanName = cleanName.replace(/SIMULADO-|QUESTOES-|JSON|-COM-GABARITO/g, '').replace(/[-_]/g, ' ').trim(); 
 
                 const li = document.createElement('li');
                 const a = document.createElement('a');
@@ -485,7 +505,7 @@
                 SIMULADO_LIST.appendChild(li);
             });
             
-            SIMULADO_LIST.innerHTML += '<li><a style="font-size:0.8em; opacity: 0.7;">* Certifique-se que estão na pasta **simulados/**</a></li>';
+            SIMULADO_LIST.innerHTML += '<li><a style="font-size:0.8em; opacity: 0.7;">* Verifique a pasta **simulados/**</a></li>';
         }
 
         window.onload = loadSimuladosList;
