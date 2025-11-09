@@ -262,7 +262,17 @@ function excluirNota(id) {
 
 // === LISTAR SIMULADOS ===
 function carregarLista() {
-  const nomes = ["ESTRATEGIA.json","ESTRATEGIA (6).json","SIMULADO_POLICIA_PENAL.json"];
+  const nomes = ["SIMULADO-DIREITOS-HUMANOS-JSON.json",
+    "SIMULADO-IASES-JSON-COM-GABARITO.json",
+    "SIMULADO-POLICIA-PENAL02-JSON.json",
+    "SIMULADO-POLICIA-PENAL-JSON.json",
+    "QUESTOES-GERAIS.json",
+    "QUESTOES-AREA-POLICIAL.json",
+    "SIMULADO-IDCAP-60-QUESTOES.json",
+    "002-IDCAP-60-QUESTOES.json",
+    "SIMULADO-03-IDCAP-60-QUESTOES.json",
+     "ESTRATEGIA.json",
+    "LEGISLAÇÃO-ESPECÍFICA.json"];
   const list = document.getElementById("simulados-list");
   nomes.forEach(n => {
     const li = document.createElement("li");
