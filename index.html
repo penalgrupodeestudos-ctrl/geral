@@ -1,7 +1,7 @@
 <script>
-// ==========================================
-// VERSÃO 3.2 - LEITURA EXTERNA DE SIMULADOS
-// ==========================================
+// =====================================================
+// PROJETO SABER 3.2 - COMPATÍVEL COM GITHUB
+// =====================================================
 
 let simulados = {};
 let questoesFiltradas = [];
@@ -14,37 +14,54 @@ let timerInterval = null;
 let modo = 'simulado';
 let disciplinaAtualFiltro = 'todos';
 
-// Carregar manifest JSON com os simulados
+// =========================
+// 1️⃣ CARREGAR MANIFEST
+// =========================
 async function carregarManifest() {
     try {
         const resposta = await fetch('data/simulados_manifest.json');
+        if (!resposta.ok) throw new Error('Arquivo manifest não encontrado.');
         simulados = await resposta.json();
         montarMenuPrincipal();
     } catch (erro) {
-        console.error('Erro ao carregar manifest:', erro);
-        alert('⚠️ Não foi possível carregar os simulados.\nVerifique se o arquivo data/simulados_manifest.json existe no GitHub.');
+        console.warn('⚠️ Manifest não encontrado, exibindo menu padrão.', erro);
+        // Exibe menu mesmo sem manifest (modo fallback)
+        simulados = {};
+        montarMenuPrincipal();
     }
 }
 
-// Montar cards do menu principal dinamicamente
+// =========================
+// 2️⃣ MONTAR MENU PRINCIPAL
+// =========================
 function montarMenuPrincipal() {
     const menu = document.querySelector('#telaPrincipal .menu-principal');
     let html = '';
 
-    Object.entries(simulados).forEach(([id, sim]) => {
-        html += `
-            <div class="card-simulado" onclick="iniciarSimulado(${id})">
-                <h3>📋 ${sim.nome}</h3>
-                <div class="info">
-                    <strong>${sim.total} Questões</strong><br>
-                    ${sim.descricao || ''}
+    // Se manifest carregado, exibe simulados
+    if (Object.keys(simulados).length > 0) {
+        Object.entries(simulados).forEach(([id, sim]) => {
+            html += `
+                <div class="card-simulado" onclick="iniciarSimulado(${id})">
+                    <h3>📋 ${sim.nome}</h3>
+                    <div class="info">
+                        <strong>${sim.total} Questões</strong><br>
+                        ${sim.descricao || ''}
+                    </div>
+                    <button class="btn">FAZER SIMULADO</button>
                 </div>
-                <button class="btn">FAZER SIMULADO</button>
+            `;
+        });
+    } else {
+        html += `
+            <div class="card-simulado">
+                <h3>⚠️ Nenhum simulado encontrado</h3>
+                <div class="info">Verifique se o arquivo <b>data/simulados_manifest.json</b> existe no GitHub.</div>
             </div>
         `;
-    });
+    }
 
-    // Mantém os cards extras originais
+    // Cards padrão (disciplinas, desempenho, ajuda)
     html += `
         <div class="card-simulado" onclick="abrirDisciplinas()">
             <h3>📚 Estudar por Disciplina</h3>
@@ -66,11 +83,14 @@ function montarMenuPrincipal() {
     menu.innerHTML = html;
 }
 
-// Iniciar simulado selecionado
+// =========================
+// 3️⃣ INICIAR SIMULADO
+// =========================
 async function iniciarSimulado(id) {
     try {
         const sim = simulados[id];
         const resp = await fetch(sim.arquivo);
+        if (!resp.ok) throw new Error('Erro ao abrir arquivo JSON.');
         questoesFiltradas = await resp.json();
 
         simuladoAtual = id;
@@ -92,10 +112,20 @@ async function iniciarSimulado(id) {
     }
 }
 
-// === Suas funções originais ===
-// manter as funções exibirQuestao(), selecionarOpcao(), mostrarDica(),
-// navegação, marcarParaRevisao(), finalizarSimulado(), etc.
-// Não altere layout ou estrutura delas.
+// =========================
+// 4️⃣ FUNÇÕES ORIGINAIS
+// =========================
+function mostrarAjuda() {
+    alert('ℹ️ PROJETO SABER:\n\n1️⃣ Escolha um simulado\n2️⃣ Responda as questões\n3️⃣ Use dicas 💡\n4️⃣ Marque ⭐ para revisar\n5️⃣ Veja resultados.\n\nBom estudo! 🚀');
+}
+
+function verDesempenho() {
+    alert('📊 Painel de desempenho em desenvolvimento.');
+}
+
+// MANTENHA TODAS AS FUNÇÕES ORIGINAIS ABAIXO:
+// exibirQuestao(), selecionarOpcao(), mostrarDica(), questaoProxima(), etc.
+// Não precisam ser alteradas — continuam funcionando normalmente.
 
 </script>
 <script>
