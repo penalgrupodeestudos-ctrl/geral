@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PROJETO SABER - Polícia Penal ES</title>
 <style>
-/* ====== ESTILO ORIGINAL MANTIDO ====== */
+/* === ESTILO ORIGINAL MANTIDO === */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
 background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);
@@ -14,35 +14,25 @@ color:#333;min-height:100vh;padding:20px}
 header{background:linear-gradient(135deg,#2c3e50 0%,#3498db 100%);
 color:white;padding:30px;border-radius:15px;margin-bottom:30px;text-align:center;
 box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-header h1{font-size:2.5rem;margin-bottom:10px}
+header h1{font-size:2.3rem;margin-bottom:10px}
 .menu-principal{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:20px;margin-bottom:30px}
-.card-simulado,.card-disciplina{background:white;padding:30px;border-radius:15px;
+.card-simulado{background:white;padding:30px;border-radius:15px;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);text-align:center;transition:all .3s ease;cursor:pointer}
-.card-simulado:hover,.card-disciplina:hover{transform:translateY(-10px);
+.card-simulado:hover{transform:translateY(-10px);
 box-shadow:0 15px 40px rgba(0,0,0,0.2)}
-.card-simulado h3,.card-disciplina h3{color:#2c3e50;margin-bottom:15px;font-size:1.4rem}
+.card-simulado h3{color:#2c3e50;margin-bottom:15px;font-size:1.4rem}
 .card-simulado .info{background:#f0f0f0;padding:15px;border-radius:10px;margin:15px 0;
 font-size:.9rem;text-align:left}
-.btn{background:linear-gradient(135deg,#3498db 0%,#2980b9 100%);color:white;
+.btn{background:linear-gradient(135deg,#3498db,#2980b9);color:white;
 border:none;padding:12px 30px;border-radius:8px;cursor:pointer;font-size:1rem;
 transition:all .3s ease;margin-top:10px;width:100%}
-.btn:hover{background:linear-gradient(135deg,#2980b9 0%,#1e5a96 100%)}
-.btn-disciplina{background:linear-gradient(135deg,#27ae60 0%,#229954 100%)}
-.btn-disciplina:hover{background:linear-gradient(135deg,#229954 0%,#1e7e34 100%)}
+.btn:hover{background:linear-gradient(135deg,#2980b9,#1e5a96)}
 .btn-voltar{background:linear-gradient(135deg,#95a5a6 0%,#7f8c8d 100%);
 padding:10px 20px;font-size:.9rem;width:auto;margin-bottom:20px}
 .hidden{display:none!important}
 .quiz-interface{background:white;padding:40px;border-radius:15px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-.questao-header{display:flex;justify-content:space-between;align-items:center;
-margin-bottom:30px;padding-bottom:20px;border-bottom:2px solid #3498db;flex-wrap:wrap;gap:15px}
-.timer{font-size:1.2rem;color:#e74c3c;font-weight:bold;background:#fff3cd;
-padding:8px 15px;border-radius:5px}
-.progresso{flex-grow:1;background:#ecf0f1;border-radius:10px;height:30px;overflow:hidden}
-.progresso-bar{height:100%;background:linear-gradient(90deg,#27ae60,#2ecc71);
-width:0%;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:.85rem;transition:width .3s}
-.numero-questao{font-size:.95rem;color:#7f8c8d;font-weight:bold}
 .enunciado{background:#f9f9f9;padding:25px;border-radius:10px;margin:20px 0;
 font-size:1.05rem;line-height:1.8;border-left:4px solid #3498db}
 .opcoes{display:grid;gap:12px;margin:25px 0}
@@ -52,48 +42,31 @@ cursor:pointer;transition:all .3s ease;font-size:1rem;text-align:left}
 .opcao.correta{background:#d4edda;border-color:#28a745;color:#155724}
 .opcao.incorreta{background:#f8d7da;border-color:#dc3545;color:#721c24}
 .opcao:disabled{cursor:not-allowed}
-.explicacao{background:#e8f4f8;padding:20px;border-radius:10px;margin-top:20px;
-border-left:4px solid #3498db;display:none;line-height:1.8}
-.explicacao.ativa{display:block}
-.dica{background:#fff3cd;padding:15px;border-radius:8px;margin-top:15px;
-border-left:4px solid #ffc107;display:none;font-size:.95rem}
-.dica.ativa{display:block}
-.botoes-navegacao{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap;justify-content:center}
-.btn-pequeno{padding:10px 16px;font-size:.85rem;width:auto;flex:1;min-width:100px}
-.resultado-final{background:linear-gradient(135deg,#27ae60 0%,#229954 100%);
-color:white;padding:40px;border-radius:15px;text-align:center;display:none;overflow-y:auto;max-height:90vh}
+.resultado-final{background:linear-gradient(135deg,#27ae60,#229954);
+color:white;padding:40px;border-radius:15px;text-align:center;display:none}
 .resultado-final.ativo{display:block}
 @media(max-width:768px){header h1{font-size:1.8rem}.menu-principal{grid-template-columns:1fr}.quiz-interface{padding:20px}}
 </style>
 </head>
 <body>
 <div class="container">
-<header><h1>🎓 PROJETO SABER</h1><p>Sistema Avançado de Simulados - Polícia Penal ES</p></header>
+<header><h1>🎓 PROJETO SABER</h1><p>Simulados Polícia Penal ES</p></header>
 
 <!-- MENU PRINCIPAL -->
 <div id="telaPrincipal">
-  <div class="menu-principal" id="menuSimulados"><!-- preenchido via JS --></div>
+  <div class="menu-principal" id="menuSimulados"></div>
 </div>
 
 <!-- QUIZ -->
 <div id="quizContainer" class="hidden">
   <button class="btn btn-voltar" onclick="voltarMenu()">← Voltar</button>
   <div class="quiz-interface">
-    <div class="questao-header">
-      <div class="numero-questao">Q<span id="numQuestao">1</span>/<span id="totalQuestoes">0</span></div>
-      <div class="progresso"><div class="progresso-bar" id="progressoBar"><span id="percentualProgresso">0%</span></div></div>
-      <div class="timer" id="timer">00:00</div>
-    </div>
-    <div class="disciplina" id="disciplinaAtual">Disciplina</div>
-    <div class="enunciado" id="enunciado">Enunciado</div>
-    <div class="dica" id="dica"></div>
+    <div class="enunciado" id="enunciado"></div>
     <div class="opcoes" id="opcoes"></div>
-    <div class="explicacao" id="explicacao"></div>
-    <div class="botoes-navegacao">
-      <button class="btn btn-pequeno" onclick="questaoAnterior()">← Ant</button>
-      <button class="btn btn-pequeno" onclick="mostrarDica()">💡 Dica</button>
-      <button class="btn btn-pequeno" onclick="questaoProxima()">Próx →</button>
-      <button class="btn btn-pequeno" style="background:#e74c3c" onclick="finalizarSimulado()">✓ Fin</button>
+    <div id="explicacao" style="display:none;background:#eef;padding:10px;border-radius:10px;margin-top:10px"></div>
+    <div style="margin-top:20px;text-align:center">
+      <button class="btn" onclick="questaoAnterior()">← Anterior</button>
+      <button class="btn" onclick="questaoProxima()">Próxima →</button>
     </div>
   </div>
 </div>
@@ -102,142 +75,113 @@ color:white;padding:40px;border-radius:15px;text-align:center;display:none;overf
 <div id="resultadoContainer" class="resultado-final">
   <button class="btn btn-voltar" onclick="voltarMenu()" style="background:#fff;color:#2c3e50">← Menu</button>
   <h2>✅ Simulado Finalizado!</h2>
-  <div class="estatisticas">
-    <p><strong>Acertos:</strong> <span id="totalAcertos">0</span></p>
-    <p><strong>Erros:</strong> <span id="totalErros">0</span></p>
-    <p><strong>Pontuação:</strong> <span id="pontuacao">0%</span></p>
-  </div>
+  <p><strong>Acertos:</strong> <span id="totalAcertos">0</span></p>
+  <p><strong>Erros:</strong> <span id="totalErros">0</span></p>
+  <p><strong>Pontuação:</strong> <span id="pontuacao">0%</span></p>
 </div>
 </div>
 
 <script>
-let simulados={},questoesFiltradas=[],simuladoAtual=0,questaoAtual=0,respostas={},tempoInicio=0,timerInterval=null;
+let simulados = {};
+let questoesFiltradas = [];
+let simuladoAtual = 0;
+let questaoAtual = 0;
+let respostas = {};
 
-/* ====== CARREGAR MANIFEST ====== */
-async function carregarManifest(){
-  try{
-    const resp=await fetch('data/simulados-manifest.json');
-    simulados=await resp.json();
+async function carregarManifest() {
+  try {
+    const r = await fetch('data/simulados-manifest.json');
+    simulados = await r.json();
     montarMenu();
-  }catch(e){
-    console.error(e);
-    document.getElementById('menuSimulados').innerHTML='<p style="color:white">Erro ao carregar simulados.</p>';
+  } catch(e) {
+    console.error('Erro manifest:', e);
+    document.getElementById('menuSimulados').innerHTML='<p style="color:white">Erro ao carregar manifest.</p>';
   }
 }
 
-/* ====== MONTAR MENU ====== */
-function montarMenu(){
-  const menu=document.getElementById('menuSimulados');
-  let html='';
-  Object.entries(simulados).forEach(([id,s])=>{
-    html+=`
-    <div class="card-simulado" onclick="iniciarSimulado(${id})">
-      <h3>📋 ${s.nome}</h3>
-      <div class="info"><strong>${s.total} Questões</strong><br>${s.descricao||''}</div>
-      <button class="btn">FAZER SIMULADO</button>
-    </div>`;
-  });
-  menu.innerHTML=html;
+function montarMenu() {
+  const menu = document.getElementById('menuSimulados');
+  menu.innerHTML = '';
+  for (const [id, s] of Object.entries(simulados)) {
+    menu.innerHTML += `
+      <div class="card-simulado" onclick="iniciarSimulado(${id})">
+        <h3>📘 ${s.nome}</h3>
+        <div class="info"><strong>${s.total} Questões</strong><br>${s.descricao||''}</div>
+        <button class="btn">FAZER SIMULADO</button>
+      </div>`;
+  }
 }
 
-/* ====== INICIAR SIMULADO ====== */
-async function iniciarSimulado(id){
-  try{
-    const sim=simulados[id];
-    const r=await fetch(sim.arquivo);
-    questoesFiltradas=await r.json();
-    simuladoAtual=id;questaoAtual=0;respostas={};
+async function iniciarSimulado(num) {
+  try {
+    const sim = simulados[num];
+    const resp = await fetch(sim.arquivo);
+    if (!resp.ok) throw new Error('Arquivo não encontrado: '+sim.arquivo);
+    const dados = await resp.json();
+    questoesFiltradas = Array.isArray(dados) ? dados : (dados.questoes || []);
+    if (!questoesFiltradas.length) throw new Error('Nenhuma questão encontrada.');
+    questaoAtual = 0; respostas = {};
     document.getElementById('telaPrincipal').classList.add('hidden');
     document.getElementById('quizContainer').classList.remove('hidden');
-    tempoInicio=Date.now();
-    iniciarTimer();
     exibirQuestao();
-  }catch(e){alert('Erro ao carregar simulado.');console.error(e);}
+  } catch(e) {
+    console.error(e);
+    alert('Erro ao iniciar simulado: ' + e.message);
+  }
 }
 
-/* ====== TIMER ====== */
-function iniciarTimer(){
-  clearInterval(timerInterval);
-  let tempo=questoesFiltradas.length*60; // 1 min por questão
-  timerInterval=setInterval(()=>{
-    if(tempo<=0){clearInterval(timerInterval);finalizarSimulado();}
-    document.getElementById('timer').textContent=formatarTempo(tempo--);
-  },1000);
-}
-function formatarTempo(s){
-  const m=Math.floor(s/60),ss=s%60;
-  return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
-}
-
-/* ====== QUESTÕES ====== */
-function exibirQuestao(){
-  const q=questoesFiltradas[questaoAtual];
-  if(!q)return;
-  document.getElementById('numQuestao').textContent=questaoAtual+1;
-  document.getElementById('totalQuestoes').textContent=questoesFiltradas.length;
-  document.getElementById('disciplinaAtual').textContent=q.disciplina||'';
-  document.getElementById('enunciado').textContent=q.enunciado;
-  const opcoes=document.getElementById('opcoes');
-  opcoes.innerHTML='';
-  q.opcoes.forEach((o,i)=>{
+function exibirQuestao() {
+  const q = questoesFiltradas[questaoAtual];
+  if (!q) return;
+  document.getElementById('enunciado').innerHTML = `<b>Questão ${questaoAtual+1}:</b> ${q.enunciado}`;
+  const op = document.getElementById('opcoes');
+  op.innerHTML = '';
+  q.opcoes.forEach((txt,i)=>{
     const div=document.createElement('div');
     div.className='opcao';
-    div.textContent=`${String.fromCharCode(65+i)}) ${o}`;
+    div.textContent=`${String.fromCharCode(65+i)}) ${txt}`;
     div.onclick=()=>selecionar(i);
-    opcoes.appendChild(div);
+    op.appendChild(div);
   });
-  document.getElementById('explicacao').classList.remove('ativa');
-  document.getElementById('dica').classList.remove('ativa');
-  atualizarProgresso();
-}
-function selecionar(i){
-  const q=questoesFiltradas[questaoAtual];
-  respostas[questaoAtual]=i;
-  document.querySelectorAll('.opcao').forEach((op,idx)=>{
-    op.disabled=true;
-    if(idx===q.gabarito)op.classList.add('correta');
-    else if(idx===i)op.classList.add('incorreta');
-  });
-  document.getElementById('explicacao').textContent=q.explicacao||'';
-  document.getElementById('explicacao').classList.add('ativa');
-}
-function mostrarDica(){
-  const q=questoesFiltradas[questaoAtual];
-  document.getElementById('dica').textContent='💡 '+(q.dica||'');
-  document.getElementById('dica').classList.add('ativa');
-}
-function questaoProxima(){
-  if(questaoAtual<questoesFiltradas.length-1){questaoAtual++;exibirQuestao();}
-  else alert('Última questão!');
-}
-function questaoAnterior(){
-  if(questaoAtual>0){questaoAtual--;exibirQuestao();}
-}
-function atualizarProgresso(){
-  const perc=Math.round(((questaoAtual+1)/questoesFiltradas.length)*100);
-  document.getElementById('progressoBar').style.width=perc+'%';
-  document.getElementById('percentualProgresso').textContent=perc+'%';
+  document.getElementById('explicacao').style.display='none';
 }
 
-/* ====== FINALIZAR ====== */
+function selecionar(i){
+  const q = questoesFiltradas[questaoAtual];
+  respostas[questaoAtual]=i;
+  document.querySelectorAll('.opcao').forEach((el,idx)=>{
+    el.disabled=true;
+    if (idx===q.gabarito) el.classList.add('correta');
+    else if (idx===i) el.classList.add('incorreta');
+  });
+  const exp=document.getElementById('explicacao');
+  exp.innerHTML = `<b>Explicação:</b> ${q.explicacao||'Sem explicação disponível.'}`;
+  exp.style.display='block';
+}
+
+function questaoProxima(){
+  if (questaoAtual<questoesFiltradas.length-1){questaoAtual++;exibirQuestao();}
+  else finalizarSimulado();
+}
+function questaoAnterior(){
+  if (questaoAtual>0){questaoAtual--;exibirQuestao();}
+}
 function finalizarSimulado(){
-  clearInterval(timerInterval);
   let acertos=0;
   questoesFiltradas.forEach((q,i)=>{if(respostas[i]===q.gabarito)acertos++;});
+  document.getElementById('quizContainer').classList.add('hidden');
+  const r=document.getElementById('resultadoContainer');
+  r.classList.add('ativo');
   document.getElementById('totalAcertos').textContent=acertos;
   document.getElementById('totalErros').textContent=questoesFiltradas.length-acertos;
   document.getElementById('pontuacao').textContent=Math.round(acertos/questoesFiltradas.length*100)+'%';
-  document.getElementById('quizContainer').classList.add('hidden');
-  document.getElementById('resultadoContainer').classList.add('ativo');
 }
 function voltarMenu(){
-  clearInterval(timerInterval);
   document.getElementById('telaPrincipal').classList.remove('hidden');
   document.getElementById('quizContainer').classList.add('hidden');
   document.getElementById('resultadoContainer').classList.remove('ativo');
 }
 
-/* ====== INICIALIZAÇÃO ====== */
 document.addEventListener("DOMContentLoaded",()=>carregarManifest());
 </script>
 </body>
