@@ -1,170 +1,302 @@
-{
-  "titulo": "Simulado Polícia Penal ES",
-  "descricao": "Versão revisada, formatada e comentada",
-  "texto_base": "As joias roubadas do Louvre, em Paris, em um ousado assalto à luz do dia, foram avaliadas em 88 milhões de euros (R$ 550,3 milhões), afirmou um promotor público francês, citando o curador do museu. A procuradora francesa Laure Beccuau disse à rádio francesa RTL que a quantia era “extraordinária”, mas afirmou que a maior perda era para o patrimônio histórico da França. Entre os itens roubados estavam joias da coroa e peças oferecidas por dois imperadores da Casa de Bonaparte às suas esposas. Ladrões munidos de ferramentas elétricas levaram menos de oito minutos para entrar e fugir com o saque, logo após a abertura do museu mais visitado do mundo, na manhã de domingo. Como os ladrões não foram capturados mais de dois dias após o roubo, especialistas temem que as joias já tenham desaparecido. Beccuau disse que o anúncio do valor estimado das joias poderia fazer com que os ladrões pensassem duas vezes e não as destruíssem. Ela acrescentou que os ladrões não ficariam com todo o dinheiro se tivessem “a péssima ideia de derreter essas joias”. Os itens roubados, anteriormente descritos como tendo valor inestimável, incluem um colar de diamantes e esmeraldas que o imperador Napoleão deu à sua esposa, uma tiara usada pela imperatriz Eugênia (esposa de Napoleão III) e várias peças que pertenceram à rainha Maria-Amélia, mulher do rei Luís Filipe I e prima da primeira imperatriz brasileira, Maria Leopoldina. Os investigadores encontraram uma coroa danificada que pertencia à imperatriz Eugênia na rota de fuga dos ladrões — aparentemente deixada para trás quando partiram às pressas. Quatro ladrões mascarados usaram um caminhão com elevador mecânico para ter acesso à Galerie d’Apollon (Galeria de Apolo) através de uma varanda próxima ao rio Sena. Dois deles cortaram uma janela de vidro no primeiro andar usando um cortador a disco e entraram no museu. Ameaçaram os guardas, que evacuaram o local. Os ladrões tentaram incendiar o veículo do lado de fora, mas foram impedidos pela intervenção de um funcionário do museu. Eles fugiram em scooters. O presidente francês Emmanuel Macron descreveu o roubo como um ataque ao patrimônio da França. As medidas de segurança foram reforçadas em instituições culturais do país, depois que um relatório apontou que uma em cada três salas do Louvre não tinha câmeras de segurança e que o sistema de alarme não disparou. O ministro da Justiça, Gérald Darmanin, lamentou que os ladrões tivessem conseguido chegar com um caminhão até o museu, deixando a França com uma “imagem terrível”. As autoridades acreditam que a ação foi de uma equipe de profissionais, dada a rapidez e organização. Especialistas disseram à BBC que os investigadores tinham apenas um ou dois dias para localizar os itens antes que fossem considerados perdidos para sempre. É provável que as joias tenham sido derretidas, contrabandeadas e vendidas por uma fração de seu valor original.",
-  "questoes": [
-    {
-      "numero": 1,
-      "enunciado": "Com base no texto, qual foi a principal consequência do roubo das joias do Louvre, segundo a procuradora francesa?",
-      "alternativas": ["a) A perda de peças de alto valor financeiro.", "b) O aumento da criminalidade em Paris.", "c) O prejuízo ao patrimônio histórico da França.", "d) A exposição da fragilidade da segurança do museu.", "e) A destruição de obras de arte de valor inestimável."],
-      "resposta_correta": "c",
-      "resposta_texto": "O prejuízo ao patrimônio histórico da França.",
-      "comentario": "A procuradora destacou que, embora o valor fosse alto, a maior perda dizia respeito ao patrimônio cultural e histórico."
-    },
-    {
-      "numero": 2,
-      "enunciado": "Qual foi a intenção da procuradora ao divulgar o valor estimado das joias roubadas?",
-      "alternativas": ["a) Justificar o reforço nas medidas de segurança.", "b) Alertar a população sobre o prejuízo financeiro.", "c) Incentivar os ladrões a devolverem as joias.", "d) Desestimular os ladrões a destruírem as peças.", "e) Pressionar as autoridades a agirem com mais rapidez."],
-      "resposta_correta": "d",
-      "resposta_texto": "Desestimular os ladrões a destruírem as peças.",
-      "comentario": "A divulgação do valor buscava preservar as joias, fazendo os ladrões perceberem sua importância e não as derreterem."
-    },
-    {
-      "numero": 3,
-      "enunciado": "A ação dos ladrões pode ser caracterizada como:",
-      "alternativas": ["a) Amadora.", "b) Improvisada.", "c) Violenta.", "d) Profissional.", "e) Fracassada."],
-      "resposta_correta": "d",
-      "resposta_texto": "Profissional.",
-      "comentario": "O texto descreve rapidez, organização e planejamento, indicando que os criminosos eram profissionais."
-    },
-    {
-      "numero": 4,
-      "enunciado": "Os itens roubados:",
-      "alternativas": ["a) Foram todos recuperados.", "b) Pertenciam à imperatriz Maria Leopoldina.", "c) Incluíam peças de valor histórico e simbólico.", "d) Estavam guardados em cofres subterrâneos.", "e) Foram vendidos no mercado negro."],
-      "resposta_correta": "c",
-      "resposta_texto": "Incluíam peças de valor histórico e simbólico.",
-      "comentario": "O texto cita joias da coroa e peças de imperatrizes e rainhas, de valor histórico e simbólico inestimável."
-    },
-    {
-      "numero": 5,
-      "enunciado": "Após o roubo, uma das medidas adotadas foi:",
-      "alternativas": ["a) Instalar cofres subterrâneos.", "b) Reforçar a segurança em instituições culturais.", "c) Substituir guardas por agentes armados.", "d) Fechar o museu temporariamente.", "e) Criar força-tarefa internacional."],
-      "resposta_correta": "b",
-      "resposta_texto": "Reforçar a segurança em instituições culturais.",
-      "comentario": "O presidente Macron determinou reforço na segurança de museus e instituições culturais em todo o país."
-    },
-    {
-      "numero": 6,
-      "enunciado": "Qual fator contribuiu para a facilidade da ação criminosa?",
-      "alternativas": ["a) Falta de visitantes.", "b) Negligência dos guardas.", "c) Falta de câmeras em parte das salas.", "d) Demora policial.", "e) Cumplicidade de funcionários."],
-      "resposta_correta": "c",
-      "resposta_texto": "Falta de câmeras em parte das salas.",
-      "comentario": "Um relatório revelou que 1/3 das salas não tinha câmeras e o alarme não funcionou, facilitando a ação."
-    },
-    {
-      "numero": 7,
-      "enunciado": "De acordo com o Novo Acordo Ortográfico, a grafia correta do termo é:",
-      "alternativas": ["a) microondas", "b) micro ondas", "c) micro-ondas", "d) micro–ondas", "e) micro-óndas"],
-      "resposta_correta": "c",
-      "resposta_texto": "micro-ondas.",
-      "comentario": "O prefixo 'micro' termina com a mesma vogal inicial da palavra seguinte, exigindo hífen conforme o Novo Acordo Ortográfico."
-    },
-    {
-      "numero": 8,
-      "enunciado": "O termo 'As medidas de segurança' exerce a função de sujeito. Assinale a alternativa em que o termo destacado também é sujeito:",
-      "alternativas": ["a) Os ladrões tentaram incendiar o veículo.", "b) A procuradora francesa se referiu à quantia extraordinária.", "c) A coroa foi deixada para trás.", "d) Os investigadores encontraram uma coroa danificada.", "e) O presidente francês descreveu o roubo como um ataque ao patrimônio."],
-      "resposta_correta": "a",
-      "resposta_texto": "Os ladrões tentaram incendiar o veículo.",
-      "comentario": "Em 'Os ladrões tentaram incendiar o veículo', o termo destacado é sujeito, assim como 'As medidas de segurança'."
-    },
-    {
-      "numero": 9,
-      "enunciado": "Nas frases 'O silêncio das vitrines gritava a ausência das joias' e 'A madrugada parecia observar a fuga dos ladrões', a figura de linguagem é:",
-      "alternativas": ["a) Hipérbole", "b) Antítese", "c) Metáfora", "d) Prosopopeia", "e) Eufemismo"],
-      "resposta_correta": "d",
-      "resposta_texto": "Prosopopeia.",
-      "comentario": "Há atribuição de ações humanas a seres inanimados, caracterizando a personificação (prosopopeia)."
-    },
-    {
-      "numero": 10,
-      "enunciado": "O verbo 'descreveu', em 'O presidente francês Emmanuel Macron descreveu o roubo como um ataque ao patrimônio da França', é transitivo direto. Assinale o verbo com transitividade diferente:",
-      "alternativas": ["a) lamentou", "b) encontrou", "c) explicou", "d) tentou", "e) apresentou"],
-      "resposta_correta": "e",
-      "resposta_texto": "apresentar",
-      "comentario": "O verbo 'apresentar' pode ser transitivo direto e indireto (apresentar algo a alguém), diferindo de 'descrever', que é apenas transitivo direto."
-    },
-    {
-      "numero": 11,
-      "enunciado": "Um levantamento do estoque de um centro de distribuição revelou que 2/5 do total de pacotes eram destinados a produtos eletrônicos...",
-      "alternativas": ["a) 420", "b) 520", "c) 490", "d) 380", "e) 350"],
-      "resposta_correta": "c",
-      "resposta_texto": "490",
-      "comentario": "Aplicando regra de proporção, encontra-se o total de pacotes como 490."
-    },
-    {
-      "numero": 12,
-      "enunciado": "Custo base = R$ 3.500,00. Preço de catálogo deve gerar 20% de lucro após 30% de desconto...",
-      "alternativas": ["a) R$ 6.200,00", "b) R$ 5.800,00", "c) R$ 6.000,00", "d) R$ 5.900,00", "e) R$ 6.100,00"],
-      "resposta_correta": "c",
-      "resposta_texto": "R$ 6.000,00",
-      "comentario": "O preço final com desconto (70% do catálogo) deve ser R$ 4.200. Logo, o preço de catálogo é R$ 6.000."
-    },
-    {
-      "numero": 13,
-      "enunciado": "Monitor 4:3 com diagonal 50 polegadas. Área de visualização é:",
-      "alternativas": ["a) 300", "b) 400", "c) 800", "d) 1000", "e) 1200"],
-      "resposta_correta": "e",
-      "resposta_texto": "1200",
-      "comentario": "Pelo triângulo 3–4–5: largura=40, altura=30, área=40x30=1200 pol²."
-    },
-    {
-      "numero": 14,
-      "enunciado": "Caixa 3x2x(x+1) dm tem volume 18 dm³. Aumentando a altura em 1 dm, o novo volume será:",
-      "alternativas": ["a) 21", "b) 24", "c) 27", "d) 30", "e) 33"],
-      "resposta_correta": "b",
-      "resposta_texto": "24",
-      "comentario": "Resolvendo 6(x+1)=18 → x=2. Nova altura 3 dm → volume=3x2x4=24 dm³."
-    },
-    {
-      "numero": 15,
-      "enunciado": "Na sequência 1, 3, 5, 4, 3, 5, 7, 6, 5, 7..., a soma dos termos 13º, 16º e 21º é:",
-      "alternativas": ["a) 25", "b) 27", "c) 29", "d) 26", "e) 28"],
-      "resposta_correta": "e",
-      "resposta_texto": "28",
-      "comentario": "Padrão periódico: 13º=7, 16º=10, 21º=11 → soma=28."
-    },
-    {
-      "numero": 16,
-      "enunciado": "Analise as proposições lógicas e marque a sequência correta.",
-      "alternativas": ["a) V, V, F, V", "b) F, V, F, V", "c) V, V, V, F", "d) V, F, F, V", "e) V, V, F, F"],
-      "resposta_correta": "a",
-      "resposta_texto": "V, V, F, V",
-      "comentario": "As duas primeiras são verdadeiras, a terceira é falsa e a quarta verdadeira."
-    },
-    {
-      "numero": 17,
-      "enunciado": "Proposição: 'Se existe algum sistema operacional inseguro, então todo firewall é confiável'. Equivalente lógica:",
-      "alternativas": ["a) Algum SO é inseguro e todo firewall é confiável.", "b) Algum firewall é confiável ou algum SO é inseguro.", "c) Se algum firewall não é confiável, então não existe SO inseguro.", "d) Se todo firewall é confiável, então existe SO inseguro.", "e) Se não existe SO inseguro, então algum firewall não é confiável."],
-      "resposta_correta": "c",
-      "resposta_texto": "Se algum firewall não é confiável, então não existe SO inseguro.",
-      "comentario": "É a contrapositiva lógica da proposição original, portanto equivalente."
-    },
-    {
-      "numero": 18,
-      "enunciado": "Distribuição de tempos (min): 16→40, 17→30, 18→20, 19→10. Assinale a INCORRETA:",
-      "alternativas": ["a) Mediana 17,5", "b) Variável discreta", "c) Média 17", "d) Moda 16", "e) 30% ≥18 min"],
-      "resposta_correta": "a",
-      "resposta_texto": "Mediana 17,5",
-      "comentario": "Mediana correta é 17, pois as observações 50ª e 51ª pertencem ao grupo 17. Logo, (a) é incorreta."
-    },
-    {
-      "numero": 19,
-      "enunciado": "Clube com 6 sócios e 5 cargos distintos, 2 elegíveis à presidência. Quantas formações distintas?",
-      "alternativas": ["a) 180", "b) 240", "c) 260", "d) 340", "e) 350"],
-      "resposta_correta": "b",
-      "resposta_texto": "240",
-      "comentario": "2 escolhas para presidente e P(5,4)=120 → total 240 combinações."
-    },
-    {
-      "numero": 20,
-      "enunciado": "Do conjunto {1,2,3,4,5} selecionam-se 2 números. Probabilidade de soma ≥7:",
-      "alternativas": ["a) 10%", "b) 20%", "c) 30%", "d) 40%", "e) 50%"],
-      "resposta_correta": "d",
-      "resposta_texto": "40%",
-      "comentario": "Pares com soma≥7: (2,5),(3,4),(3,5),(4,5)=4 de 10 → 40%."
-    }
-  ]
-}
-
-
-
+[
+  {
+    "id": 1,
+    "disciplina": "Geral",
+    "enunciado": "Com base no texto, qual foi a principal consequência do roubo das joias do Louvre, segundo a procuradora francesa?",
+    "opcoes": [
+      "a) A perda de peças de alto valor financeiro.",
+      "b) O aumento da criminalidade em Paris.",
+      "c) O prejuízo ao patrimônio histórico da França.",
+      "d) A exposição da fragilidade da segurança do museu.",
+      "e) A destruição de obras de arte de valor inestimável."
+    ],
+    "gabarito": 2,
+    "explicacao": "A procuradora destacou que, embora o valor fosse alto, a maior perda dizia respeito ao patrimônio cultural e histórico.",
+    "dica": ""
+  },
+  {
+    "id": 2,
+    "disciplina": "Geral",
+    "enunciado": "Qual foi a intenção da procuradora ao divulgar o valor estimado das joias roubadas?",
+    "opcoes": [
+      "a) Justificar o reforço nas medidas de segurança.",
+      "b) Alertar a população sobre o prejuízo financeiro.",
+      "c) Incentivar os ladrões a devolverem as joias.",
+      "d) Desestimular os ladrões a destruírem as peças.",
+      "e) Pressionar as autoridades a agirem com mais rapidez."
+    ],
+    "gabarito": 3,
+    "explicacao": "A divulgação do valor buscava preservar as joias, fazendo os ladrões perceberem sua importância e não as derreterem.",
+    "dica": ""
+  },
+  {
+    "id": 3,
+    "disciplina": "Geral",
+    "enunciado": "A ação dos ladrões pode ser caracterizada como:",
+    "opcoes": [
+      "a) Amadora.",
+      "b) Improvisada.",
+      "c) Violenta.",
+      "d) Profissional.",
+      "e) Fracassada."
+    ],
+    "gabarito": 3,
+    "explicacao": "O texto descreve rapidez, organização e planejamento, indicando que os criminosos eram profissionais.",
+    "dica": ""
+  },
+  {
+    "id": 4,
+    "disciplina": "Geral",
+    "enunciado": "Os itens roubados:",
+    "opcoes": [
+      "a) Foram todos recuperados.",
+      "b) Pertenciam à imperatriz Maria Leopoldina.",
+      "c) Incluíam peças de valor histórico e simbólico.",
+      "d) Estavam guardados em cofres subterrâneos.",
+      "e) Foram vendidos no mercado negro."
+    ],
+    "gabarito": 2,
+    "explicacao": "O texto cita joias da coroa e peças de imperatrizes e rainhas, de valor histórico e simbólico inestimável.",
+    "dica": ""
+  },
+  {
+    "id": 5,
+    "disciplina": "Geral",
+    "enunciado": "Após o roubo, uma das medidas adotadas foi:",
+    "opcoes": [
+      "a) Instalar cofres subterrâneos.",
+      "b) Reforçar a segurança em instituições culturais.",
+      "c) Substituir guardas por agentes armados.",
+      "d) Fechar o museu temporariamente.",
+      "e) Criar força-tarefa internacional."
+    ],
+    "gabarito": 1,
+    "explicacao": "O presidente Macron determinou reforço na segurança de museus e instituições culturais em todo o país.",
+    "dica": ""
+  },
+  {
+    "id": 6,
+    "disciplina": "Geral",
+    "enunciado": "Qual fator contribuiu para a facilidade da ação criminosa?",
+    "opcoes": [
+      "a) Falta de visitantes.",
+      "b) Negligência dos guardas.",
+      "c) Falta de câmeras em parte das salas.",
+      "d) Demora policial.",
+      "e) Cumplicidade de funcionários."
+    ],
+    "gabarito": 2,
+    "explicacao": "Um relatório revelou que 1/3 das salas não tinha câmeras e o alarme não funcionou, facilitando a ação.",
+    "dica": ""
+  },
+  {
+    "id": 7,
+    "disciplina": "Geral",
+    "enunciado": "De acordo com o Novo Acordo Ortográfico, a grafia correta do termo é:",
+    "opcoes": [
+      "a) microondas",
+      "b) micro ondas",
+      "c) micro-ondas",
+      "d) micro–ondas",
+      "e) micro-óndas"
+    ],
+    "gabarito": 2,
+    "explicacao": "O prefixo 'micro' termina com a mesma vogal inicial da palavra seguinte, exigindo hífen conforme o Novo Acordo Ortográfico.",
+    "dica": ""
+  },
+  {
+    "id": 8,
+    "disciplina": "Geral",
+    "enunciado": "O termo 'As medidas de segurança' exerce a função de sujeito. Assinale a alternativa em que o termo destacado também é sujeito:",
+    "opcoes": [
+      "a) Os ladrões tentaram incendiar o veículo.",
+      "b) A procuradora francesa se referiu à quantia extraordinária.",
+      "c) A coroa foi deixada para trás.",
+      "d) Os investigadores encontraram uma coroa danificada.",
+      "e) O presidente francês descreveu o roubo como um ataque ao patrimônio."
+    ],
+    "gabarito": 0,
+    "explicacao": "Em 'Os ladrões tentaram incendiar o veículo', o termo destacado é sujeito, assim como 'As medidas de segurança'.",
+    "dica": ""
+  },
+  {
+    "id": 9,
+    "disciplina": "Geral",
+    "enunciado": "Nas frases 'O silêncio das vitrines gritava a ausência das joias' e 'A madrugada parecia observar a fuga dos ladrões', a figura de linguagem é:",
+    "opcoes": [
+      "a) Hipérbole",
+      "b) Antítese",
+      "c) Metáfora",
+      "d) Prosopopeia",
+      "e) Eufemismo"
+    ],
+    "gabarito": 3,
+    "explicacao": "Há atribuição de ações humanas a seres inanimados, caracterizando a personificação (prosopopeia).",
+    "dica": ""
+  },
+  {
+    "id": 10,
+    "disciplina": "Geral",
+    "enunciado": "O verbo 'descreveu', em 'O presidente francês Emmanuel Macron descreveu o roubo como um ataque ao patrimônio da França', é transitivo direto. Assinale o verbo com transitividade diferente:",
+    "opcoes": [
+      "a) lamentou",
+      "b) encontrou",
+      "c) explicou",
+      "d) tentou",
+      "e) apresentou"
+    ],
+    "gabarito": 4,
+    "explicacao": "O verbo 'apresentar' pode ser transitivo direto e indireto (apresentar algo a alguém), diferindo de 'descrever', que é apenas transitivo direto.",
+    "dica": ""
+  },
+  {
+    "id": 11,
+    "disciplina": "Geral",
+    "enunciado": "Um levantamento do estoque de um centro de distribuição revelou que 2/5 do total de pacotes eram destinados a produtos eletrônicos...",
+    "opcoes": [
+      "a) 420",
+      "b) 520",
+      "c) 490",
+      "d) 380",
+      "e) 350"
+    ],
+    "gabarito": 2,
+    "explicacao": "Aplicando regra de proporção, encontra-se o total de pacotes como 490.",
+    "dica": ""
+  },
+  {
+    "id": 12,
+    "disciplina": "Geral",
+    "enunciado": "Custo base = R$ 3.500,00. Preço de catálogo deve gerar 20% de lucro após 30% de desconto...",
+    "opcoes": [
+      "a) R$ 6.200,00",
+      "b) R$ 5.800,00",
+      "c) R$ 6.000,00",
+      "d) R$ 5.900,00",
+      "e) R$ 6.100,00"
+    ],
+    "gabarito": 2,
+    "explicacao": "O preço final com desconto (70% do catálogo) deve ser R$ 4.200. Logo, o preço de catálogo é R$ 6.000.",
+    "dica": ""
+  },
+  {
+    "id": 13,
+    "disciplina": "Geral",
+    "enunciado": "Monitor 4:3 com diagonal 50 polegadas. Área de visualização é:",
+    "opcoes": [
+      "a) 300",
+      "b) 400",
+      "c) 800",
+      "d) 1000",
+      "e) 1200"
+    ],
+    "gabarito": 4,
+    "explicacao": "Pelo triângulo 3–4–5: largura=40, altura=30, área=40x30=1200 pol².",
+    "dica": ""
+  },
+  {
+    "id": 14,
+    "disciplina": "Geral",
+    "enunciado": "Caixa 3x2x(x+1) dm tem volume 18 dm³. Aumentando a altura em 1 dm, o novo volume será:",
+    "opcoes": [
+      "a) 21",
+      "b) 24",
+      "c) 27",
+      "d) 30",
+      "e) 33"
+    ],
+    "gabarito": 1,
+    "explicacao": "Resolvendo 6(x+1)=18 → x=2. Nova altura 3 dm → volume=3x2x4=24 dm³.",
+    "dica": ""
+  },
+  {
+    "id": 15,
+    "disciplina": "Geral",
+    "enunciado": "Na sequência 1, 3, 5, 4, 3, 5, 7, 6, 5, 7..., a soma dos termos 13º, 16º e 21º é:",
+    "opcoes": [
+      "a) 25",
+      "b) 27",
+      "c) 29",
+      "d) 26",
+      "e) 28"
+    ],
+    "gabarito": 4,
+    "explicacao": "Padrão periódico: 13º=7, 16º=10, 21º=11 → soma=28.",
+    "dica": ""
+  },
+  {
+    "id": 16,
+    "disciplina": "Geral",
+    "enunciado": "Analise as proposições lógicas e marque a sequência correta.",
+    "opcoes": [
+      "a) V, V, F, V",
+      "b) F, V, F, V",
+      "c) V, V, V, F",
+      "d) V, F, F, V",
+      "e) V, V, F, F"
+    ],
+    "gabarito": 0,
+    "explicacao": "As duas primeiras são verdadeiras, a terceira é falsa e a quarta verdadeira.",
+    "dica": ""
+  },
+  {
+    "id": 17,
+    "disciplina": "Geral",
+    "enunciado": "Proposição: 'Se existe algum sistema operacional inseguro, então todo firewall é confiável'. Equivalente lógica:",
+    "opcoes": [
+      "a) Algum SO é inseguro e todo firewall é confiável.",
+      "b) Algum firewall é confiável ou algum SO é inseguro.",
+      "c) Se algum firewall não é confiável, então não existe SO inseguro.",
+      "d) Se todo firewall é confiável, então existe SO inseguro.",
+      "e) Se não existe SO inseguro, então algum firewall não é confiável."
+    ],
+    "gabarito": 2,
+    "explicacao": "É a contrapositiva lógica da proposição original, portanto equivalente.",
+    "dica": ""
+  },
+  {
+    "id": 18,
+    "disciplina": "Geral",
+    "enunciado": "Distribuição de tempos (min): 16→40, 17→30, 18→20, 19→10. Assinale a INCORRETA:",
+    "opcoes": [
+      "a) Mediana 17,5",
+      "b) Variável discreta",
+      "c) Média 17",
+      "d) Moda 16",
+      "e) 30% ≥18 min"
+    ],
+    "gabarito": 0,
+    "explicacao": "Mediana correta é 17, pois as observações 50ª e 51ª pertencem ao grupo 17. Logo, (a) é incorreta.",
+    "dica": ""
+  },
+  {
+    "id": 19,
+    "disciplina": "Geral",
+    "enunciado": "Clube com 6 sócios e 5 cargos distintos, 2 elegíveis à presidência. Quantas formações distintas?",
+    "opcoes": [
+      "a) 180",
+      "b) 240",
+      "c) 260",
+      "d) 340",
+      "e) 350"
+    ],
+    "gabarito": 1,
+    "explicacao": "2 escolhas para presidente e P(5,4)=120 → total 240 combinações.",
+    "dica": ""
+  },
+  {
+    "id": 20,
+    "disciplina": "Geral",
+    "enunciado": "Do conjunto {1,2,3,4,5} selecionam-se 2 números. Probabilidade de soma ≥7:",
+    "opcoes": [
+      "a) 10%",
+      "b) 20%",
+      "c) 30%",
+      "d) 40%",
+      "e) 50%"
+    ],
+    "gabarito": 3,
+    "explicacao": "Pares com soma≥7: (2,5),(3,4),(3,5),(4,5)=4 de 10 → 40%.",
+    "dica": ""
+  }
+]
