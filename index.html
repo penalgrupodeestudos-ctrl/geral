@@ -389,11 +389,7 @@
     
     <script>
         // O CÓDIGO ESPERA ENCONTRAR OS ARQUIVOS JSON NESTA PASTA!
-        // Configurações do Repositório GitHub
-        const GITHUB_OWNER = 'penalgrupodeestudos-ctrl';
-        const GITHUB_REPO = 'SABER01';
-        const GITHUB_BRANCH = 'main'; // Geralmente 'main' ou 'master'
-        const GITHUB_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/data?ref=${GITHUB_BRANCH}`;
+        
         const DATA_FOLDER = './data/'; 
         let currentQuizData = null;
         let currentSimuladoName = '';
@@ -741,18 +737,7 @@
 throw new Error(errorMessage); 
 	                }
 	                
-	                // Se o arquivo JSON for carregado do GitHub, ele pode vir com um campo 'content' codificado em base64.
-	                // Isso é comum quando se usa a API de Conteúdo do GitHub.
-	                let responseData = await response.json();
-	                
-	                if (responseData.content && responseData.encoding === 'base64') {
-	                    // Decodifica o conteúdo base64
-	                    const decodedContent = atob(responseData.content);
-	                    // Converte a string JSON decodificada em objeto JavaScript
-	                    responseData = JSON.parse(decodedContent);
-	                }
-	                
-	                const rawData = responseData;
+	                const rawData = await response.json();
                 
                 // Linha removida, pois a lógica de decodificação foi adicionada acima.
                 let quizData;
@@ -806,58 +791,30 @@ throw new Error(errorMessage);
         /**
          * Carrega a lista de simulados. (Foi mantida a lógica de fallback para arquivos carregados)
          */
-        // Função original renomeada para fallback, caso a API do GitHub falhe.
-        async function loadSimuladosFallback(list) {
-            console.warn("Usando lista de testes (fallback) devido a falha na API do GitHub ou ambiente local.");
-            // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
-            const fallbackFiles = [
-                "SIMULADO-POLICIA-PENAL-JSON.json", 
-                "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-
-                "QUESTOES-GERAIS.json.json"
-            ];
-            
-            list.innerHTML = '';
-            fallbackFiles.forEach(filename => {
-                const cleanName = filename.replace(/\\.json$/i, ''); 
-                const li = document.createElement('li');
-                li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
-                list.appendChild(li);
-            });
-            list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
-        }
-
         /**
-         * Carrega a lista de simulados dinamicamente usando a API do GitHub.
+         * Carrega a lista de simulados. (Foi mantida a lógica de fallback para arquivos carregados)
          */
         async function loadSimulados() {
             const list = document.getElementById('simulado-list');
             
             try {
-                // Tenta carregar a lista de arquivos JSON da pasta 'data' do repositório GitHub
-                const response = await fetch(GITHUB_API_URL);
+                // Tenta carregar uma lista de arquivos de um manifest JSON (recomendado para projetos maiores)
+                const manifestUrl = DATA_FOLDER + 'simulados_manifest.json';
+                const response = await fetch(manifestUrl);
 
                 if (!response.ok) {
-                    // Se a API falhar (limite de taxa, erro 404, etc.), usa o fallback
-                    throw new Error(`Falha ao acessar a API do GitHub: ${response.status} ${response.statusText}`);
+                    throw new Error(`Não foi possível carregar o arquivo manifest. Tentando fallback.`);
                 }
                 
-                const contents = await response.json(); 
-                
-                // Filtra apenas arquivos que terminam com .json
-                const simuladoFilenames = contents
-                    .filter(item => item.type === 'file' && item.name.toLowerCase().endsWith('.json'))
-                    .map(item => item.name);
+                const simuladoFilenames = await response.json(); 
 
                 list.innerHTML = '';
-                if (simuladoFilenames.length === 0) {
-                    list.innerHTML = '<li>Nenhum arquivo JSON encontrado na pasta "data" do GitHub.</li>';
+                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
+                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
                     return;
                 }
 
                 simuladoFilenames.forEach(filename => {
-                    // Remove a extensão .json para exibir um nome limpo
                     const cleanName = filename.replace(/\\.json$/i, ''); 
                     
                     const li = document.createElement('li');
@@ -868,10 +825,28 @@ throw new Error(errorMessage);
                 });
                 
             } catch (error) {
-                console.error("Erro ao carregar simulados dinamicamente. Usando fallback:", error);
-                list.innerHTML = '<li><small style="color:var(--danger-color);">Falha ao carregar lista do GitHub. Usando lista de testes.</small></li>';
-                // Chama a função de fallback com a lista de elementos
-                loadSimuladosFallback(list);
+                console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
+                
+                // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
+                const fallbackFiles = [
+                    "SIMULADO-POLICIA-PENAL-JSON.json", 
+                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                    "SIMULADO-DIREITOS-HUMANOS-JSON.json",
+                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
+                    "QUESTOES-AREA-POLICIAL.json",
+                    "simulado_100_questoes.json",
+                    "100-QUESTOES-POLICIAL.json",
+                    "QUESTOES-GERAIS.json.json"
+                ];
+                
+                list.innerHTML = '';
+                fallbackFiles.forEach(filename => {
+                    const cleanName = filename.replace(/\\.json$/i, ''); 
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
+                    list.appendChild(li);
+                });
+                list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
             }
         }
 
