@@ -3,67 +3,66 @@
     "nome": "Simulado Direitos Humanos",
     "descricao": "Questões de Direitos Humanos",
     "total": 60,
-    "arquivo": "data/SIMULADO-DIREITOS-HUMANOS.json"
+    "arquivo": "SIMULADO-DIREITOS-HUMANOS.json"
   },
   "2": {
     "nome": "Simulado IASES Gabarito",
     "descricao": "IASES completo com gabarito",
     "total": 60,
-    "arquivo": "data/SIMULADO-IASES-JSON-COM-GABARITO.json"
+    "arquivo": "SIMULADO-IASES-JSON-COM-GABARITO.json"
   },
   "3": {
     "nome": "Simulado Polícia Penal 02",
     "descricao": "Concurso Polícia Penal - Prova 02",
     "total": 60,
-    "arquivo": "data/SIMULADO-POLICIA-PENAL02.json"
+    "arquivo": "SIMULADO-POLICIA-PENAL02.json"
   },
   "4": {
     "nome": "Simulado Polícia Penal 01",
     "descricao": "Concurso Polícia Penal - Prova 01",
     "total": 60,
-    "arquivo": "data/SIMULADO-POLICIA-PENAL.json"
+    "arquivo": "SIMULADO-POLICIA-PENAL.json"
   },
   "5": {
     "nome": "Questões Gerais",
     "descricao": "Banco geral de questões diversas",
     "total": 50,
-    "arquivo": "data/QUESTOES-GERAIS.json"
+    "arquivo": "QUESTOES-GERAIS.json"
   },
   "6": {
     "nome": "Questões Área Policial",
-    "descricao": "Foco em concursos da área policial",
+    "descricao": "Questões da área policial",
     "total": 50,
-    "arquivo": "data/QUESTOES-AREA-POLICIAL.json"
+    "arquivo": "QUESTOES-AREA-POLICIAL.json"
   },
   "7": {
     "nome": "Simulado IDCAP 01",
-    "descricao": "Primeiro simulado IDCAP com 60 questões",
+    "descricao": "Simulado IDCAP com 60 questões",
     "total": 60,
-    "arquivo": "data/SIMULADO-IDCAP-60-QUESTOES.json"
+    "arquivo": "SIMULADO-IDCAP-60-QUESTOES.json"
   },
   "8": {
     "nome": "Simulado IDCAP 02",
     "descricao": "Segundo simulado IDCAP",
     "total": 60,
-    "arquivo": "data/SIMULADO-02-IDCAP-60-QUESTOES.json"
+    "arquivo": "SIMULADO-02-IDCAP-60-QUESTOES.json"
   },
   "9": {
     "nome": "Simulado IDCAP 03",
     "descricao": "Terceiro simulado IDCAP",
     "total": 60,
-    "arquivo": "data/SIMULADO-03-IDCAP-60-QUESTOES.json"
+    "arquivo": "SIMULADO-03-IDCAP-60-QUESTOES.json"
   },
   "10": {
     "nome": "Estratégia",
     "descricao": "Questões do Estratégia Concursos",
     "total": 40,
-    "arquivo": "data/ESTRATEGIA.json"
+    "arquivo": "ESTRATEGIA.json"
   },
   "11": {
     "nome": "Legislação Específica",
     "descricao": "Questões sobre legislação específica",
     "total": 40,
-    "arquivo": "data/LEGISLAÇÃO-ESPECÍFICA.json"
+    "arquivo": "LEGISLAÇÃO-ESPECÍFICA.json"
   }
 }
-
