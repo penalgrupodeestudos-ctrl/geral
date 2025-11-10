@@ -93,7 +93,7 @@
     },
     {
       "id": 7,
-      "disciplina": "Língua Portuguesa",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "De acordo com o Novo Acordo Ortográfico, a grafia correta do termo é:",
       "opcoes": [
         "microondas",
@@ -108,7 +108,7 @@
     },
     {
       "id": 8,
-      "disciplina": "Língua Portuguesa",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "O termo “As medidas de segurança” exerce a função de sujeito. Assinale a alternativa em que o termo destacado também é sujeito:",
       "opcoes": [
         "Os ladrões tentaram incendiar o veículo.",
@@ -123,7 +123,7 @@
     },
     {
       "id": 9,
-      "disciplina": "Língua Portuguesa",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Nas frases “O silêncio das vitrines gritava a ausência das joias” e “A madrugada parecia observar a fuga dos ladrões”, a figura de linguagem é:",
       "opcoes": [
         "Hipérbole",
@@ -138,7 +138,7 @@
     },
     {
       "id": 10,
-      "disciplina": "Língua Portuguesa",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "O verbo “descreveu” é transitivo direto. Assinale o verbo com transitividade diferente:",
       "opcoes": [
         "lamentou",
@@ -153,7 +153,7 @@
     },
     {
       "id": 11,
-      "disciplina": "Raciocínio Lógico / Matemática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Um levantamento do estoque revelou que 2/5 do total de pacotes eram eletrônicos. Dos eletrônicos, 2/7 seriam enviados para o exterior, e os demais pacotes eletrônicos, que somavam 140 unidades, eram domésticos. Nessas condições, o número total de pacotes era igual a:",
       "opcoes": [
         "420",
@@ -168,7 +168,7 @@
     },
     {
       "id": 12,
-      "disciplina": "Raciocínio Lógico / Matemática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Custo base = R$ 3.500,00. Após conceder 30% de desconto, a organizadora quer ter 20% de lucro sobre o custo. Qual o preço de catálogo?",
       "opcoes": [
         "R$ 6.200,00",
@@ -183,7 +183,7 @@
     },
     {
       "id": 13,
-      "disciplina": "Raciocínio Lógico / Matemática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Monitor proporção largura:altura = 4:3 e diagonal = 50. Área de visualização (em pol²):",
       "opcoes": [
         "300",
@@ -198,7 +198,7 @@
     },
     {
       "id": 14,
-      "disciplina": "Raciocínio Lógico / Matemática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Caixa com dimensões 3 dm, 2 dm e (x + 1) dm. Volume = 18 dm³. Se a dimensão desconhecida for aumentada em 1 dm, o novo volume será:",
       "opcoes": [
         "21",
@@ -213,7 +213,7 @@
     },
     {
       "id": 15,
-      "disciplina": "Raciocínio Lógico / Matemática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Sequência: 1,3,5,4,3,5,7,6,5,7,9,8,7,9,11,... A soma dos termos 13º, 16º e 21º é:",
       "opcoes": [
         "25",
@@ -228,7 +228,7 @@
     },
     {
       "id": 16,
-      "disciplina": "Raciocínio Lógico",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Analise as proposições (→, ↔, ∧, ∨). Assinale a sequência correta (de cima para baixo):\n( ) (O Sol gira em torno da Terra) ∨ (Brasília é a capital do Brasil)\n( ) (A Lua é feita de queijo) ↔ (2 é um número ímpar)\n( ) (O Brasil fica na América do Sul) → (O Japão fica na Europa)\n( ) (Paris é a capital da França) ∧ (A água ferve a 100°C ao nível do mar)",
       "opcoes": [
         "V, V, F, V",
@@ -243,7 +243,7 @@
     },
     {
       "id": 17,
-      "disciplina": "Raciocínio Lógico",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Proposição: \"Se existe algum sistema operacional inseguro, então todo firewall é confiável.\" Qual frase é logicamente equivalente?",
       "opcoes": [
         "Algum SO é inseguro e todo firewall é confiável.",
@@ -258,7 +258,7 @@
     },
     {
       "id": 18,
-      "disciplina": "Estatística",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Tempo (min) / frequência: 16→40, 17→30, 18→20, 19→10. Assinale a opção incorreta:",
       "opcoes": [
         "A mediana é 17,5 minutos.",
@@ -273,7 +273,7 @@
     },
     {
       "id": 19,
-      "disciplina": "Combinatória",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Clube: 6 sócios elegíveis para 5 cargos distintos. Só 2 podem candidatar-se a Presidente. Quantas composições distintas?",
       "opcoes": [
         "180",
@@ -288,7 +288,7 @@
     },
     {
       "id": 20,
-      "disciplina": "Probabilidade",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Códigos 1–5; selecionam dois simultaneamente. Probabilidade de soma ≥ 7?",
       "opcoes": [
         "10%",
@@ -303,7 +303,7 @@
     },
     {
       "id": 21,
-      "disciplina": "Informática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Das letras abaixo, marque aquela que representa um nome de arquivo válido no Windows.",
       "opcoes": [
         "@relatorioteste.txt",
@@ -318,7 +318,7 @@
     },
     {
       "id": 22,
-      "disciplina": "Informática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "O texto recebeu qual formatação? (tachado/sobrescrito; todas maiúsculas e sobrescrito; versalete e sobrescrito; todas maiúsculas e subscrito; versalete e subscrito)",
       "opcoes": [
         "tachado/sobrescrito",
@@ -333,7 +333,7 @@
     },
     {
       "id": 23,
-      "disciplina": "Informática / Excel",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Qual opção NÃO aparece no menu de Formatação Condicional?",
       "opcoes": [
         "Inserção de Alertas.",
@@ -348,7 +348,7 @@
     },
     {
       "id": 24,
-      "disciplina": "Busca / Informática",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Para pesquisar exatamente a expressão CONCURSOS NO RIO DE JANEIRO, usar:",
       "opcoes": [
         "- .",
@@ -363,7 +363,7 @@
     },
     {
       "id": 25,
-      "disciplina": "Segurança da Informação",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Assinale a correta sobre política de senhas:",
       "opcoes": [
         "Senhas devem ser compartilhadas.",
@@ -378,7 +378,7 @@
     },
     {
       "id": 26,
-      "disciplina": "Atualidades / Cinema",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "“O Agente Secreto”, dirigido por Kleber Mendonça Filho e estrelado por Wagner Moura, trata de:",
       "opcoes": [
         "Mulher idosa que decide assumir controle...",
@@ -393,7 +393,7 @@
     },
     {
       "id": 27,
-      "disciplina": "Atualidades",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "A OMS afirmou que não há evidências conclusivas ligando o uso do medicamento durante a gravidez ao autismo. O medicamento mencionado foi:",
       "opcoes": [
         "Paracetamol.",
@@ -408,7 +408,7 @@
     },
     {
       "id": 28,
-      "disciplina": "Atualidades",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "O termo cunhado para o conflito Israel–Irã (junho de 2025) foi:",
       "opcoes": [
         "Guerra de 12 Dias.",
@@ -423,7 +423,7 @@
     },
     {
       "id": 29,
-      "disciplina": "Atualidades / Censo",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "De acordo com o Censo 2022 do IBGE, os venezuelanos tornaram-se a maior comunidade estrangeira residente no Brasil. Até então, qual comunidade era a maior?",
       "opcoes": [
         "japoneses",
@@ -438,7 +438,7 @@
     },
     {
       "id": 30,
-      "disciplina": "Atualidades / Político-Religioso",
+      "disciplina": "Estratégia Concursos",
       "enunciado": "Sobre a conjuntura após a eleição do novo Papa Leão XIV, a alternativa mais compatível com o texto-base é:",
       "opcoes": [
         "I.",
@@ -449,6 +449,456 @@
       ],
       "gabarito": 0,
       "explicacao": "Segundo o resumo adaptado para a prova, a opção mais coerente com o enunciado é a I.",
+      "dica": ""
+    },
+    {
+      "id": 31,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Sobre a abrangência do Código de Ética da PPES (IN nº 004/2024), assinale a alternativa correta:",
+      "opcoes": [
+        "Aplica-se exclusivamente aos servidores efetivos, excluídos contratados temporários.",
+        "Aplica-se apenas aos servidores com vínculo remunerado com a administração pública.",
+        "Aplica-se a todos que prestem serviços permanentes, temporários ou excepcionais à PPES, ainda que sem retribuição.",
+        "Aplica-se exclusivamente aos servidores lotados em unidades prisionais.",
+        "Tem aplicação apenas aos servidores de carreira em estágio probatório."
+      ],
+      "gabarito": 2,
+      "explicacao": "A IN prevê alcance amplo do Código, incluindo todos que prestem serviços à PPES, mesmo sem remuneração.",
+      "dica": ""
+    },
+    {
+      "id": 32,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Segundo a IN nº 004/2024, é considerado conflito de interesses:",
+      "opcoes": [
+        "A divulgação de informações públicas pela assessoria de imprensa da PPES.",
+        "O confronto entre interesses públicos e privados que possa comprometer o interesse público ou influenciar o desempenho imparcial da função pública.",
+        "A omissão de dados sigilosos em relatórios de rotina.",
+        "A simples existência de parentesco entre servidor e preso.",
+        "A recusa injustificada em fornecer informação pública."
+      ],
+      "gabarito": 1,
+      "explicacao": "Definição clássica de conflito de interesses: embate entre interesses públicos e privados que comprometa imparcialidade.",
+      "dica": ""
+    },
+    {
+      "id": 33,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Nos termos da IN nº 004/2024, o servidor da PPES deve:",
+      "opcoes": [
+        "Participar de atividades políticas que reforcem valores institucionais.",
+        "Utilizar sua identidade funcional para obter vantagens, desde que sem prejuízo ao serviço público.",
+        "Facilitar a fiscalização e o acompanhamento de suas tarefas pelos superiores hierárquicos.",
+        "Recusar-se a cumprir determinações da chefia que não estejam previstas expressamente no Código.",
+        "Divulgar livremente informações internas para assegurar transparência."
+      ],
+      "gabarito": 2,
+      "explicacao": "O servidor deve permitir a fiscalização e o acompanhamento de suas tarefas por superiores, em consonância com princípios de integridade.",
+      "dica": ""
+    },
+    {
+      "id": 34,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Nos termos das disposições finais da IN nº 004/2024, a censura ética aplicada a servidor da PPES:",
+      "opcoes": [
+        "Fica registrada por 2 anos nos assentamentos e impede promoção.",
+        "Fica registrada por 3 anos, mas não produz efeito para fins de promoção.",
+        "É permanente, integrando de forma definitiva o histórico funcional.",
+        "Deve ser eliminada do registro funcional após 12 meses.",
+        "Impede o servidor de participar de cursos de capacitação durante 3 anos."
+      ],
+      "gabarito": 1,
+      "explicacao": "Conforme as disposições finais adaptadas do enunciado, a censura possui registro por 3 anos e não afeta promoção (opção descrita no material).",
+      "dica": ""
+    },
+    {
+      "id": 35,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Rodrigo, policial penal, encaminhou relato de humilhação verbal sofrida por preso à chefia e recomendou acompanhamento psicológico. À luz da IN nº 004/2024, a atitude de Rodrigo é:",
+      "opcoes": [
+        "Extrapolação de atribuições; deveria só a direção decidir.",
+        "Afronta o princípio da hierarquia.",
+        "Eticamente adequada, reflete dever funcional de respeito e dignidade humana.",
+        "Violação do dever de sigilo institucional.",
+        "Moralmente compreensível, mas sem respaldo normativo."
+      ],
+      "gabarito": 2,
+      "explicacao": "Encaminhar ocorrência e promover cuidados ao custodiado demonstra cumprimento do dever de zelar pela dignidade humana, previsto no Código de Ética.",
+      "dica": ""
+    },
+    {
+      "id": 36,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Segundo a Lei nº 8.429/1992, qual alternativa representa ato de improbidade que importe enriquecimento ilícito:",
+      "opcoes": [
+        "Autorizar despesas não previstas em lei.",
+        "Conceder benefício administrativo sem formalidades.",
+        "Liberar recursos públicos sem observar normas.",
+        "Firmar contrato de rateio sem previsão orçamentária.",
+        "Utilizar em obra particular bem móvel/propriedade do ente, bem como trabalho de servidores/terceiros contratados."
+      ],
+      "gabarito": 4,
+      "explicacao": "O uso de bens públicos e trabalho de servidores para fins privados caracteriza improbidade com enriquecimento ilícito e dano ao erário.",
+      "dica": ""
+    },
+    {
+      "id": 37,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Empresa pública federal XPS: empregado Bruno, no exercício, praticou ato ilícito que causou prejuízo a particular José. A ação indenizatória observará regime de responsabilidade civil:",
+      "opcoes": [
+        "subjetiva, pois responsabilidade da sociedade de economia mista é direta independentemente de culpa.",
+        "objetiva, dispensando demonstração de culpa do empregado Bruno.",
+        "subjetiva, uma vez que sociedade de economia mista tem natureza jurídica de direito privado.",
+        "subjetiva, podendo Bruno ser incluído como litisconsorte passivo.",
+        "objetiva, sendo incabível ação regressiva contra Bruno por ser empregado público."
+      ],
+      "gabarito": 1,
+      "explicacao": "Quando estado/empresa pública presta serviço público, regra é responsabilidade objetiva pelos danos causados por seus agentes no exercício da função.",
+      "dica": ""
+    },
+    {
+      "id": 38,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Sobre o decreto autônomo: Mário concluiu que se trata de um ato normativo editado pelo Presidente da República sendo ele:",
+      "opcoes": [
+        "um ato normativo que visa exclusivamente à fiel execução da lei.",
+        "um ato que não possui qualquer fundamentação na Constituição.",
+        "um ato que inova no ordenamento jurídico, com fundamento de validade diretamente na Constituição.",
+        "um ato considerado contrário à lei vigente.",
+        "um ato que não pode impor obrigações nem restringir direitos."
+      ],
+      "gabarito": 2,
+      "explicacao": "Decreto autônomo tem base de validade na própria Constituição e pode regulamentar matérias nelas previstas, inovando o ordenamento.",
+      "dica": ""
+    },
+    {
+      "id": 39,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Considerando a Lei nº 9.784/1999, analise as afirmações I–IV. Está correto o que se afirma em:",
+      "opcoes": [
+        "I, II, III e IV",
+        "I e II, apenas",
+        "II e III, apenas",
+        "I, II e IV, apenas",
+        "I, III e IV, apenas"
+      ],
+      "gabarito": 0,
+      "explicacao": "Todas as quatro assertivas correspondem a disposições e conceitos previstos na Lei nº 9.784/1999.",
+      "dica": ""
+    },
+    {
+      "id": 40,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Caso de confissão obtida por violência física e psicológica contra Caio. Segundo a Constituição de 1988, assinale a alternativa correta:",
+      "opcoes": [
+        "Provas obtidas por meios ilícitos são válidas no processo se confirmadas por outras provas legais.",
+        "A lei considerará crimes inafiançáveis e insuscetíveis de graça ou anistia a prática da tortura, tráfico ilícito de entorpecentes, terrorismo e crimes hediondos.",
+        "Ninguém será submetido a tortura nem a tratamento desumano ou degradante, exceto em situações de ameaça à segurança nacional.",
+        "O preso poderá ser coagido a colaborar com as investigações, em nome do interesse público.",
+        "Ninguém será preso senão em flagrante delito ou por ordem escrita e fundamentada de autoridade policial competente, salvo nos casos de crime militar."
+      ],
+      "gabarito": 1,
+      "explicacao": "A Constituição prevê que tortura e crimes hediondos são inafiançáveis; provas obtidas por meios ilícitos são inválidas (contrapõe a (a)).",
+      "dica": ""
+    },
+    {
+      "id": 41,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Presidente editou decreto alterando denominação de órgãos, extinguindo cargos vagos e transferindo alguns cargos. Medida é:",
+      "opcoes": [
+        "inconstitucional, pois extinção e criação de cargos são matérias reservadas à lei.",
+        "regular, pois o Presidente pode editar decretos relativos à organização da administração, desde que sem aumento de despesas.",
+        "inconstitucional, pois transferência e extinção dependem de autorização do Congresso.",
+        "válida, pois o Presidente tem competência para editar decretos autônomos sobre matérias administrativas.",
+        "válida, mas apenas se houver autorização legislativa específica."
+      ],
+      "gabarito": 0,
+      "explicacao": "Criação/extinção de cargos públicos e definições de carreira são matérias legislativas; não cabe ao chefe do Executivo suprimir cargos por decreto.",
+      "dica": ""
+    },
+    {
+      "id": 42,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "No que se refere à Ordem Social, assinale o item correto:",
+      "opcoes": [
+        "A Constituição determina que ações e serviços de saúde serão regulamentados pelo poder público e podem ser exercidos direta ou indiretamente, inclusive por pessoa física/jurídica de direito privado.",
+        "A educação e o ensino noturno serão organizados em uma grade especial, independentemente das condições do educando.",
+        "O atendimento educacional especializado aos portadores de deficiência física deverá ser feito em instituições especializadas, preferencialmente.",
+        "A universalidade da cobertura e atendimento da Seguridade Social significa que benefícios e serviços serão iguais para todos.",
+        "O Estado exercerá apenas a função de planejamento das políticas sociais."
+      ],
+      "gabarito": 0,
+      "explicacao": "A CF prevê que a saúde será regulamentada pelo poder público e pode ser executada por entidades privadas mediante normas e supervisão.",
+      "dica": ""
+    },
+    {
+      "id": 43,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Sobre Segurança Pública, assinale a alternativa correta:",
+      "opcoes": [
+        "Competência exclusiva da União.",
+        "Polícia Militar vinculada ao Poder Judiciário.",
+        "Deve ser exercida de forma compartilhada entre União, Estados, DF e Municípios.",
+        "Uso da força é absolutamente proibido salvo legítima defesa e transgressões disciplinares militares.",
+        "Sistema Penal é o principal instrumento das políticas de segurança pública."
+      ],
+      "gabarito": 2,
+      "explicacao": "A CF estabelece atuação compartilhada e complementar entre os entes federativos na segurança pública.",
+      "dica": ""
+    },
+    {
+      "id": 44,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Sobre conceito, fundamentos e evolução dos Direitos Humanos, assinale a alternativa correta:",
+      "opcoes": [
+        "O atual conceito afirma que são direitos pré-existentes ao direito positivado, dispensando forma e previsão expressa.",
+        "A última corrente de fundamentação dos Direitos Humanos se baseia na dignidade da pessoa humana.",
+        "O primeiro documento de Direitos Humanos registrado é a Declaração dos Direitos do Homem.",
+        "A Primeira Guerra Mundial é responsável pela nova fase de internacionalização dos Direitos Humanos.",
+        "Dos Direitos Humanos possuem normatividade aberta e não podem ser fundamentados por nenhuma base teórica."
+      ],
+      "gabarito": 0,
+      "explicacao": "A concepção clássica dos Direitos Humanos os entende como direitos inerentes ao ser humano, anteriores à positivação jurídica.",
+      "dica": ""
+    },
+    {
+      "id": 45,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Sobre a Declaração Universal dos Direitos Humanos (DUDH), assinale a alternativa correta:",
+      "opcoes": [
+        "Todo ser humano tem direito a um julgamento justo, podendo ser preso arbitrariamente sempre que houver suspeita de crime contra o Estado.",
+        "A DUDH assegura o direito à vida, à liberdade e à segurança pessoal, fundados na dignidade humana.",
+        "O direito de asilo deve ser garantido em qualquer hipótese, inclusive em crimes comuns.",
+        "É permitido aplicar tratamentos cruéis ou degradantes em situações excepcionais.",
+        "O reconhecimento da personalidade jurídica de cada indivíduo depende da nacionalidade."
+      ],
+      "gabarito": 1,
+      "explicacao": "A DUDH consagra direitos fundamentais como vida, liberdade e segurança pessoal vinculados à dignidade humana.",
+      "dica": ""
+    },
+    {
+      "id": 46,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Regras de Nelson Mandela (Regras Mínimas) — julgue I–III. Está correto o que se afirma em:",
+      "opcoes": [
+        "Apenas I.",
+        "I e II.",
+        "II e III.",
+        "Todas as assertivas.",
+        "Nenhuma das assertivas."
+      ],
+      "gabarito": 3,
+      "explicacao": "As Regras de Nelson Mandela contemplam necessidades individuais, instalações sanitárias adequadas e acesso a serviços odontológicos na perspectiva de dignidade e saúde dos reclusos.",
+      "dica": ""
+    },
+    {
+      "id": 47,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Thiago, policial penal, ao repelir agressão que acreditava injusta, feriu o outro que depois disse ter sido 'brincadeira'. Nesse caso Thiago agiu em erro:",
+      "opcoes": [
+        "de tipo permissivo",
+        "de tipo incriminador",
+        "sobre a pessoa",
+        "na execução",
+        "de proibição"
+      ],
+      "gabarito": 0,
+      "explicacao": "Tratando-se de ação baseada em falsa percepção da situação (acreditou haver agressão), configura-se erro sobre circunstância permissiva — 'erro de tipo permissivo'.",
+      "dica": ""
+    },
+    {
+      "id": 48,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Acerca das penas, é correto afirmar que se considera:",
+      "opcoes": [
+        "Regime aberto a execução da pena em estabelecimento de segurança média.",
+        "Regime aberto a execução da pena em colônia agrícola, industrial ou estabelecimento similar.",
+        "Regime semiaberto a execução da pena em colônia agrícola, industrial ou estabelecimento similar.",
+        "Regime semiaberto a execução da pena em casa de albergado ou estabelecimento adequado.",
+        "Regime fechado a execução em segurança máxima e semiaberto em segurança média."
+      ],
+      "gabarito": 2,
+      "explicacao": "A execução em colônia agrícola/industrial é tradicionalmente associada ao regime semiaberto, conforme previsão legal.",
+      "dica": ""
+    },
+    {
+      "id": 49,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Alexandre desferiu duas facadas em policial penal Eduardo com dolo de matar; a vítima faleceu. Alexandre deverá responder por:",
+      "opcoes": [
+        "Homicídio doloso simples, majorado por ter sido praticado contra integrante do sistema prisional.",
+        "Homicídio doloso, qualificado por ter sido praticado contra integrante do sistema prisional.",
+        "Homicídio doloso simples, sem majoração.",
+        "Lesão corporal seguida de morte, majorada por ter sido praticada contra integrante do sistema prisional.",
+        "Lesão corporal seguida de morte, sem majorantes."
+      ],
+      "gabarito": 1,
+      "explicacao": "Homicídio doloso com qualificadora por ter sido praticado contra agente do sistema prisional no exercício da função ou por motivo relacionado à função pode configurar majorante/qualificadora.",
+      "dica": ""
+    },
+    {
+      "id": 50,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Antônio, advogado, pediu R$10.000 a Célia alegando que pagaria metade ao juiz para conseguir livramento condicional — porém não conhece o magistrado; Célia não pagou. Antônio responderá por:",
+      "opcoes": [
+        "Tráfico de influência, em sua forma consumada",
+        "Exploração de prestígio, em sua forma tentada, majorado",
+        "Exploração de prestígio, em sua forma tentada, sem majoração",
+        "Exploração de prestígio, em sua forma consumada, majorado",
+        "Exploração de prestígio, em sua forma consumada, sem majoração"
+      ],
+      "gabarito": 2,
+      "explicacao": "A conduta é tentativa de exploração de prestígio (prometendo influência inexistente); não houve pagamento → tentativa; sem majorante descrito no enunciado.",
+      "dica": ""
+    },
+    {
+      "id": 51,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Sobre o inquérito policial, assinale a alternativa INCORRETA:",
+      "opcoes": [
+        "Nos delitos em que a ação penal pública dependa de representação, o inquérito não poderá ser instaurado sem a manifestação do ofendido.",
+        "Nos crimes de ação privada, a autoridade policial somente poderá iniciar o inquérito mediante requerimento de quem possua legitimidade.",
+        "O Ministério Público somente poderá devolver o inquérito policial à autoridade competente para diligências complementares indispensáveis à formulação da denúncia.",
+        "Tanto o ofendido quanto seu representante legal, assim como o investigado, podem solicitar diligências, cuja realização deverá ser feita pela autoridade policial.",
+        "O inquérito policial acompanhará a denúncia ou a queixa, sempre que tenha servido como base para uma delas."
+      ],
+      "gabarito": 2,
+      "explicacao": "A assertiva (c) está redigida de forma restritiva/errônea no enunciado; o MP pode requisitar diligências e devolver o inquérito para complementação quando necessário.",
+      "dica": ""
+    },
+    {
+      "id": 52,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Em ação penal privada subsidiária da pública, quando o MP não propõe denúncia dentro do prazo legal, caberá a ele:",
+      "opcoes": [
+        "Deixar de atuar no processo.",
+        "Participar sem legitimidade para recorrer.",
+        "Não poderá requerer arquivamento nem rejeitar queixa apresentada.",
+        "Aditar a queixa, rejeitá-la, oferecer denúncia substitutiva, atuar em todos os atos, apresentar provas e interpor recursos.",
+        "Deixará de figurar como parte, atuando apenas como fiscal da lei."
+      ],
+      "gabarito": 3,
+      "explicacao": "O MP, na hipótese apontada, pode atuar plenamente, inclusive ofertando denúncia substitutiva e praticando atos processuais inerentes à titularidade.",
+      "dica": ""
+    },
+    {
+      "id": 53,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Com relação às medidas cautelares previstas no Código de Processo Penal, assinale a alternativa correta:",
+      "opcoes": [
+        "Podem ser decretadas mesmo nos casos em que o crime não preveja pena privativa de liberdade.",
+        "É vedado o uso da força durante a execução da prisão, exceto quando indispensável.",
+        "Se a infração for afiançável, a ausência do mandado não impedirá a prisão.",
+        "Estando o acusado em localidade diversa, sua prisão será deprecada, dispensando-se envio integral do mandado.",
+        "Qualquer autoridade policial poderá cumprir mandado registrado no CNJ, desde que dentro da área de competência do magistrado."
+      ],
+      "gabarito": 0,
+      "explicacao": "Medidas cautelares pessoais podem ser aplicadas quando necessárias, mesmo para infrações sem pena privativa de liberdade.",
+      "dica": ""
+    },
+    {
+      "id": 54,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Provas obtidas a partir de provas ilícitas não serão consideradas ilegais quando puderem ser produzidas por fonte autônoma e independente. Nesse caso, tais provas serão:",
+      "opcoes": [
+        "ilícitas",
+        "parcialmente ilícitas",
+        "parcialmente lícitas",
+        "lícitas, porém proibidas",
+        "lícitas"
+      ],
+      "gabarito": 4,
+      "explicacao": "Se puderem ser produzidas por fonte autônoma e independente, afastada a contaminação pela prova ilícita, tornam-se lícitas.",
+      "dica": ""
+    },
+    {
+      "id": 55,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Policial penal condenado por tortura — efeito da condenação segundo Lei nº 9.455/1997:",
+      "opcoes": [
+        "Suspensão do cargo por 8 anos.",
+        "Somente a perda do cargo.",
+        "Somente a interdição do cargo.",
+        "A perda do cargo e a interdição pelo dobro do prazo da pena aplicada.",
+        "Prestação de serviço comunitário."
+      ],
+      "gabarito": 3,
+      "explicacao": "A Lei de Tortura prevê perda do cargo e interdição dos direitos decorrentes do cargo, com prazos multiplicadores conforme redação legal adaptada.",
+      "dica": ""
+    },
+    {
+      "id": 56,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "De acordo com a Lei de Execução Penal, se o indivíduo primário for condenado por constituição de milícia privada, para formar requisito objetivo para progressão de regime deverá cumprir:",
+      "opcoes": [
+        "30%",
+        "40%",
+        "50%",
+        "60%",
+        "70%"
+      ],
+      "gabarito": 2,
+      "explicacao": "Conforme regras de progressão previstas para crimes mais graves, comumente exige-se cumprimento de metade da pena (50%) para progressão — opção (c) selecionada conforme material do simulado.",
+      "dica": ""
+    },
+    {
+      "id": 57,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "De acordo com a Lei de Drogas (Lei nº 11.343/2006), marque a alternativa correta:",
+      "opcoes": [
+        "O crime de tráfico de drogas pode ser praticado na forma culposa.",
+        "O tráfico é um crime hediondo.",
+        "O tráfico é um crime material quanto ao resultado.",
+        "O crime de tráfico se consuma com a prática de qualquer conduta prevista no art. 33, 'caput'.",
+        "Na Lei de drogas é possível o crime de tráfico na forma qualificada."
+      ],
+      "gabarito": 3,
+      "explicacao": "O tipo penal do art. 33, caput, descreve as condutas que configuram o crime de tráfico; a consumação ocorre com a prática de qualquer dessas condutas.",
+      "dica": ""
+    },
+    {
+      "id": 58,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Indivíduo com porte de arma de fogo de uso permitido efetuou disparos em local ermo e desabitado. Marque a alternativa correta:",
+      "opcoes": [
+        "Ele responderá pelo crime de disparo de arma de fogo.",
+        "A conduta dele é atípica.",
+        "Ele responderá por um crime hediondo.",
+        "A conduta se amolda ao crime de porte ilegal de arma de uso restrito.",
+        "A conduta se amolda ao crime de porte ilegal de arma de uso proibido."
+      ],
+      "gabarito": 0,
+      "explicacao": "Ainda que a arma seja de uso permitido, efetuar disparos em local público/ermo pode configurar crime de disparo de arma de fogo ou outra modalidade prevista em lei; portanto (a) é resposta adequada ao enunciado.",
+      "dica": ""
+    },
+    {
+      "id": 59,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "À luz da Lei Complementar nº 1.061, a PPES reger-se-á pelos princípios constitucionais e deve observar, ainda, na sua atuação: EXCETO:",
+      "opcoes": [
+        "a promoção dos direitos humanos;",
+        "a hierarquia e a disciplina;",
+        "o atendimento ao público com presteza, probidade e urbanidade;",
+        "a integração com outros órgãos de segurança pública e da execução penal;",
+        "a atuação na prevenção e no controle das infrações administrativas no âmbito da execução penal."
+      ],
+      "gabarito": 4,
+      "explicacao": "Conforme a redação adaptada, as disposições da Lei Complementar listam princípios e deveres institucionais (a–d). A opção (e) é a alternativa 'EXCETO' conforme o enunciado do simulado.",
+      "dica": ""
+    },
+    {
+      "id": 60,
+      "disciplina": "Estratégia Concursos",
+      "enunciado": "Quais são os símbolos institucionais da PPES, segundo o professor Fábio Ramos?",
+      "opcoes": [
+        "Hino, bandeira, brasão e selo, válidos em todo território nacional, a serem estabelecidos em decreto.",
+        "Hino, bandeira, brasão e distintivo, válidos em todo território nacional, a serem estabelecidos em decreto.",
+        "Hino, bandeira, arma e selo, válidos em todo território do estado, a serem estabelecidos em decreto.",
+        "Hino, bandeira, brasão, selo e distintivo, válidos em todo território nacional, a serem estabelecidos em decreto.",
+        "Hino, bandeira, brasão apenas, válidos em todo território nacional, a serem estabelecidos em decreto."
+      ],
+      "gabarito": 1,
+      "explicacao": "De acordo com a questão adaptada do material, os símbolos institucionais incluem hino, bandeira, brasão e distintivo, regulamentados por decreto.",
       "dica": ""
     }
   ]
