@@ -3,843 +3,1837 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERIFICAR DESEMPENHO DO ALUNO- Simulados Interativos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>PROJETO SABER - Simulados Interativos</title>
     <style>
-        /* Variáveis de Tema (Design System Básico) */
-        :root {
-            --primary-color: #004d99; /* Azul Profundo */
-            --secondary-color: #fca311; /* Laranja de Destaque */
-            --success-color: #28a745; /* Verde para Acerto */
-            --danger-color: #dc3545; /* Vermelho para Erro */
-            --warning-color: #ffc107; /* Amarelo para Atenção */
-            --bg-light: #f9fbfd; /* Fundo Leve */
-            --bg-dark: #212529; /* Barra Lateral Escura */
-            --text-dark: #343a40;
-            --text-light: #fff;
-            --border-color: #e9ecef;
-            --card-bg: #ffffff;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            color: #333;
         }
 
-        /* ======================================= */
-        /* CONFIGURAÇÃO RESPONSIVA (Layout)        */
-        /* ======================================= */
-
-        /* Padrão para Celular (Barra lateral em cima, Conteúdo em baixo) */
-        #sidebar {
-            width: 100%; 
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
-            overflow-y: auto;
-        }
-        
-        @media (min-width: 768px) {
-            body {
-                display: flex; /* Volta ao layout lado a lado para telas grandes */
-            }
-            #sidebar {
-                width: 300px;
-                flex-shrink: 0; 
-                height: 100vh; 
-                position: sticky; /* Mantém a barra lateral fixa no topo */
-                top: 0;
-                box-shadow: 4px 0 10px rgba(0, 0, 0, 0.15); /* Sombra na lateral */
-            }
-            #main-content {
-                flex-grow: 1;
-            }
-            header {
-                flex-direction: row;
-            }
-        }
-        
-        /* CABEÇALHO */
         header {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            padding: 15px 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-direction: column; /* Empilha no celular */
-            gap: 10px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #2D5A9A 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         header h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem; /* Menor no celular */
-            margin: 0;
-            text-align: center;
-        }
-        @media (min-width: 768px) {
-             header h1 {
-                font-size: 1.8rem;
-            }
+            font-size: 2.5em;
+            margin-bottom: 5px;
         }
 
-        /* Botão Análise e Revisão na Sidebar */
-        .btn-sidebar-report {
-            padding: 12px 15px;
-            background-color: var(--success-color); 
-            color: var(--text-light);
-            font-weight: bold;
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .main-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .main-screen.active {
+            display: block;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h2 {
+            color: #1E3A8A;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .profile-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1E3A8A;
+        }
+
+        .section-title {
+            color: #1E3A8A;
+            font-size: 1.5em;
+            margin: 30px 0 20px 0;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .option-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            border-color: #1E3A8A;
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .option-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .option-card h3 {
+            color: #1E3A8A;
+            margin-bottom: 10px;
+        }
+
+        .option-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .simulado-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 30px;
+        }
+
+        .simulado-card .icon {
+            font-size: 2.5em;
+        }
+
+        .simulado-card h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .simulado-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95em;
+        }
+
+        .simulado-card .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
             border: none;
             border-radius: 6px;
+            font-size: 1em;
             cursor: pointer;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            transition: background-color 0.2s;
-            display: none; 
-            width: 100%;
-            text-align: center;
-            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
         }
 
-        .btn-sidebar-report:hover {
-            background-color: #1e7e34;
+        .btn-primary {
+            background: #1E3A8A;
+            color: white;
         }
 
-        /* Lista de Simulados */
-        #simulado-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
+        .btn-primary:hover {
+            background: #395abc;
         }
 
-        #simulado-list li {
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+
+        .btn-edit:hover {
+            background: #0b7dda;
+        }
+
+        .btn-voltar {
+            background: #ff9800;
+            color: white;
+            padding: 8px 16px;
+        }
+
+        .btn-voltar:hover {
+            background: #e68900;
+        }
+
+        .mode-toggles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .toggle-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-card h3 {
+            color: #1E3A8A;
             margin-bottom: 5px;
-            border-radius: 5px;
-            overflow: hidden;
         }
 
-        #simulado-list a {
-            display: block;
-            padding: 10px 15px;
-            color: var(--text-light);
-            text-decoration: none;
-            background-color: #343a40;
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
             cursor: pointer;
-            transition: background-color 0.2s, color 0.2s;
-            border-left: 5px solid transparent;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
         }
 
-        #simulado-list a:hover {
-            background-color: #495057;
-            border-left-color: var(--secondary-color);
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
 
-        /* CONTEÚDO PRINCIPAL */
-        #main-content {
-            width: 100%; 
-            padding: 0;
+        input:checked + .toggle-slider {
+            background-color: #1E3A8A;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .admin-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .admin-modal.active {
+            display: block;
+        }
+
+        .admin-content {
+            background-color: white;
+            margin: 3% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 95%;
+            max-width: 1000px;
+            max-height: 90vh;
             overflow-y: auto;
         }
 
-        #quiz-container {
-            background-color: var(--bg-light);
-            padding: 20px; 
-            max-width: 900px;
-            margin: 0 auto; 
-        }
-        @media (min-width: 768px) {
-            #quiz-container {
-                 padding: 30px;
-                 margin: 20px auto;
-            }
-        }
-        
-        /* ... Estilos de Questão e Opções (Mantidos) ... */
-        .question-card {
-            margin-bottom: 20px; 
-            padding: 15px; 
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.3s; 
-        }
-
-        .question-card.answered {
-            border-left: 5px solid var(--primary-color);
-        }
-
-        .question-card h4 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--primary-color);
-            margin-top: 0;
-            font-size: 1.1rem; 
-        }
-        
-        .option-label {
-            display: flex;
-            align-items: center;
-            padding: 10px; 
-            margin: 5px 0;
+        .close-admin {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            transition: background-color 0.2s, border-color 0.2s;
-            position: relative;
         }
 
-        .option-label:hover {
-            background-color: var(--bg-light);
+        .close-admin:hover {
+            color: black;
         }
 
-        .question-locked .option-label {
-            cursor: default; 
-            pointer-events: none; 
-        }
-        
-        .option-label input[type="radio"] {
-            margin-right: 10px;
-        }
-        
-        /* Estilos de Feedback */
-        .option-label.correct {
-            background-color: #e6ffed !important; 
-            border: 2px solid var(--success-color); 
-            font-weight: 500;
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            flex-wrap: wrap;
         }
 
-        .option-label.incorrect {
-            background-color: #ffebeb !important; 
-            border: 2px solid var(--danger-color); 
-            font-weight: 500;
+        .admin-tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 15px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
         }
-        
-        /* ANÁLISE DIDÁTICA DO PROFESSOR */
-        .explanation-box {
-            margin-top: 15px; 
-            padding: 15px;
-            background-color: #e6f7ff; 
-            border-left: 5px solid var(--primary-color);
-            border-radius: 4px;
-            display: none; 
+
+        .admin-tab-btn.active {
+            color: #1E3A8A;
+            border-bottom-color: #1E3A8A;
         }
-        
-        .explanation-box strong {
-            color: var(--primary-color);
-            font-family: 'Montserrat', sans-serif;
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
             display: block;
             margin-bottom: 8px;
+            font-weight: 600;
+            color: #1E3A8A;
         }
 
-        /* COMENTÁRIOS DO ALUNO (Área de Notas) */
-        .comment-section {
-            margin-top: 20px; 
-            border-top: 1px dashed var(--border-color);
-            padding-top: 15px;
-        }
-
-        .comment-section textarea {
+        .form-group textarea,
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
             width: 100%;
-            min-height: 70px; 
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: vertical;
-            font-family: 'Roboto', sans-serif;
-            box-sizing: border-box; 
-            margin-bottom: 10px; 
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
         }
-        
-        .comment-section strong {
-            color: var(--secondary-color);
-            font-size: 0.9rem;
+
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+        }
+
+        .form-group input[type="text"] {
+            font-family: Arial, sans-serif;
+        }
+
+        #jsonPreview, #jsonPreviewImport {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .instructions {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            color: #0066cc;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .simulado-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #1E3A8A;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1E3A8A, #2D5A9A);
+            transition: width 0.3s ease;
+        }
+
+        .questao-container {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .questao-texto {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .opcoes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opcao-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .opcao-label:hover {
+            border-color: #1E3A8A;
+            background: #f0f4ff;
+        }
+
+        .opcao-label span {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            flex: 1;
+            text-align: left;
+        }
+
+        .opcao-label.correta {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .opcao-label.correta::before {
+            content: "✅ ";
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .opcao-label.incorreta {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .opcao-label.incorreta::before {
+            content: "❌ ";
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .modo-deus-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .modo-professor-box {
+            background: #e8f4f8;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+
+        .navegacao {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .relatorio-screen {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .relatorio-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .relatorio-header h2 {
+            color: #1E3A8A;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .pontuacao-geral {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .pontuacao-box {
+            background: linear-gradient(135deg, #1E3A8A, #2D5A9A);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pontuacao-box h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .modal-nome {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-nome.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-nome-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-nome-content h2 {
+            color: #1E3A8A;
+            margin-bottom: 20px;
+        }
+
+        .modal-nome-content input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-nome-content button {
+            margin: 0 10px;
+        }
+
+        .feedback-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            color: #1565c0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 6px;
+            border-left: 3px solid #1E3A8A;
+        }
+
+        .checkbox-item input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 500;
+            color: #1E3A8A;
+        }
+
+        .simulado-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 4px solid #1E3A8A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .simulado-info {
+            flex: 1;
+        }
+
+        .simulado-info strong {
+            color: #1E3A8A;
             display: block;
             margin-bottom: 5px;
         }
 
-        /* Estilos dos Botões de Anotação */
-        .note-buttons {
+        .simulado-info small {
+            color: #666;
+        }
+
+        .simulado-actions {
             display: flex;
             gap: 10px;
         }
 
-        .note-buttons button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: opacity 0.2s;
-            font-size: 0.85rem; 
-        }
-
-        .btn-save-note {
-            background-color: var(--success-color);
-            color: var(--text-light);
-        }
-
-        .btn-clear-note {
-            background-color: var(--danger-color);
-            color: var(--text-light);
-        }
-        
-        /* BOTAO RELATÓRIO FINAL no Header */
-        .btn-check-all {
-            padding: 10px 20px; 
-            background-color: var(--secondary-color);
-            color: var(--text-dark);
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 10px; 
-            transition: background-color 0.2s;
-            display: none;
-            width: 100%; 
+        footer {
             text-align: center;
-            font-size: 0.9rem; 
+            padding: 20px;
+            color: white;
+            margin-top: 40px;
+            font-size: 0.9em;
         }
-        @media (min-width: 768px) {
-            .btn-check-all {
-                width: auto;
-                margin: 0;
-                padding: 12px 25px;
-                font-size: 1rem;
+
+        @media (max-width: 768px) {
+            .admin-content {
+                padding: 20px;
+                width: 98%;
+            }
+
+            .simulado-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .simulado-actions {
+                width: 100%;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .navegacao {
+                flex-direction: column;
+            }
+
+            .navegacao button {
+                width: 100%;
             }
         }
-
-
-        /* Relatório de Desempenho */
-        #performance-report {
-            margin-top: 30px;
-            padding: 20px; 
-            background-color: var(--card-bg);
-            border: 2px solid var(--primary-color);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        #performance-report h3 {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-top: 0;
-            font-size: 1.2rem; 
-        }
-
-        .report-summary span {
-            display: block;
-            font-size: 1rem; 
-            margin-bottom: 8px;
-        }
-        
-        .report-summary .score-info {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-bottom: 15px;
-        }
-
-        .report-summary .hit { color: var(--success-color); font-weight: bold; }
-        .report-summary .error { color: var(--danger-color); font-weight: bold; }
-        .report-summary .percent { color: var(--secondary-color); font-weight: bold; }
-        .report-summary .percent strong { font-size: 1.2rem !important; } 
-
-        .weak-areas {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #fffbe6; 
-            border-left: 5px solid var(--warning-color);
-            border-radius: 6px;
-        }
-        
     </style>
 </head>
 <body>
+    <header>
+        <h1>📚 PROJETO SABER</h1>
+        <p>Seu portal de estudos inteligente para aprovação</p>
+    </header>
 
-    <aside id="sidebar">
-        <h2>Simulados</h2>
-        <p>Selecione um simulado para iniciar:</p>
+    <div class="container">
+        <div id="menuPrincipal" class="main-screen active">
+            <div class="welcome-section">
+                <h2>Bem-vindo ao Projeto Saber!</h2>
+                <p>Escolha seu modo de estudo e comece a aprender</p>
+            </div>
 
-        <button class="btn-sidebar-report" id="btn-sidebar-report" onclick="showPerformanceReport(true)">
-            📊 Correção e avaliação do desempenho
-        </button>
+            <div class="profile-card">
+                <h3>👤 Perfil do Estudante</h3>
+                <p>Total de questões disponíveis: <strong id="totalQuestoes">0</strong></p>
+            </div>
 
-        <ul id="simulado-list">
-            <li>Carregando simulados...</li>
-        </ul>
-        <div id="quiz-status" style="margin-top: 20px; font-size: 0.9rem; color: #adb5bd;">Aguardando seleção.</div>
-    </aside>
+            <div id="secaoSimulados">
+                <h2 class="section-title">📚 Meus Simulados</h2>
+                <div class="options-grid" id="simuladosCriados"></div>
+            </div>
 
-    <div id="main-content">
-        <header>
-            <h1>Análise e Revisão de Conteúdo </h1>
-            <button class="btn-check-all" id="btn-report" onclick="showPerformanceReport(true)">Visualizar Relatório Final</button>
-        </header>
-        <div id="quiz-container">
-            <p>Selecione um simulado na barra lateral para começar.</p>
-        </div>
-    </div>
-    
-    <script>
-        // O CÓDIGO ESPERA ENCONTRAR OS ARQUIVOS JSON NESTA PASTA!
-        
-        const DATA_FOLDER = './data/'; 
-        let currentQuizData = null;
-        let currentSimuladoName = '';
-        let answeredQuestions = 0;
-        
-        let performance = {
-            totalQuestions: 0,
-            hits: 0,
-            errors: 0,
-            disciplineBreakdown: {} 
-        };
-
-        // ===================================================================
-        // FUNÇÕES DE ANOTAÇÕES
-        // ===================================================================
-        function saveNote(simuladoName, index) {
-            try {
-                const textarea = document.getElementById(`note-q-${index}`);
-                const content = textarea ? textarea.value : '';
-
-                if (content.trim() === '') {
-                    alert('A anotação está vazia. Use o botão "Excluir" para remover notas salvas.');
-                    return;
-                }
-
-                const key = `notes_${simuladoName}_${index}`;
-                localStorage.setItem(key, content);
-                alert('Anotação gravada com sucesso!');
-            } catch (e) {
-                console.error("Erro ao salvar a nota no LocalStorage:", e);
-                alert('Erro ao gravar a anotação. Verifique o console.');
-            }
-        }
-
-        function clearNote(simuladoName, index) {
-            try {
-                const key = `notes_${simuladoName}_${index}`;
-                localStorage.removeItem(key);
-                
-                const textarea = document.getElementById(`note-q-${index}`);
-                if (textarea) {
-                    textarea.value = '';
-                }
-                alert('Anotação excluída com sucesso!');
-            } catch (e) {
-                console.error("Erro ao excluir a nota do LocalStorage:", e);
-                alert('Erro ao excluir a anotação. Verifique o console.');
-            }
-        }
-
-        function loadNote(simuladoName, index) {
-            try {
-                const key = `notes_${simuladoName}_${index}`;
-                return localStorage.getItem(key) || '';
-            } catch (e) {
-                console.error("Erro ao carregar a nota do LocalStorage:", e);
-                return '';
-            }
-        }
-
-        // ===================================================================
-        // FUNÇÕES DE PERFORMANCE E INTERATIVIDADE
-        // ===================================================================
-
-        function updatePerformance(discipline, isCorrect) {
-            discipline = (discipline || 'Geral').toUpperCase().trim(); 
-
-            if (!performance.disciplineBreakdown[discipline]) {
-                performance.disciplineBreakdown[discipline] = { total: 0, errors: 0 };
-            }
-
-            performance.totalQuestions++;
-            if (isCorrect) {
-                performance.hits++;
-            } else {
-                performance.errors++;
-            }
-
-            performance.disciplineBreakdown[discipline].total++;
-            if (!isCorrect) {
-                performance.disciplineBreakdown[discipline].errors++;
-            }
-        }
-
-
-        /**
-         * Implementa a interatividade em tempo real: corrige a questão no clique
-         */
-        function checkAnswer(index, selectedValue) {
-            if (!currentQuizData || index >= currentQuizData.length) return;
-
-            const q = currentQuizData[index];
-            const questionElement = document.querySelector(`.question-card[data-question-number='${q.numero}']`);
-            
-            if (questionElement.classList.contains('question-locked')) {
-                return;
-            }
-
-            const isCorrect = (selectedValue === q.resposta_correta);
-            const selectedLabel = questionElement.querySelector(`input[value='${selectedValue}']`).closest('.option-label');
-            const correctInput = questionElement.querySelector(`input[value='${q.resposta_correta}']`);
-            const correctLabel = correctInput ? correctInput.closest('.option-label') : null;
-            const explanationBox = document.getElementById(`exp-${index}`);
-
-            questionElement.classList.add('question-locked'); 
-            questionElement.classList.add('answered'); 
-            answeredQuestions++;
-
-            if (correctLabel) {
-                correctLabel.classList.add('correct');
-            }
-            if (!isCorrect) {
-                selectedLabel.classList.add('incorrect');
-            }
-
-            if (explanationBox) {
-                explanationBox.style.display = 'block';
-            }
-
-            updatePerformance(q.disciplina, isCorrect);
-
-            const totalQuestions = currentQuizData.length;
-            if (answeredQuestions === totalQuestions) {
-                document.getElementById('btn-report').style.display = 'block';
-                document.getElementById('quiz-status').textContent = `Simulado concluído! Clique em "Visualizar Relatório Final" ou role para baixo.`;
-                showPerformanceReport(true); 
-            } else {
-                document.getElementById('quiz-status').textContent = `Progresso: ${answeredQuestions}/${totalQuestions} questões respondidas.`;
-                
-                // Rolagem suave para a próxima questão
-                setTimeout(() => {
-                    let nextIndex = index + 1;
-                    while (nextIndex < currentQuizData.length) {
-                        const nextQ = document.querySelector(`.question-card[data-question-number='${currentQuizData[nextIndex].numero}']`);
-                        if (nextQ && !nextQ.classList.contains('question-locked')) {
-                            nextQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            break;
-                        }
-                        nextIndex++;
-                    }
-                }, 200); 
-            }
-        }
-
-        /**
-         * Gera e exibe o relatório de desempenho e as áreas de melhoria.
-         */
-        function showPerformanceReport(autoScroll = false) {
-            const container = document.getElementById('quiz-container');
-            let reportElement = document.getElementById('performance-report');
-            
-            if (!currentQuizData || currentQuizData.length === 0) {
-                alert("Nenhum simulado carregado. Selecione um na barra lateral.");
-                return;
-            }
-
-            if (reportElement) {
-                reportElement.remove();
-            }
-
-            const total = currentQuizData.length;
-            
-            // Evita divisão por zero se nenhuma questão foi respondida
-            const questionsConsidered = answeredQuestions > 0 ? answeredQuestions : 1; 
-            const percentage = ((performance.hits / questionsConsidered) * 100).toFixed(2);
-            
-            let disciplineResults = [];
-            for (const disc in performance.disciplineBreakdown) {
-                const data = performance.disciplineBreakdown[disc];
-                if (data.errors > 0) { 
-                    const errorRate = (data.errors / data.total) * 100;
-                    disciplineResults.push({
-                        discipline: disc,
-                        errors: data.errors,
-                        total: data.total,
-                        errorRate: errorRate
-                    });
-                }
-            }
-
-            disciplineResults.sort((a, b) => b.errorRate - a.errorRate);
-
-            let weakAreasHtml = '<h4>🎯 Observações: Áreas de Melhoria e Prioridade de Estudos:</h4>';
-            if (disciplineResults.length > 0) {
-                weakAreasHtml += '<p>Com base no seu desempenho, seu foco principal de revisão deve ser nas seguintes disciplinas (ordenadas pela maior taxa de erro):</p><ul>';
-                disciplineResults.slice(0, 5).forEach(result => {
-                    weakAreasHtml += `
-                        <li>
-                            **${result.discipline}**: 
-                            <span style="color:var(--danger-color);">${result.errors} erros</span> em ${result.total} questões 
-                            (${(result.errorRate).toFixed(1)}% de erro)
-                        </li>
-                    `;
-                });
-                weakAreasHtml += '</ul><p>Revise os temas e utilize suas *Notas Pessoais* em cada questão para registrar o aprendizado.</p>';
-            } else if (answeredQuestions === total && total > 0) {
-                weakAreasHtml += '<p>🎉 Parabéns! Excelente desempenho. Seu foco deve ser em manter o nível e revisar suas anotações e os temas mais recentes do edital.</p>';
-            } else {
-                weakAreasHtml += '<p>Continue respondendo as questões para que o sistema possa analisar seu desempenho e identificar suas áreas de melhoria de forma precisa.</p>';
-            }
-            
-            reportElement = document.createElement('div');
-            reportElement.id = 'performance-report';
-            reportElement.innerHTML = `
-                <h3>📊 Relatório de Análise e Avaliação do Desempenho</h3>
-                <div class="report-summary">
-                    <span class="score-info">**Cada questão vale 1 ponto.**</span>
-                    <span>Total de Questões no Simulado: <strong>${total}</strong></span>
-                    <span>Questões Respondidas: <strong>${answeredQuestions}</strong></span>
-                    <span class="hit">✅ Acertos (Pontos): <strong>${performance.hits}</strong></span>
-                    <span class="error">❌ Erros (Pontos Perdidos): <strong>${performance.errors}</strong></span>
-                    <span class="percent">Aproveitamento nas Respondidas: <strong style="font-size: 1.5rem;">${percentage}%</strong></span>
+            <h2 class="section-title">🎓 Modo de Estudo</h2>
+            <div class="options-grid">
+                <div class="option-card" onclick="abrirModalOpcoes('completo', null)">
+                    <div class="icon">📝</div>
+                    <h3>Simulado Completo</h3>
+                    <p>Todas as questões</p>
+                    <button class="btn btn-primary">Iniciar</button>
                 </div>
-                <div class="weak-areas">${weakAreasHtml}</div>
-            `;
 
-            container.appendChild(reportElement);
-            
-            if (autoScroll) {
-                reportElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
+                <div class="option-card" onclick="mostrarSelecaoDisciplina()">
+                    <div class="icon">📚</div>
+                    <h3>Por Disciplina</h3>
+                    <p>Escolha uma disciplina</p>
+                    <button class="btn btn-primary">Selecionar</button>
+                </div>
 
+                <div class="option-card" onclick="abrirAdminPanel()">
+                    <div class="icon">⚙️</div>
+                    <h3>Painel Admin</h3>
+                    <p>Gerenciar simulados</p>
+                    <button class="btn btn-primary">Acessar</button>
+                </div>
+            </div>
 
-        /**
-         * Renderiza uma única questão no container.
-         */
-        function renderQuestion(q, index, name) {
-            const container = document.getElementById('quiz-container');
-            const questionElement = document.createElement('div');
-            questionElement.className = 'question-card';
-            questionElement.setAttribute('data-question-number', q.numero);
-
-            const disciplina = q.disciplina || 'Geral';
-            let opcoes = q.opcoes;
-            const respostaCorreta = q.resposta_correta || q.gabarito; 
-            const explicacao = q.explicacao_professor || q.comentario || 'Nenhuma análise detalhada disponível. Reforce o estudo do tema.';
-
-
-            const questionHtml = `
-                <h4>Q${q.numero} | ${disciplina}</h4>
-                <p><strong>${q.questao || q.enunciado}</strong></p>
-            `;
-
-            if (!opcoes && q.alternativas && Array.isArray(q.alternativas)) {
-                opcoes = {};
-                q.alternativas.forEach(alt => opcoes[alt.letra] = alt.texto);
-            }
-
-            let optionsHtml = '<div class="options-group">';
-            const radioName = `quiz_q${index}`; 
-            
-            for (const key in opcoes) {
-                const uniqueId = `${radioName}_opt${key}`;
-                optionsHtml += `
-                    <label class="option-label" for="${uniqueId}">
-                        <input type="radio" name="${radioName}" id="${uniqueId}" value="${key}" onclick="checkAnswer(${index}, this.value)">
-                        <span>${key}) ${opcoes[key]}</span>
+            <div class="mode-toggles">
+                <div class="toggle-card">
+                    <div>
+                        <h3>🎓 Modo Professor</h3>
+                        <p>Explicações acadêmicas</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="modoProfessor">
+                        <span class="toggle-slider"></span>
                     </label>
-                `;
-            }
-            optionsHtml += '</div>';
-
-            const explanationHtml = `
-                <div class="explanation-box" id="exp-${index}">
-                    <strong>Análise Didática do Professor:</strong>
-                    <p class="explanation-text">**Gabarito: ${respostaCorreta || 'N/A'}** - ${explicacao}</p>
                 </div>
-            `;
-            
-            const noteContent = loadNote(name, index);
-            const commentSectionHtml = `
-                <div class="comment-section">
-                    <strong>🖊️ Notas Pessoais (Comentários):</strong>
-                    <textarea id="note-q-${index}" 
-                        placeholder="Use este espaço para anotar o porquê errou, conceitos chave ou pontos de atenção para revisão futura." 
-                    >${noteContent}</textarea>
-                    <div class="note-buttons">
-                        <button class="btn-save-note" onclick="saveNote('${name}', ${index})">
-                            💾 Gravar Anotação
-                        </button>
-                        <button class="btn-clear-note" onclick="clearNote('${name}', ${index})">
-                            🗑️ Excluir Anotação
-                        </button>
+
+                <div class="toggle-card">
+                    <div>
+                        <h3>⚡ Modo Deus</h3>
+                        <p>Respostas visíveis</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="modoDeus">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalOpcoes" class="modal-nome">
+            <div class="modal-nome-content">
+                <h2>🎯 Escolha Como Deseja Responder</h2>
+                <p id="modalOpcoesMsg" style="color: #666; margin-bottom: 20px;"></p>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="radio" id="ordem-sequencial" name="ordem" value="sequencial" checked>
+                        <label for="ordem-sequencial">📋 Ordem Sequencial (1, 2, 3...)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" id="ordem-aleatoria" name="ordem" value="aleatoria">
+                        <label for="ordem-aleatoria">🔀 Questões Misturadas</label>
                     </div>
                 </div>
-            `;
-            
-            questionElement.innerHTML = questionHtml + optionsHtml + explanationHtml + commentSectionHtml;
-            container.appendChild(questionElement);
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="fecharModalOpcoes()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="confirmarOpcoes()" style="margin-left: 10px;">Começar →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="selecaoDisciplina" class="main-screen">
+            <h2 style="color: #1E3A8A; margin-bottom: 30px;">Escolha uma Disciplina</h2>
+            <div class="options-grid" id="disciplinasGrid"></div>
+            <button class="btn btn-secondary" onclick="voltarMenu()" style="margin-top: 20px;">← Voltar</button>
+        </div>
+
+        <div id="simuladoInterface" class="simulado-screen">
+            <div class="navegacao" style="justify-content: space-between; margin-bottom: 20px;">
+                <button class="btn btn-voltar" onclick="voltarMenuDuranteSimulado()">🏠 Voltar ao Menu</button>
+                <div id="infoSimulado" style="color: #1E3A8A; font-weight: 600;"></div>
+                <div id="infoOrdem" style="color: #666; font-size: 0.9em;"></div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span id="progressText">Questão 1</span>
+                    <span id="disciplinaAtual"></span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="questao-container">
+                <h3 id="numeroQuestao">Questão 1</h3>
+                <p id="textoQuestao" class="questao-texto"></p>
+
+                <div id="mododeusResposta" class="modo-deus-box" style="display: none;">
+                    <h4>⚡ Resposta Correta: <span id="respostaCorretaDeus"></span></h4>
+                </div>
+
+                <div id="opcoesContainer" class="opcoes-container"></div>
+
+                <div id="mododeusExplicacao" class="modo-professor-box" style="display: none;">
+                    <h4>🎓 Explicação do Professor</h4>
+                    <p id="textoExplicacao"></p>
+                </div>
+
+                <div id="feedbackBox" class="feedback-box" style="display: none;">
+                    <h4 id="feedbackTitulo"></h4>
+                    <p id="feedbackTexto"></p>
+                </div>
+            </div>
+
+            <div class="navegacao">
+                <button class="btn btn-secondary" onclick="questaoAnterior()" id="btnAnterior">← Anterior</button>
+                <button class="btn btn-primary" onclick="proximaQuestao()" id="btnProxima">Próxima →</button>
+                <button class="btn btn-primary" onclick="finalizarSimulado()" id="btnFinalizar" style="display: none;">Finalizar</button>
+            </div>
+        </div>
+
+        <div id="relatorioFinal" class="relatorio-screen">
+            <div class="relatorio-header">
+                <h2>🎉 Simulado Finalizado!</h2>
+                <div class="pontuacao-geral">
+                    <div class="pontuacao-box">
+                        <h3 id="pontuacaoFinal">0</h3>
+                        <p>Pontuação</p>
+                    </div>
+                    <div class="pontuacao-box">
+                        <h3 id="percentualAcerto">0%</h3>
+                        <p>Taxa de Acerto</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navegacao" style="margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="voltarMenu()">← Voltar ao Menu</button>
+                <button class="btn btn-primary" onclick="iniciarSimuladoCompleto()">🔄 Novo Simulado</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalNome" class="modal-nome">
+        <div class="modal-nome-content">
+            <h2>📝 Nomeie o Simulado</h2>
+            <p id="modalMensagem" style="color: #666; margin-bottom: 15px;"></p>
+            <input type="text" id="nomeSimulado" placeholder="Digite um nome para o simulado..." autofocus>
+            <div>
+                <button class="btn btn-secondary" onclick="fecharModalNome()">Cancelar</button>
+                <button class="btn btn-primary" onclick="confirmarNomeSimulado()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalGabarito" class="modal-nome">
+        <div class="modal-nome-content">
+            <h2>✏️ Editar Gabarito</h2>
+            <p id="gabaritoMensagem" style="color: #666; margin-bottom: 15px;"></p>
+            <div id="editorGabaritoContent" style="text-align: left; max-height: 400px; overflow-y: auto;"></div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="fecharEditorGabarito()">Cancelar</button>
+                <button class="btn btn-primary" onclick="salvarGabaritoEditado()" style="margin-left: 10px;">Salvar Gabarito</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-content">
+            <span class="close-admin" onclick="fecharAdminPanel()">&times;</span>
+            <h2 style="color: #1E3A8A; margin-bottom: 20px;">Painel Administrativo</h2>
+
+            <div id="adminLogin" style="text-align: center; padding: 40px;">
+                <h3 style="color: #1E3A8A; margin-bottom: 20px;">🔐 Login Admin</h3>
+                <input type="password" id="adminPassword" placeholder="Senha de admin" style="width: 300px; max-width: 100%; margin-bottom: 15px; padding: 12px;">
+                <br>
+                <button class="btn btn-primary" onclick="verificarSenhaAdmin()">Entrar</button>
+            </div>
+
+            <div id="adminPanel" style="display: none;">
+                <div class="admin-tabs">
+                    <button class="admin-tab-btn active" onclick="mudarAbaAdmin('converter')">📝 Converter Texto</button>
+                    <button class="admin-tab-btn" onclick="mudarAbaAdmin('importar')">📁 Importar JSON</button>
+                    <button class="admin-tab-btn" onclick="mudarAbaAdmin('gerenciar')">📋 Gerenciar</button>
+                </div>
+
+                <div id="converter" class="admin-tab-content active">
+                    <div class="instructions">
+                        <strong>📋 INSTRUÇÕES PARA CONVERTER:</strong><br><br>
+                        Cole suas questões no formato abaixo:<br>
+                        • Questão começa com: <strong>1-</strong>, <strong>2-</strong>, <strong>3-</strong> etc<br>
+                        • Opções começam com: <strong>A)</strong>, <strong>B)</strong>, <strong>C)</strong>, <strong>D)</strong><br>
+                        • IMPORTANTE: Todas as questões DEVEM ter A), B), C) e D) obrigatoriamente<br>
+                        • Deixe UMA LINHA EM BRANCO entre cada questão
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cole o simulado em texto:</label>
+                        <textarea id="simuladoTexto" placeholder="1- Texto completo da primeira questão...
+A) Opção A
+B) Opção B
+C) Opção C
+D) Opção D
+
+2- Texto completo da segunda questão...
+A) Opção A
+B) Opção B
+C) Opção C
+D) Opção D"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="converterTextoParaJson()">🔄 Converter para JSON</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('simuladoTexto').value = ''" style="margin-left: 10px;">🗑️ Limpar</button>
+
+                    <div id="statusConversao" class="status-message"></div>
+
+                    <h3 style="color: #1E3A8A; margin-top: 30px; margin-bottom: 15px;">JSON Convertido (<span id="qtdQuestoesConvertidas">0</span> questões):</h3>
+                    <div id="jsonPreview"></div>
+
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-primary" onclick="copiarJSON('jsonPreview')">📋 Copiar JSON</button>
+                        <button class="btn btn-primary" onclick="downloadJSON('jsonPreview')" style="margin-left: 10px;">💾 Download</button>
+                        <button class="btn btn-primary" onclick="abrirEditorGabaritoConversor()" style="margin-left: 10px; background: #2196F3;">✏️ Editar Gabarito</button>
+                        <button class="btn btn-primary" onclick="salvarComoSimulado()" style="margin-left: 10px; background: #2ecc71;">💾 Salvar como Simulado</button>
+                    </div>
+                </div>
+
+                <div id="importar" class="admin-tab-content">
+                    <div class="instructions">
+                        <strong>📁 Como funciona:</strong> Cole um JSON válido aqui OU selecione um arquivo .json. <strong>Verifique se tem "resposta_correta" e TODAS as opções A, B, C, D!</strong>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cole JSON diretamente aqui:</label>
+                        <textarea id="jsonImportTexto" placeholder='[{"numero": 1, "disciplina": "Disciplina", "questao": "Pergunta?", "opcoes": {"A": "Opção A", "B": "Opção B", "C": "Opção C", "D": "Opção D"}, "resposta_correta": "B", "explicacao_professor": "Explicação..."}]'></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="importarJSONDiretoTexto()">✅ Importar JSON Direto</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('jsonImportTexto').value = ''" style="margin-left: 10px;">🗑️ Limpar</button>
+
+                    <hr style="margin: 20px 0; border: 1px solid #ddd;">
+
+                    <div class="form-group">
+                        <label>OU selecione um arquivo JSON:</label>
+                        <input type="file" id="fileInput" accept=".json">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="abrirSeletorArquivo()">📂 Selecionar Arquivo</button>
+
+                    <div id="statusImportacao" class="status-message"></div>
+
+                    <h3 style="color: #1E3A8A; margin-top: 30px; margin-bottom: 15px;">Pré-visualização (<span id="qtdQuestoesImportadas">0</span> questões):</h3>
+                    <div id="jsonPreviewImport"></div>
+
+                    <button class="btn btn-primary" onclick="salvarSimuladoImportado()" style="margin-top: 15px;">✅ Confirmar Importação</button>
+                </div>
+
+                <div id="gerenciar" class="admin-tab-content">
+                    <h3 style="color: #1E3A8A; margin-bottom: 20px;">📚 Simulados e Disciplinas</h3>
+                    <p style="margin-bottom: 20px;">Total de questões no sistema: <strong id="totalQuestoesList">0</strong></p>
+                    <div id="listaQuestoes"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PROJETO SABER - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        let todasAsQuestoes = [];
+        let questoesAtual = [];
+        let modoProfessor = false;
+        let modoDeus = false;
+        let indicePerguntaAtual = 0;
+        let respostas = {};
+        let jsonConvertido = null;
+        let questoesImportadas = [];
+        let tipoOperacaoSimulado = null;
+        let nomeSimuladoAtual = '';
+        let questaoRespondida = false;
+        let disciplinaEmEdicao = null;
+        let modoOrdenacao = 'sequencial';
+        let tipoInicioSimulado = null;
+        let parametroSimulado = null;
+
+        function inicializar() {
+            carregarDoLocalStorage();
+            atualizarDisciplinas();
+            atualizarSimuladosCriados();
+            atualizarTotalQuestoes();
         }
 
-        /**
-         * Carrega o JSON do simulado selecionado e renderiza na tela.
-         *// Esta função foi modificada para adicionar o scroll suave para o início do quiz.
-         * A URL de carregamento é construída a partir da pasta DATA_FOLDER.
-         * Para arquivos carregados via GitHub API, o arquivo JSON deve estar na pasta 'data' do repositório.
-         */        */
-        async function loadAndRenderQuiz(filename) {
-            const container = document.getElementById('quiz-container');
-            const statusElement = document.getElementById('quiz-status');
-            const reportButtonHeader = document.getElementById('btn-report');
-            const reportButtonSidebar = document.getElementById('btn-sidebar-report'); 
+        function carregarDoLocalStorage() {
+            const salvo = localStorage.getItem('projetoSaberQuestoes');
+            if (salvo) {
+                todasAsQuestoes = JSON.parse(salvo);
+            }
+        }
 
+        function salvarNoLocalStorage() {
+            localStorage.setItem('projetoSaberQuestoes', JSON.stringify(todasAsQuestoes));
+        }
+
+        function atualizarTotalQuestoes() {
+            document.getElementById('totalQuestoes').textContent = todasAsQuestoes.length;
+            document.getElementById('totalQuestoesList').textContent = todasAsQuestoes.length;
+        }
+
+        function atualizarSimuladosCriados() {
+            const disciplinas = {};
+            todasAsQuestoes.forEach(q => {
+                const disc = q.disciplina || "Geral";
+                if (!disciplinas[disc]) {
+                    disciplinas[disc] = { count: 0 };
+                }
+                disciplinas[disc].count++;
+            });
+
+            const grid = document.getElementById('simuladosCriados');
+            grid.innerHTML = '';
+
+            if (Object.keys(disciplinas).length === 0) {
+                document.getElementById('secaoSimulados').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('secaoSimulados').style.display = 'block';
+
+            Object.entries(disciplinas).forEach(([nome, data]) => {
+                const card = document.createElement('div');
+                card.className = 'option-card simulado-card';
+                card.onclick = () => abrirModalOpcoes('simulado', nome);
+                card.innerHTML = `
+                    <div class="icon">📖</div>
+                    <h3>${nome}</h3>
+                    <p>${data.count} questão(ões)</p>
+                    <div class="badge">Iniciar Simulado</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function atualizarDisciplinas() {
+            const disciplinas = {};
+            todasAsQuestoes.forEach(q => {
+                const disc = q.disciplina || "Geral";
+                if (!disciplinas[disc]) {
+                    disciplinas[disc] = [];
+                }
+                disciplinas[disc].push(q);
+            });
+
+            const grid = document.getElementById('disciplinasGrid');
+            grid.innerHTML = '';
+
+            Object.entries(disciplinas).forEach(([nome, questoes]) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.onclick = () => abrirModalOpcoes('disciplina', nome);
+                card.innerHTML = `
+                    <div class="icon">📖</div>
+                    <h3>${nome}</h3>
+                    <p>${questoes.length} questão(ões)</p>
+                    <button class="btn btn-primary">Iniciar</button>
+                `;
+                grid.appendChild(card);
+            });
+
+            if (Object.keys(disciplinas).length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">Nenhuma questão disponível.</p>';
+            }
+        }
+
+        function abrirModalOpcoes(tipo, parametro = null) {
+            tipoInicioSimulado = tipo;
+            parametroSimulado = parametro;
+            let msg = '';
             
-            // RESETAR ESTADOS
-            currentSimuladoName = filename.replace(/\.json$/i, ''); 
-            answeredQuestions = 0;
-            performance = {
-                totalQuestions: 0,
-                hits: 0,
-                errors: 0,
-                disciplineBreakdown: {}
-            };
-            reportButtonHeader.style.display = 'none'; 
-            reportButtonSidebar.style.display = 'block'; 
-
-            statusElement.textContent = `Carregando: ${currentSimuladoName}`;
-            container.innerHTML = `<p>Aguarde, carregando dados de ${currentSimuladoName}...</p>`;
+            if (tipo === 'completo') {
+                msg = 'Simulado Completo - Deseja responder na ordem ou misturado?';
+            } else if (tipo === 'disciplina') {
+                msg = `${parametro} - Deseja responder na ordem ou misturado?`;
+            } else if (tipo === 'simulado') {
+                msg = `${parametro} - Deseja responder na ordem ou misturado?`;
+            }
             
-            let reportElement = document.getElementById('performance-report');
-            if (reportElement) reportElement.remove();
+            document.getElementById('modalOpcoesMsg').textContent = msg;
+            document.getElementById('modalOpcoes').classList.add('active');
+            document.getElementById('ordem-sequencial').checked = true;
+        }
 
-            try {
-                // Verifica se o arquivo está sendo carregado a partir do GitHub (se o HTML estiver no GitHub Pages, por exemplo)
-                // Se o HTML estiver sendo executado localmente, ele tentará carregar o arquivo localmente.
-                // A pasta DATA_FOLDER é './data/', então a URL será './data/nome_do_arquivo.json'
-                const url = DATA_FOLDER + filename;
-                const response = await fetch(url);
+        function fecharModalOpcoes() {
+            document.getElementById('modalOpcoes').classList.remove('active');
+            tipoInicioSimulado = null;
+            parametroSimulado = null;
+        }
 
-                if (!response.ok) {
-                    // MENSAGEM DE ERRO VISÍVEL SE O ARQUIVO NÃO FOR ENCONTRADO (CRÍTICO)
-                    const errorMessage = `ERRO (404/CORS) ao carregar o simulado '${filename}'. Por favor, verifique se o arquivo JSON está na pasta: **${DATA_FOLDER}**`;
-                    
-                    container.innerHTML = `
-                        <div style="background-color: #ffebeb; border: 2px solid var(--danger-color); padding: 20px; border-radius: 8px; margin-top: 20px;">
-                            <h3 style="color: var(--danger-color); margin-top: 0;">❌ Falha ao Encontrar ou Carregar o Arquivo</h3>
-                            <p>${errorMessage}</p>
-                            <p><strong>Solução:</strong> Crie uma pasta chamada **'data'** e mova o arquivo <strong>${filename}</strong> para dentro dela.</p>
-                        </div>
+        function confirmarOpcoes() {
+            modoOrdenacao = document.querySelector('input[name="ordem"]:checked').value;
+            
+            if (tipoInicioSimulado === 'completo') {
+                iniciarSimuladoCompleto();
+            } else if (tipoInicioSimulado === 'disciplina') {
+                iniciarSimuladoDisciplina(parametroSimulado);
+            } else if (tipoInicioSimulado === 'simulado') {
+                iniciarSimuladoPorNome(parametroSimulado);
+            }
+            
+            fecharModalOpcoes();
+        }
+
+        function iniciarSimuladoCompleto() {
+            if (todasAsQuestoes.length === 0) {
+                alert('Nenhuma questão disponível. Importe questões no Painel Admin!');
+                return;
+            }
+            
+            if (modoOrdenacao === 'sequencial') {
+                questoesAtual = [...todasAsQuestoes].sort((a, b) => (a.numero || 0) - (b.numero || 0));
+            } else {
+                questoesAtual = [...todasAsQuestoes].sort(() => Math.random() - 0.5);
+            }
+            
+            respostas = {};
+            indicePerguntaAtual = 0;
+            nomeSimuladoAtual = 'Simulado Completo';
+            modoProfessor = document.getElementById('modoProfessor').checked;
+            modoDeus = document.getElementById('modoDeus').checked;
+            mostrarQuestao();
+            document.getElementById('menuPrincipal').classList.remove('active');
+            document.getElementById('simuladoInterface').style.display = 'block';
+        }
+
+        function iniciarSimuladoPorNome(nomeDisciplina) {
+            questoesAtual = todasAsQuestoes.filter(q => q.disciplina === nomeDisciplina);
+            if (questoesAtual.length === 0) {
+                alert('Nenhuma questão nesta disciplina.');
+                return;
+            }
+            
+            if (modoOrdenacao === 'sequencial') {
+                questoesAtual.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+            } else {
+                questoesAtual.sort(() => Math.random() - 0.5);
+            }
+            
+            respostas = {};
+            indicePerguntaAtual = 0;
+            nomeSimuladoAtual = nomeDisciplina;
+            modoProfessor = document.getElementById('modoProfessor').checked;
+            modoDeus = document.getElementById('modoDeus').checked;
+            mostrarQuestao();
+            document.getElementById('menuPrincipal').classList.remove('active');
+            document.getElementById('simuladoInterface').style.display = 'block';
+        }
+
+        function iniciarSimuladoDisciplina(disciplina) {
+            questoesAtual = todasAsQuestoes.filter(q => q.disciplina === disciplina);
+            if (questoesAtual.length === 0) {
+                alert('Nenhuma questão nesta disciplina.');
+                return;
+            }
+            
+            if (modoOrdenacao === 'sequencial') {
+                questoesAtual.sort((a, b) => (a.numero || 0) - (b.numero || 0));
+            } else {
+                questoesAtual.sort(() => Math.random() - 0.5);
+            }
+            
+            respostas = {};
+            indicePerguntaAtual = 0;
+            nomeSimuladoAtual = disciplina;
+            modoProfessor = document.getElementById('modoProfessor').checked;
+            modoDeus = document.getElementById('modoDeus').checked;
+            mostrarQuestao();
+            document.getElementById('selecaoDisciplina').classList.remove('active');
+            document.getElementById('simuladoInterface').style.display = 'block';
+        }
+
+        function mostrarQuestao() {
+            if (indicePerguntaAtual >= questoesAtual.length) {
+                finalizarSimulado();
+                return;
+            }
+
+            const questao = questoesAtual[indicePerguntaAtual];
+            const progress = ((indicePerguntaAtual + 1) / questoesAtual.length) * 100;
+
+            document.getElementById('numeroQuestao').textContent = `Questão ${indicePerguntaAtual + 1}`;
+            document.getElementById('progressText').textContent = `Questão ${indicePerguntaAtual + 1} de ${questoesAtual.length}`;
+            document.getElementById('infoSimulado').textContent = nomeSimuladoAtual;
+            document.getElementById('infoOrdem').textContent = modoOrdenacao === 'sequencial' ? '📋 Ordem Sequencial' : '🔀 Questões Misturadas';
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('textoQuestao').textContent = questao.questao;
+            document.getElementById('disciplinaAtual').textContent = `📚 ${questao.disciplina}`;
+
+            questaoRespondida = false;
+            document.getElementById('feedbackBox').style.display = 'none';
+
+            const opcoesDiv = document.getElementById('opcoesContainer');
+            opcoesDiv.innerHTML = '';
+
+            const opcoesOrdenadas = ['A', 'B', 'C', 'D', 'E'].filter(letra => questao.opcoes && questao.opcoes[letra]);
+
+            opcoesOrdenadas.forEach((letra) => {
+                const texto = questao.opcoes[letra];
+                if (texto) {
+                    const label = document.createElement('label');
+                    label.className = 'opcao-label';
+                    label.setAttribute('data-opcao', letra);
+                    label.innerHTML = `
+                        <span><strong>${letra})</strong> ${texto}</span>
                     `;
-                    statusElement.textContent = `Falha ao carregar. Verifique o caminho.`;
-                    reportButtonSidebar.style.display = 'none';
-                    
-throw new Error(errorMessage); 
-	                }
-	                
-	                const rawData = await response.json();
-                
-                // Linha removida, pois a lógica de decodificação foi adicionada acima.
-                let quizData;
+                    label.onclick = () => selecionarRespostaComAutoCorrecao(letra, questao);
+                    opcoesDiv.appendChild(label);
+                }
+            });
 
-                // LÓGICA DE COMPATIBILIDADE PARA EXTRAIR A LISTA DE QUESTÕES
-                if (Array.isArray(rawData)) {
-                    quizData = rawData;
-                } else if (rawData && rawData.simulados_policia_penal && Array.isArray(rawData.simulados_policia_penal) && rawData.simulados_policia_penal.length > 0) {
-                    quizData = rawData.simulados_policia_penal[0].questoes;
-                } else if (rawData && rawData.simulados && Array.isArray(rawData.simulados) && rawData.simulados.length > 0) {
-                    quizData = rawData.simulados[0].questoes;
-                } else if (rawData && Array.isArray(rawData.questoes)) { 
-                    quizData = rawData.questoes;
+            if (modoDeus) {
+                document.getElementById('respostaCorretaDeus').textContent = questao.resposta_correta || '?';
+                document.getElementById('mododeusResposta').style.display = 'block';
+                document.getElementById('textoExplicacao').textContent = questao.explicacao_professor || '';
+                document.getElementById('mododeusExplicacao').style.display = 'block';
+            } else if (modoProfessor) {
+                document.getElementById('mododeusResposta').style.display = 'none';
+                document.getElementById('textoExplicacao').textContent = questao.explicacao_professor || '';
+                document.getElementById('mododeusExplicacao').style.display = 'block';
+            } else {
+                document.getElementById('mododeusResposta').style.display = 'none';
+                document.getElementById('mododeusExplicacao').style.display = 'none';
+            }
+
+            document.getElementById('btnAnterior').style.display = indicePerguntaAtual > 0 ? 'block' : 'none';
+            document.getElementById('btnProxima').style.display = questaoRespondida && indicePerguntaAtual < questoesAtual.length - 1 ? 'block' : 'none';
+            document.getElementById('btnFinalizar').style.display = questaoRespondida && indicePerguntaAtual === questoesAtual.length - 1 ? 'block' : 'none';
+        }
+
+        function selecionarRespostaComAutoCorrecao(letra, questao) {
+            if (questaoRespondida) return;
+            
+            questaoRespondida = true;
+            respostas[indicePerguntaAtual] = letra;
+
+            const opcoesDiv = document.getElementById('opcoesContainer');
+            const opcoes = opcoesDiv.querySelectorAll('.opcao-label');
+
+            const respostaCorreta = questao.resposta_correta;
+            let acertou = false;
+
+            opcoes.forEach(opcao => {
+                const opcaoLetra = opcao.getAttribute('data-opcao');
+                opcao.style.pointerEvents = 'none';
+
+                if (opcaoLetra === respostaCorreta) {
+                    opcao.classList.add('correta');
+                    acertou = (opcaoLetra === letra);
+                } else if (opcaoLetra === letra && letra !== respostaCorreta) {
+                    opcao.classList.add('incorreta');
                 } else {
-                    throw new Error("Formato do JSON inválido. Não foi possível extrair a lista de questões. Estrutura não reconhecida.");
+                    opcao.classList.add('incorreta');
+                    opcao.style.opacity = '0.5';
                 }
+            });
 
-                if (!quizData || !Array.isArray(quizData) || quizData.length === 0) {
-                    throw new Error("O JSON foi lido, mas a lista de questões está vazia ou incompleta.");
-                }
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackTitulo = document.getElementById('feedbackTitulo');
+            const feedbackTexto = document.getElementById('feedbackTexto');
 
-                currentQuizData = quizData;
-                container.innerHTML = ''; // Limpa o container
-                
-                quizData.forEach((q, index) => {
-                    renderQuestion(q, index, currentSimuladoName);
-                });
+            if (acertou) {
+                feedbackTitulo.textContent = '✅ Resposta Correta!';
+                feedbackTexto.textContent = questao.explicacao_professor || '';
+                feedbackBox.style.background = '#d4edda';
+                feedbackBox.style.borderLeftColor = '#28a745';
+                feedbackBox.style.color = '#155724';
+            } else {
+                feedbackTitulo.textContent = '❌ Resposta Incorreta';
+                feedbackTexto.textContent = `Resposta correta: ${respostaCorreta}\n\n${questao.explicacao_professor || ''}`;
+                feedbackBox.style.background = '#f8d7da';
+                feedbackBox.style.borderLeftColor = '#dc3545';
+                feedbackBox.style.color = '#721c24';
+            }
 
-                statusElement.textContent = `Simulado "${currentSimuladoName}" carregado com sucesso. (${quizData.length} questões)`;
-                
-                // === CÓDIGO INSERIDO PARA ROLAR PARA O INÍCIO DO SIMULADO ABAIXO DA CAIXA ===
-                
-                // 1. Rola o conteúdo principal para o topo (útil se o '#main-content' tiver um overflow)
-                document.getElementById('main-content').scrollTop = 0; 
-                
-                // 2. Rola a janela para que o início do contêiner de questões seja visível
-                document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            feedbackBox.style.display = 'block';
 
-            } catch (error) {
-                console.error("Erro ao carregar o quiz:", error);
-                
-                if (!container.innerHTML.includes('Falha ao Encontrar')) { 
-                    statusElement.textContent = `Falha ao carregar o simulado. Verifique a estrutura JSON.`;
-                    container.innerHTML = `<p style="color:var(--danger-color); font-weight:bold; padding: 20px;">ERRO: ${error.message}. Verifique o formato do seu arquivo JSON.</p>`;
-                }
-                reportButtonSidebar.style.display = 'none';
+            document.getElementById('btnAnterior').style.display = indicePerguntaAtual > 0 ? 'block' : 'none';
+            document.getElementById('btnProxima').style.display = indicePerguntaAtual < questoesAtual.length - 1 ? 'block' : 'none';
+            document.getElementById('btnFinalizar').style.display = indicePerguntaAtual === questoesAtual.length - 1 ? 'block' : 'none';
+        }
+
+        function proximaQuestao() {
+            indicePerguntaAtual++;
+            mostrarQuestao();
+        }
+
+        function questaoAnterior() {
+            if (indicePerguntaAtual > 0) {
+                indicePerguntaAtual--;
+                mostrarQuestao();
             }
         }
 
+        function finalizarSimulado() {
+            let acertos = 0;
+            questoesAtual.forEach((q, i) => {
+                if (respostas[i] === q.resposta_correta) {
+                    acertos++;
+                }
+            });
 
-        /**
-         * Carrega a lista de simulados. (Foi mantida a lógica de fallback para arquivos carregados)
-         */
-        /**
-         * Carrega a lista de simulados. (Foi mantida a lógica de fallback para arquivos carregados)
-         */
-        async function loadSimulados() {
-            const list = document.getElementById('simulado-list');
+            const percentual = Math.round((acertos / questoesAtual.length) * 100);
+            document.getElementById('pontuacaoFinal').textContent = acertos + '/' + questoesAtual.length;
+            document.getElementById('percentualAcerto').textContent = percentual + '%';
+
+            document.getElementById('simuladoInterface').style.display = 'none';
+            document.getElementById('relatorioFinal').style.display = 'block';
+        }
+
+        function voltarMenuDuranteSimulado() {
+            if (confirm('⚠️ Tem certeza que deseja voltar ao menu?\nSeu progresso será perdido!')) {
+                voltarMenu();
+            }
+        }
+
+        function voltarMenu() {
+            document.getElementById('menuPrincipal').classList.add('active');
+            document.getElementById('selecaoDisciplina').classList.remove('active');
+            document.getElementById('simuladoInterface').style.display = 'none';
+            document.getElementById('relatorioFinal').style.display = 'none';
+        }
+
+        function mostrarSelecaoDisciplina() {
+            if (todasAsQuestoes.length === 0) {
+                alert('Nenhuma questão disponível.');
+                return;
+            }
+            document.getElementById('menuPrincipal').classList.remove('active');
+            document.getElementById('selecaoDisciplina').classList.add('active');
+        }
+
+        function abrirAdminPanel() {
+            document.getElementById('adminModal').classList.add('active');
+        }
+
+        function fecharAdminPanel() {
+            document.getElementById('adminModal').classList.remove('active');
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        function verificarSenhaAdmin() {
+            const senha = document.getElementById('adminPassword').value;
+            if (senha === 'admin123') {
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                atualizarListaQuestoes();
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
+
+        function mudarAbaAdmin(aba) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.admin-tab-btn').forEach(el => el.classList.remove('active'));
             
-            try {
-                // Lista de simulados fornecida pelo usuário, implementada diretamente para garantir o carregamento.
-                const simuladoFilenames = [
-                    "SIMULADO-DIREITOS-HUMANOS.json",
-                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
-                    "SIMULADO-POLICIA-PENAL02.json",
-                    "SIMULADO-POLICIA-PENAL.json", 
-                    "QUESTOES-GERAIS.json",
-                    "QUESTOES-AREA-POLICIAL.json", 
-                    "SIMULADO-IDCAP-60-QUESTOES.json",
-                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                    "SIMULADO-03-IDCAP-60-QUESTOES.json",
-                    "ESTRATEGIA.json",
-                    "LEGISLAÇÃO-ESPECÍFICA.json"
-                ];
+            document.getElementById(aba).classList.add('active');
+            event.target.classList.add('active');
 
-                list.innerHTML = '';
-                if (simuladoFilenames.length === 0) {
-                    list.innerHTML = '<li>Nenhum simulado configurado.</li>';
-                    return;
-                }
-
-                simuladoFilenames.forEach(filename => {
-                    const cleanName = filename.replace(/\\.json$/i, ''); 
-                    
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>
-                    `;
-                    list.appendChild(li);
-                });
-                
-            } catch (error) {
-                console.error("Erro ao carregar simulados:", error);
-                list.innerHTML = '<li><small style="color:var(--danger-color);">Falha ao carregar lista de simulados. Verifique o console.</small></li>';
+            if (aba === 'gerenciar') {
+                atualizarListaQuestoes();
             }
         }
 
+        function converterTextoParaJson() {
+            const texto = document.getElementById('simuladoTexto').value.trim();
+            if (!texto) {
+                mostrarStatus('Cole o texto do simulado!', 'error', 'statusConversao');
+                return;
+            }
 
+            try {
+                const jsonTeste = JSON.parse(texto);
+                jsonConvertido = Array.isArray(jsonTeste) ? jsonTeste : [jsonTeste];
+                document.getElementById('jsonPreview').textContent = JSON.stringify(jsonConvertido, null, 2);
+                document.getElementById('qtdQuestoesConvertidas').textContent = jsonConvertido.length;
+                mostrarStatus('✅ JSON válido! ' + jsonConvertido.length + ' questão(ões).', 'success', 'statusConversao');
+                return;
+            } catch (e) {}
 
-        window.onload = loadSimulados;
+            let questoes = [];
+            let linhas = texto.split('\n');
+            let questaoAtual = null;
+            let textoAtual = '';
+            let opcoesAtuais = {};
+            let numeroSequencia = 1;
 
+            for (let i = 0; i < linhas.length; i++) {
+                let linha = linhas[i].trim();
+                
+                const novaQuestaoMatch = linha.match(/^(\d+)\s*[-\.]\s*(.+)/);
+                
+                if (novaQuestaoMatch) {
+                    if (questaoAtual !== null && Object.keys(opcoesAtuais).length >= 4) {
+                        questoes.push({
+                            numero: numeroSequencia,
+                            disciplina: "Importado",
+                            questao: textoAtual.trim(),
+                            opcoes: opcoesAtuais,
+                            resposta_correta: "",
+                            explicacao_professor: "Adicione uma explicação."
+                        });
+                        numeroSequencia++;
+                    }
+                    
+                    questaoAtual = parseInt(novaQuestaoMatch[1]);
+                    textoAtual = novaQuestaoMatch[2];
+                    opcoesAtuais = {};
+                    continue;
+                }
+                
+                const opcaoMatch = linha.match(/^([A-E])\s*[-\.)]\s*(.+)/);
+                
+                if (opcaoMatch && questaoAtual !== null) {
+                    opcoesAtuais[opcaoMatch[1]] = opcaoMatch[2].trim();
+                } else if (questaoAtual !== null && linha !== '' && !opcaoMatch) {
+                    if (textoAtual.trim() !== '') {
+                        textoAtual += '\n' + linha;
+                    } else {
+                        textoAtual = linha;
+                    }
+                }
+            }
+
+            if (questaoAtual !== null && Object.keys(opcoesAtuais).length >= 4) {
+                questoes.push({
+                    numero: numeroSequencia,
+                    disciplina: "Importado",
+                    questao: textoAtual.trim(),
+                    opcoes: opcoesAtuais,
+                    resposta_correta: "",
+                    explicacao_professor: "Adicione uma explicação."
+                });
+            }
+
+            jsonConvertido = questoes;
+            document.getElementById('jsonPreview').textContent = JSON.stringify(jsonConvertido, null, 2);
+            document.getElementById('qtdQuestoesConvertidas').textContent = questoes.length;
+            
+            if (questoes.length > 0) {
+                mostrarStatus('✅ Convertido com sucesso! ' + questoes.length + ' questão(ões). Agora edite o gabarito!', 'success', 'statusConversao');
+            } else {
+                mostrarStatus('❌ Nenhuma questão válida detectada. Verifique se todas têm A), B), C) e D)!', 'error', 'statusConversao');
+            }
+        }
+
+        function copiarJSON(elementId) {
+            const json = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(json).then(() => {
+                alert('✅ JSON copiado para a área de transferência!');
+            });
+        }
+
+        function downloadJSON(elementId) {
+            const json = document.getElementById(elementId).textContent;
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(json));
+            element.setAttribute('download', 'simulado.json');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        function abrirEditorGabaritoConversor() {
+            if (!jsonConvertido || jsonConvertido.length === 0) {
+                alert('Converta um simulado primeiro!');
+                return;
+            }
+            abrirEditorGabarito(jsonConvertido, null);
+        }
+
+        function abrirEditorGabaritoSimulado(nomeDisciplina) {
+            const questoes = todasAsQuestoes.filter(q => q.disciplina === nomeDisciplina);
+            if (questoes.length === 0) {
+                alert('Nenhuma questão encontrada neste simulado.');
+                return;
+            }
+            abrirEditorGabarito(questoes, nomeDisciplina);
+        }
+
+        function abrirEditorGabarito(questoes, nomeDisciplina) {
+            disciplinaEmEdicao = nomeDisciplina;
+            const content = document.getElementById('editorGabaritoContent');
+            content.innerHTML = '';
+
+            questoes.forEach((q, i) => {
+                const div = document.createElement('div');
+                div.style.marginBottom = '20px';
+                div.style.padding = '15px';
+                div.style.background = '#f8f9fa';
+                div.style.borderRadius = '6px';
+
+                let html = `<strong>Questão ${i + 1}:</strong> ${q.questao.substring(0, 60)}...<br><br>`;
+                html += `Opções: ${Object.keys(q.opcoes).sort().join(', ')}<br>`;
+                html += `<label style="margin-top: 10px; display: inline-block;"><strong>Resposta Correta:</strong> `;
+                html += `<select id="gabarito-${i}" style="padding: 5px; margin-left: 10px; border-radius: 4px; border: 1px solid #ccc;">`;
+                html += `<option value="">-- Selecione --</option>`;
+                ['A', 'B', 'C', 'D', 'E'].forEach(letra => {
+                    if (q.opcoes[letra]) {
+                        html += `<option value="${letra}" ${q.resposta_correta === letra ? 'selected' : ''}>${letra}</option>`;
+                    }
+                });
+                html += `</select></label>`;
+
+                div.innerHTML = html;
+                content.appendChild(div);
+            });
+
+            if (nomeDisciplina) {
+                document.getElementById('gabaritoMensagem').textContent = `Editando gabarito: ${nomeDisciplina} (${questoes.length} questões)`;
+            } else {
+                document.getElementById('gabaritoMensagem').textContent = `Editando gabarito: Novo simulado (${questoes.length} questões)`;
+            }
+
+            document.getElementById('modalGabarito').classList.add('active');
+        }
+
+        function fecharEditorGabarito() {
+            document.getElementById('modalGabarito').classList.remove('active');
+            disciplinaEmEdicao = null;
+        }
+
+        function salvarGabaritoEditado() {
+            if (disciplinaEmEdicao) {
+                const questoesEditadas = todasAsQuestoes.filter(q => q.disciplina === disciplinaEmEdicao);
+                questoesEditadas.forEach((q, idx) => {
+                    const select = document.getElementById(`gabarito-${idx}`);
+                    if (select && select.value) {
+                        q.resposta_correta = select.value;
+                    }
+                });
+                salvarNoLocalStorage();
+                alert('✅ Gabarito salvo para: ' + disciplinaEmEdicao);
+            } else {
+                jsonConvertido.forEach((q, i) => {
+                    const select = document.getElementById(`gabarito-${i}`);
+                    if (select && select.value) {
+                        q.resposta_correta = select.value;
+                    }
+                });
+                document.getElementById('jsonPreview').textContent = JSON.stringify(jsonConvertido, null, 2);
+                alert('✅ Gabarito editado! Você pode agora salvar como simulado.');
+            }
+
+            fecharEditorGabarito();
+        }
+
+        function salvarComoSimulado() {
+            if (!jsonConvertido || jsonConvertido.length === 0) {
+                alert('Converta um simulado primeiro!');
+                return;
+            }
+
+            const semGabarito = jsonConvertido.filter(q => !q.resposta_correta).length;
+            if (semGabarito > 0) {
+                alert(`⚠️ ${semGabarito} questão(ões) sem gabarito!\n\nEdite o gabarito antes de salvar.`);
+                return;
+            }
+
+            tipoOperacaoSimulado = 'converter';
+            document.getElementById('modalMensagem').textContent = jsonConvertido.length > 15 ? 
+                `Este simulado tem ${jsonConvertido.length} questões e será criado como um simulado independente!` :
+                `Escolha um nome para adicionar estas ${jsonConvertido.length} questões.`;
+            document.getElementById('modalNome').classList.add('active');
+        }
+
+        function fecharModalNome() {
+            document.getElementById('modalNome').classList.remove('active');
+            document.getElementById('nomeSimulado').value = '';
+            tipoOperacaoSimulado = null;
+        }
+
+        function confirmarNomeSimulado() {
+            const nome = document.getElementById('nomeSimulado').value.trim();
+            if (!nome) {
+                alert('Digite um nome para o simulado!');
+                return;
+            }
+
+            if (tipoOperacaoSimulado === 'converter') {
+                jsonConvertido.forEach(q => {
+                    q.disciplina = nome;
+                });
+                todasAsQuestoes = todasAsQuestoes.concat(jsonConvertido);
+                salvarNoLocalStorage();
+                atualizarTotalQuestoes();
+                atualizarSimuladosCriados();
+                atualizarDisciplinas();
+
+                alert('✅ Simulado "' + nome + '" salvo com sucesso!\n' + jsonConvertido.length + ' questão(ões) adicionada(s).');
+
+                fecharModalNome();
+                document.getElementById('simuladoTexto').value = '';
+                document.getElementById('jsonPreview').textContent = '';
+                jsonConvertido = null;
+            } else if (tipoOperacaoSimulado === 'importar') {
+                questoesImportadas.forEach(q => {
+                    q.disciplina = nome;
+                });
+                todasAsQuestoes = todasAsQuestoes.concat(questoesImportadas);
+                salvarNoLocalStorage();
+                atualizarTotalQuestoes();
+                atualizarSimuladosCriados();
+                atualizarDisciplinas();
+
+                alert('✅ Simulado "' + nome + '" importado com sucesso!\n' + questoesImportadas.length + ' questão(ões) adicionada(s).');
+
+                fecharModalNome();
+                document.getElementById('jsonImportTexto').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('jsonPreviewImport').textContent = '';
+                questoesImportadas = [];
+                mudarAbaAdmin('gerenciar');
+            }
+        }
+
+        function importarJSONDiretoTexto() {
+            const texto = document.getElementById('jsonImportTexto').value.trim();
+            if (!texto) {
+                mostrarStatus('Cole um JSON válido!', 'error', 'statusImportacao');
+                return;
+            }
+
+            try {
+                questoesImportadas = JSON.parse(texto);
+                if (!Array.isArray(questoesImportadas)) {
+                    questoesImportadas = [questoesImportadas];
+                }
+                document.getElementById('jsonPreviewImport').textContent = JSON.stringify(questoesImportadas, null, 2);
+                document.getElementById('qtdQuestoesImportadas').textContent = questoesImportadas.length;
+                mostrarStatus('✅ JSON válido! ' + questoesImportadas.length + ' questão(ões) pronta(s).', 'success', 'statusImportacao');
+            } catch (error) {
+                mostrarStatus('❌ Erro no JSON: ' + error.message, 'error', 'statusImportacao');
+            }
+        }
+
+        function abrirSeletorArquivo() {
+            document.getElementById('fileInput').click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    questoesImportadas = JSON.parse(e.target.result);
+                    if (!Array.isArray(questoesImportadas)) {
+                        questoesImportadas = [questoesImportadas];
+                    }
+                    document.getElementById('jsonPreviewImport').textContent = JSON.stringify(questoesImportadas, null, 2);
+                    document.getElementById('qtdQuestoesImportadas').textContent = questoesImportadas.length;
+                    mostrarStatus('✅ Arquivo válido! ' + questoesImportadas.length + ' questão(ões) pronta(s).', 'success', 'statusImportacao');
+                } catch (error) {
+                    mostrarStatus('❌ Erro no arquivo: ' + error.message, 'error', 'statusImportacao');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function salvarSimuladoImportado() {
+            if (questoesImportadas.length === 0) {
+                alert('Nenhuma questão para importar!');
+                return;
+            }
+
+            if (questoesImportadas.length > 15) {
+                tipoOperacaoSimulado = 'importar';
+                document.getElementById('modalMensagem').textContent = `Este simulado tem ${questoesImportadas.length} questões (mais de 15). Será criado como um simulado independente!`;
+                document.getElementById('modalNome').classList.add('active');
+            } else {
+                todasAsQuestoes = todasAsQuestoes.concat(questoesImportadas);
+                salvarNoLocalStorage();
+                atualizarTotalQuestoes();
+                atualizarSimuladosCriados();
+                atualizarDisciplinas();
+                
+                alert('✅ ' + questoesImportadas.length + ' questão(ões) importada(s)!\n\nTotal agora: ' + todasAsQuestoes.length);
+                
+                questoesImportadas = [];
+                document.getElementById('jsonImportTexto').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('jsonPreviewImport').textContent = '';
+                mudarAbaAdmin('gerenciar');
+            }
+        }
+
+        function atualizarListaQuestoes() {
+            const lista = document.getElementById('listaQuestoes');
+            lista.innerHTML = '';
+
+            if (todasAsQuestoes.length === 0) {
+                lista.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Nenhuma questão no sistema.</p>';
+                return;
+            }
+
+            const disciplinas = {};
+            todasAsQuestoes.forEach((q, i) => {
+                const disc = q.disciplina || "Geral";
+                if (!disciplinas[disc]) {
+                    disciplinas[disc] = [];
+                }
+                disciplinas[disc].push(i);
+            });
+
+            Object.entries(disciplinas).forEach(([nome, indices]) => {
+                const div = document.createElement('div');
+                div.className = 'simulado-item';
+                
+                const info = document.createElement('div');
+                info.className = 'simulado-info';
+                info.innerHTML = `
+                    <strong>${nome}</strong>
+                    <small>${indices.length} questão(ões)</small>
+                `;
+
+                const actions = document.createElement('div');
+                actions.className = 'simulado-actions';
+                
+                const btnEditar = document.createElement('button');
+                btnEditar.className = 'btn btn-edit';
+                btnEditar.textContent = '✏️ Editar Gabarito';
+                btnEditar.onclick = () => abrirEditorGabaritoSimulado(nome);
+
+                const btnExcluir = document.createElement('button');
+                btnExcluir.className = 'btn btn-danger';
+                btnExcluir.textContent = '🗑️ Excluir';
+                btnExcluir.onclick = () => excluirSimulado(nome);
+
+                actions.appendChild(btnEditar);
+                actions.appendChild(btnExcluir);
+                
+                div.appendChild(info);
+                div.appendChild(actions);
+                lista.appendChild(div);
+            });
+        }
+
+        function excluirSimulado(nomeDisciplina) {
+            if (confirm(`⚠️ Tem certeza que deseja excluir todas as questões de "${nomeDisciplina}"?\n\nEsta ação é irreversível!`)) {
+                todasAsQuestoes = todasAsQuestoes.filter(q => q.disciplina !== nomeDisciplina);
+                salvarNoLocalStorage();
+                atualizarTotalQuestoes();
+                atualizarSimuladosCriados();
+                atualizarDisciplinas();
+                atualizarListaQuestoes();
+                alert('✅ Simulado "' + nomeDisciplina + '" excluído com sucesso!');
+            }
+        }
+
+        function mostrarStatus(mensagem, tipo, elementId) {
+            const el = document.getElementById(elementId);
+            el.textContent = mensagem;
+            el.className = 'status-message ' + tipo;
+        }
+
+        window.addEventListener('load', inicializar);
     </script>
-
 </body>
 </html>
