@@ -44,7 +44,7 @@ header h1{font-size:1.6rem}
 /* ADMIN */
 #adminPanel{background:linear-gradient(180deg,#fff,#f6f9ff);padding:14px;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.12)}
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-textarea.code{height:320px;font-family:monospace;font-size:.9rem;padding:12px;border-radius:8px;border:1px solid #e2e8f0}
+textarea.code{height:320px;font-family:monospace;font-size:0.9rem;padding:12px;border-radius:8px;border:1px solid #e2e8f0}
 .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .kv{font-size:.9rem;color:#333}
 
@@ -97,7 +97,7 @@ textarea.code{height:320px;font-family:monospace;font-size:.9rem;padding:12px;bo
 
     <div class="explicacao" id="explicacao"></div>
 
-    <!-- Área de anotações por questão -->
+    <!-- Área de anotações por questão (PERMANECE NO QUIZ, não no Admin) -->
     <div class="note-area" id="noteArea">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <div><strong>Notas Pessoais (Anotações)</strong></div>
@@ -133,7 +133,7 @@ textarea.code{height:320px;font-family:monospace;font-size:.9rem;padding:12px;bo
   </div>
 </div>
 
-<!-- ADMIN (modal-like area) -->
+<!-- ADMIN (modal-like area) com SOMENTE o Conversor -->
 <div id="adminModal" class="hidden" style="position:fixed;left:0;top:0;right:0;bottom:0;
 display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:9999;padding:18px">
   <div id="adminPanel" style="width:100%;max-width:1100px">
@@ -154,18 +154,15 @@ display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45
       <div class="small-muted" style="margin-top:8px">Senha padrão: <strong>admin123</strong> (altere no código se desejar)</div>
     </div>
 
-    <!-- Painel real (apenas após autenticação) -->
+    <!-- Painel real (após autenticação) - APENAS O CONVERSOR AQUI -->
     <div id="adminContent" class="hidden" style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:8px">
-        <div><strong>Ferramentas do Administrador</strong></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn" onclick="abrirConversor()">Abrir Conversor JSON</button>
-          <button class="btn" onclick="baixarManifestExemplo()">Baixar manifest exemplo</button>
-        </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div><strong>Conversor JSON - SABER 3.2</strong></div>
+        <div class="small-muted">Cole o JSON antigo à esquerda, clique em Converter — o resultado aparece à direita.</div>
       </div>
 
-      <!-- Conversor embutido (oculto inicialmente) -->
-      <div id="conversorBox" class="hidden" style="margin-top:10px">
+      <!-- Conversor embutido (único conteúdo do admin) -->
+      <div id="conversorBox" style="margin-top:10px">
         <div class="admin-grid">
           <div>
             <h4>JSON Original</h4>
@@ -184,31 +181,9 @@ display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45
             <button class="btn" onclick="baixarConvertido()">Baixar .json</button>
             <button class="btn ghost" onclick="limparConversor()">Limpar</button>
           </div>
-          <div style="margin-left:auto" class="kv">Dica: o conversor transforma alternativas objeto (A,B,...) em array e letras (A,B,C) em índices (0,1,2).</div>
+          <div style="margin-left:auto" class="kv">Dica: transforma alternativas objeto (A,B,...) em array e converte letras (A,B,C) em índices (0,1,2).</div>
         </div>
       </div>
-
-      <!-- Área para exibir manifest atual / criar manifest -->
-      <div style="margin-top:14px">
-        <h4>Manifest (data/simulados-manifest.json)</h4>
-        <textarea id="manifestJson" class="code" placeholder='Edite ou cole o conteúdo do manifest aqui'></textarea>
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <button class="btn" onclick="salvarManifestLocal()">Salvar Manifest (localStorage)</button>
-          <button class="btn ghost" onclick="carregarManifestNoEditor()">Carregar Manifest (fetch)</button>
-          <div class="small-muted" style="align-self:center;margin-left:6px">Obs: Salvar no GitHub deve ser feito manualmente; aqui salvamos no localStorage para testes.</div>
-        </div>
-      </div>
-
-      <hr style="margin:14px 0">
-
-      <div>
-        <h4>Dados locais (anotações e respostas)</h4>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn" onclick="limparTodasAnotacoes()">Limpar todas as anotações (local)</button>
-          <button class="btn" onclick="limparRespostasLocal()">Limpar respostas salvas</button>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
@@ -257,14 +232,11 @@ async function iniciarSimulado(id) {
     if (!s) throw new Error('Simulado não encontrado');
     // tenta fetch do arquivo
     if (s.arquivo) {
-      // caminho pode ser 'data/arquivo.json' ou só 'arquivo.json' no manifest — assumir relativo a data/
       let caminho = s.arquivo;
-      // Se o manifest usou apenas o nome, prefixa data/
       if (!caminho.startsWith('data/')) caminho = 'data/' + caminho;
       const r = await fetch(caminho);
       if (!r.ok) throw new Error('Arquivo do simulado não encontrado: ' + caminho + ' (HTTP ' + r.status + ')');
       const dados = await r.json();
-      // aceita array direto ou { "questoes": [...] }
       if (Array.isArray(dados)) questoesFiltradas = dados;
       else if (Array.isArray(dados.questoes)) questoesFiltradas = dados.questoes;
       else throw new Error('Formato do JSON inválido. Deve ser array de questões ou { "questoes": [...] }');
@@ -274,15 +246,12 @@ async function iniciarSimulado(id) {
       throw new Error('Nenhum arquivo configurado para esse simulado.');
     }
 
-    // valida estrutura mínima
     if (!questoesFiltradas.length) throw new Error('Sem questões neste simulado.');
 
-    // carregar respostas salvas (localStorage) se existirem
     const respKey = `respostas_simulado_${simuladoAtual}`;
     const saved = localStorage.getItem(respKey);
     respostas = saved ? JSON.parse(saved) : {};
 
-    // inicializa UI
     document.getElementById('telaPrincipal').classList.add('hidden');
     document.getElementById('resultadoArea').classList.add('hidden');
     document.getElementById('quizArea').classList.remove('hidden');
@@ -291,7 +260,7 @@ async function iniciarSimulado(id) {
     document.getElementById('totalQuestoes').textContent = questoesFiltradas.length;
     questaoAtual = 0;
 
-    atualizarEstatisticas(); // caso haja respostas salvas
+    atualizarEstatisticas();
     exibirQuestao();
   } catch (e) {
     console.error(e);
@@ -305,12 +274,10 @@ function exibirQuestao() {
   if (!q) return;
   document.getElementById('numQuestao').textContent = (questaoAtual + 1);
   document.getElementById('enunciado').innerHTML = `<strong>Q${questaoAtual+1}.</strong> ${q.enunciado || q.questao || ''}`;
-  // garantir formato de opcoes: se objeto A,B,.. -> transformar em array
   let opcoes = q.opcoes || q.alternativas || q.options || [];
   if (!Array.isArray(opcoes) && typeof opcoes === 'object') {
     opcoes = Object.values(opcoes);
   }
-  // atualizar o próprio objeto para garantir compatibilidade
   q.opcoes = opcoes;
 
   const opCont = document.getElementById('opcoes');
@@ -323,7 +290,6 @@ function exibirQuestao() {
     opCont.appendChild(d);
   });
 
-  // mostrar explicacao se já respondeu
   document.getElementById('explicacao').style.display = 'none';
   if (typeof q.explicacao === 'string' && q.explicacao.trim()) {
     document.getElementById('explicacao').innerHTML = `<strong>Explicação:</strong><br>${q.explicacao}`;
@@ -331,7 +297,6 @@ function exibirQuestao() {
     document.getElementById('explicacao').innerHTML = '';
   }
 
-  // carregar anotação local (se existir)
   carregarNotaTela();
 }
 
@@ -339,7 +304,6 @@ function exibirQuestao() {
 function selecionarOpcao(indice) {
   const q = questoesFiltradas[questaoAtual];
   if (!q) return;
-  // converte gabarito string para índice caso necessário
   let gabarito = q.gabarito ?? q.resposta ?? q.resposta_correta ?? null;
   if (typeof gabarito === 'string') {
     const idx = gabarito.trim().toUpperCase().charCodeAt(0) - 65;
@@ -347,11 +311,9 @@ function selecionarOpcao(indice) {
   }
   q.gabarito = (gabarito === null || gabarito === undefined) ? q.gabarito : gabarito;
 
-  // salvar resposta localmente
   respostas[questaoAtual] = indice;
   salvarRespostasLocal();
 
-  // pintar opções (correta/incorreta)
   document.querySelectorAll('.opcao').forEach((el, idx) => {
     el.disabled = true;
     el.classList.remove('correta','incorreta');
@@ -359,9 +321,7 @@ function selecionarOpcao(indice) {
     if (idx === indice && idx !== q.gabarito) el.classList.add('incorreta');
   });
 
-  // mostrar explicação
   if (q.explicacao) document.getElementById('explicacao').style.display = 'block';
-
   atualizarEstatisticas();
 }
 
@@ -372,7 +332,6 @@ function atualizarEstatisticas() {
   let ac = 0, er = 0;
   questoesFiltradas.forEach((q, idx) => {
     const resp = respostas[idx];
-    // normaliza gabarito
     let g = q.gabarito ?? q.resposta ?? q.resposta_correta ?? null;
     if (typeof g === 'string') {
       const idxg = g.trim().toUpperCase().charCodeAt(0) - 65;
@@ -382,11 +341,10 @@ function atualizarEstatisticas() {
     if (g !== null && resp === g) ac++;
     else er++;
   });
-  const pontos = ac; // 1 ponto por questão correta
+  const pontos = ac;
   document.getElementById('acertos').textContent = ac;
   document.getElementById('erros').textContent = er;
   document.getElementById('pontos').textContent = pontos;
-  // também preencher resultado final se estiver na tela de resultado
   document.getElementById('resAcertos').textContent = ac;
   document.getElementById('resErros').textContent = er;
   const perc = questoesFiltradas.length ? Math.round((ac / questoesFiltradas.length) * 100) : 0;
@@ -459,7 +417,6 @@ function excluirNota() {
 /* ========== Limpar dados locais (admin actions) ========== */
 function limparTodasAnotacoes() {
   if (!confirm('Confirma apagar todas as anotações locais?')) return;
-  // remove keys que começam com nota_simulado_
   Object.keys(localStorage).forEach(k => {
     if (k.startsWith('nota_simulado_')) localStorage.removeItem(k);
   });
@@ -477,7 +434,6 @@ function limparRespostasLocal() {
 function baixarArquivoSimulado(encodedPath) {
   try {
     const path = decodeURIComponent(encodedPath);
-    // tenta buscar o arquivo e forçar download
     fetch(path).then(r => {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return r.blob();
@@ -498,7 +454,6 @@ function abrirAdministrador() {
   document.getElementById('adminSenha').value = '';
   document.getElementById('adminLogin').classList.remove('hidden');
   document.getElementById('adminContent').classList.add('hidden');
-  document.getElementById('conversorBox').classList.add('hidden');
 }
 function fecharAdministrador() {
   document.getElementById('adminModal').classList.add('hidden');
@@ -508,17 +463,14 @@ function validarAdmin() {
   if (s === ADMIN_PASSWORD) {
     document.getElementById('adminLogin').classList.add('hidden');
     document.getElementById('adminContent').classList.remove('hidden');
-    // carregar manifest no editor (fetch) para edição local
-    carregarManifestNoEditor();
+    // abrir automaticamente o conversor
+    document.getElementById('conversorBox').scrollIntoView({behavior:'smooth'});
   } else {
     alert('Senha incorreta.');
   }
 }
 
-/* ========== Conversor Admin (mesma lógica anterior + melhorias) ========== */
-function abrirConversor() {
-  document.getElementById('conversorBox').classList.toggle('hidden');
-}
+/* ========== Conversor Admin (conforme solicitado) ========== */
 function converterAdmin() {
   const origStr = document.getElementById('origJson').value.trim();
   if (!origStr) { alert('Cole o JSON original à esquerda.'); return; }
@@ -568,57 +520,12 @@ function limparConversor() {
   document.getElementById('convJson').value = '';
 }
 
-/* ========== Manifest editor (admin) ========= */
-function carregarManifestNoEditor() {
-  // tenta fetch do manifest e coloca no editor
-  fetch('data/simulados-manifest.json')
-  .then(r => {
-    if (!r.ok) throw new Error('Manifest não encontrado (HTTP ' + r.status + ')');
-    return r.text();
-  })
-  .then(t => {
-    document.getElementById('manifestJson').value = t;
-  })
-  .catch(e => {
-    console.error(e);
-    document.getElementById('manifestJson').value = '// Erro ao carregar manifest: ' + (e.message || e);
-  });
-}
-function salvarManifestLocal() {
-  const txt = document.getElementById('manifestJson').value.trim();
-  if (!txt) return alert('Cole o conteúdo do manifest no editor antes de salvar.');
-  try {
-    JSON.parse(txt); // valida
-    localStorage.setItem('manifest_simulados_local', txt);
-    alert('Manifest salvo no localStorage (apenas para testes). Para disponibilizar no site, faça commit no GitHub na pasta data/simulados-manifest.json');
-  } catch (e) {
-    alert('JSON inválido: ' + e.message);
-  }
-}
-function baixarManifestExemplo() {
-  const exemplo = {
-    "1": {
-      "nome": "Simulado Exemplo",
-      "descricao": "Exemplo de simulado",
-      "total": 1,
-      "arquivo": "data/SIMULADO-EXEMPLO.json"
-    }
-  };
-  const t = JSON.stringify(exemplo, null, 2);
-  const blob = new Blob([t], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'simulados-manifest-exemplo.json';
-  a.click();
-}
-
 /* ========== Teste: carregar manifest ao abrir ========== */
 document.addEventListener('DOMContentLoaded', () => {
   carregarManifest();
 });
 
 /* ========== Utilitários extras ========== */
-// função para baixar um texto como arquivo
 function baixarTexto(nome, conteudo) {
   const blob = new Blob([conteudo], {type:'application/json'});
   const a = document.createElement('a');
