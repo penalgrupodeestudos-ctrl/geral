@@ -3,65 +3,61 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PROJETO SABER - Polícia Penal ES (com Administrador)</title>
+<title>PROJETO SABER 3.4 - Polícia Penal ES</title>
 <style>
-/* ====== STYLES (mantidos + extras) ====== */
+/* ===== estilos (mantidos e organizados) ===== */
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);color:#222;min-height:100vh;padding:18px}
+body{font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif; background:linear-gradient(135deg,#1e3c72,#2a5298); color:#222; min-height:100vh; padding:18px}
 .container{max-width:1200px;margin:0 auto}
-header{background:linear-gradient(135deg,#2c3e50,#3498db);color:white;padding:22px;border-radius:12px;margin-bottom:22px;box-shadow:0 8px 24px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.header-left{display:flex;flex-direction:column}
-header h1{font-size:1.6rem}
-.header-sub{opacity:.95;font-size:.95rem}
-.menu-principal{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:22px}
-.card-simulado{background:white;padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.12);cursor:pointer;transition:transform .22s,box-shadow .22s}
-.card-simulado:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,.18)}
-.card-simulado h3{margin-bottom:10px;color:#1f4068}
-.card-simulado .info{background:#f6f8fa;padding:10px;border-radius:8px;font-size:.92rem;margin-bottom:10px;color:#333}
-.btn{display:inline-block;background:linear-gradient(135deg,#3498db,#2980b9);color:white;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-.btn.secondary{background:linear-gradient(135deg,#27ae60,#229954)}
+header{background:linear-gradient(135deg,#2c3e50,#3498db);color:white;padding:18px;border-radius:12px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:1.4rem}
+.menu-principal{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:18px}
+.card-simulado{background:white;padding:16px;border-radius:10px;box-shadow:0 8px 26px rgba(0,0,0,.12);cursor:pointer;transition:transform .18s}
+.card-simulado:hover{transform:translateY(-6px)}
+.card-simulado h3{color:#163a63;margin-bottom:8px}
+.card-simulado .info{background:#f6f8fa;padding:8px;border-radius:8px;font-size:.92rem}
+.btn{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
 .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.15)}
-.btn.small{padding:6px 10px;font-size:.92rem}
+.btn.small{padding:6px 10px;font-size:.9rem}
 .hidden{display:none!important}
 
-/* QUIZ */
-.quiz-wrap{background:white;border-radius:12px;padding:18px;box-shadow:0 12px 36px rgba(0,0,0,.12)}
-.quiz-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.stats{display:flex;gap:12px;align-items:center;font-weight:700}
-.stat-box{background:#f3f6f9;padding:8px 12px;border-radius:8px;color:#1f4068}
-.enunciado{background:#fbfdff;padding:16px;border-radius:10px;border-left:4px solid #3498db;margin-bottom:12px;font-size:1.02rem;line-height:1.6}
+/* quiz */
+.quiz-wrap{background:#fff;border-radius:12px;padding:16px;box-shadow:0 12px 36px rgba(0,0,0,.12)}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.stats{display:flex;gap:10px;align-items:center}
+.stat-box{background:#f3f6f9;padding:8px 12px;border-radius:8px;color:#163a63;font-weight:700}
+.enunciado{background:#fbfdff;padding:14px;border-radius:10px;border-left:4px solid #3498db;margin-bottom:12px;line-height:1.6}
 .opcoes{display:grid;gap:10px;margin-bottom:12px}
-.opcao{background:#fff;padding:12px;border-radius:10px;border:2px solid #eee;cursor:pointer;transition:all .18s}
+.opcao{background:#fff;padding:12px;border-radius:8px;border:2px solid #eee;cursor:pointer;transition:all .14s}
 .opcao:hover{transform:translateY(-4px);border-color:#3498db}
 .opcao.correta{background:#d4edda;border-color:#28a745;color:#155724}
 .opcao.incorreta{background:#f8d7da;border-color:#dc3545;color:#721c24}
-.explicacao{background:#eef8ff;padding:12px;border-radius:8px;border-left:4px solid #2b9edb;margin-top:8px;display:none}
+.explicacao{background:#eef8ff;padding:10px;border-radius:8px;border-left:4px solid #2b9edb;margin-top:8px;display:none}
 .note-area{background:#fff7e6;padding:12px;border-radius:8px;border-left:4px solid #ffc107;margin-top:12px}
-.note-area textarea{width:100%;min-height:90px;border:1px solid #e6e6e6;padding:10px;border-radius:6px;font-family:inherit}
-.note-area .note-actions{margin-top:8px;display:flex;gap:8px;justify-content:flex-end}
-.small-muted{font-size:.9rem;color:#666;margin-top:6px}
+.note-area textarea{width:100%;min-height:90px;padding:10px;border-radius:6px;border:1px solid #e6e6e6;font-family:inherit}
+.note-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
 
-/* ADMIN */
-#adminPanel{background:linear-gradient(180deg,#fff,#f6f9ff);padding:14px;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.12)}
+/* admin modal */
+#adminModal{position:fixed;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);z-index:9999;padding:18px}
+#adminPanel{background:linear-gradient(180deg,#fff,#f6f9ff);padding:14px;border-radius:10px;width:100%;max-width:1100px;box-shadow:0 18px 48px rgba(0,0,0,.25)}
 .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-textarea.code{height:320px;font-family:monospace;font-size:0.9rem;padding:12px;border-radius:8px;border:1px solid #e2e8f0}
-.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.kv{font-size:.9rem;color:#333}
+textarea.code{width:100%;height:320px;font-family:monospace;padding:12px;border-radius:8px;border:1px solid #e2e8f0}
+.controls{display:flex;gap:8px;align-items:center;margin-top:10px}
+.tab-btns{display:flex;gap:8px;margin-bottom:8px}
+.tab-btn{padding:8px 12px;border-radius:8px;border:1px solid #d6dbe6;background:#f8f9fb;cursor:pointer}
+.tab-btn.active{background:#3498db;color:#fff;border-color:#2980b9}
+.kv{font-size:.9rem;color:#333;margin-left:auto}
 
 /* responsive */
-@media(max-width:900px){
-  .admin-grid{grid-template-columns:1fr}
-  .menu-principal{grid-template-columns:1fr}
-}
+@media(max-width:900px){.admin-grid{grid-template-columns:1fr}.menu-principal{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
-
 <header>
-  <div class="header-left">
-    <h1>🎓 PROJETO SABER</h1>
-    <div class="header-sub">Simulados Polícia Penal ES — Ensino & Treino</div>
+  <div>
+    <h1>🎓 PROJETO SABER 3.4</h1>
+    <div style="opacity:.9">Simulados Polícia Penal ES — Conversor Inteligente</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
     <button class="btn ghost" onclick="abrirAdministrador()">Administrador</button>
@@ -69,344 +65,302 @@ textarea.code{height:320px;font-family:monospace;font-size:0.9rem;padding:12px;b
   </div>
 </header>
 
-<!-- MENU PRINCIPAL -->
+<!-- menu principal -->
 <div id="telaPrincipal">
-  <div class="menu-principal" id="menuSimulados">
-    <!-- cards gerados via JS -->
-  </div>
+  <div class="menu-principal" id="menuSimulados"></div>
 </div>
 
-<!-- QUIZ -->
+<!-- quiz area -->
 <div id="quizArea" class="hidden">
   <div class="quiz-wrap">
     <div class="quiz-header">
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div><strong id="tituloSimulado">Simulado</strong></div>
-        <div class="small-muted" id="descricaoSimulado"></div>
+      <div>
+        <strong id="tituloSimulado">Simulado</strong>
+        <div style="font-size:.9rem;color:#666" id="descricaoSimulado"></div>
       </div>
       <div class="stats">
-        <div class="stat-box">Questão <span id="numQuestao">0</span>/<span id="totalQuestoes">0</span></div>
-        <div class="stat-box">Acertos: <span id="acertos">0</span></div>
-        <div class="stat-box">Erros: <span id="erros">0</span></div>
-        <div class="stat-box">Pontos: <span id="pontos">0</span></div>
+        <div class="stat-box">Q <span id="numQuestao">0</span>/<span id="totalQuestoes">0</span></div>
+        <div class="stat-box">✔ <span id="acertos">0</span></div>
+        <div class="stat-box">✖ <span id="erros">0</span></div>
+        <div class="stat-box">⭐ <span id="pontos">0</span></div>
       </div>
     </div>
 
     <div class="enunciado" id="enunciado">Enunciado</div>
     <div class="opcoes" id="opcoes"></div>
-
     <div class="explicacao" id="explicacao"></div>
 
-    <!-- Área de anotações por questão (PERMANECE NO QUIZ, não no Admin) -->
     <div class="note-area" id="noteArea">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div><strong>Notas Pessoais (Anotações)</strong></div>
-        <div class="small-muted">Anotações salvas localmente no seu navegador</div>
-      </div>
-      <textarea id="notaTexto" placeholder="Escreva sua anotação aqui..."></textarea>
+      <strong>Notas Pessoais</strong>
+      <textarea id="notaTexto" placeholder="Escreva sua anotação..."></textarea>
       <div class="note-actions">
-        <button class="btn small" onclick="gravarNota()">💾 Gravar Anotação</button>
-        <button class="btn small" style="background:#e74c3c" onclick="excluirNota()">🗑️ Excluir Anotação</button>
+        <button class="btn small" onclick="gravarNota()">💾 Gravar</button>
+        <button class="btn small" style="background:#e74c3c" onclick="excluirNota()">🗑️ Excluir</button>
       </div>
-      <div class="small-muted" id="notaInfo"></div>
+      <div style="font-size:.9rem;color:#666;margin-top:8px" id="notaInfo"></div>
     </div>
 
-    <div style="margin-top:12px;display:flex;gap:10px;justify-content:center">
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:12px">
       <button class="btn" onclick="questaoAnterior()">← Anterior</button>
       <button class="btn" onclick="questaoProxima()">Próxima →</button>
       <button class="btn secondary" onclick="finalizarSimulado()">Finalizar</button>
-      <button class="btn ghost" onclick="voltarMenu()">Voltar ao Menu</button>
+      <button class="btn ghost" onclick="voltarMenu()">Voltar</button>
     </div>
   </div>
 </div>
 
-<!-- RESULTADOS -->
-<div id="resultadoArea" class="hidden" style="margin-top:18px">
+<!-- resultado -->
+<div id="resultadoArea" class="hidden" style="margin-top:12px">
   <div class="quiz-wrap">
     <h2>📊 Resultado</h2>
     <p><strong>Acertos:</strong> <span id="resAcertos">0</span></p>
     <p><strong>Erros:</strong> <span id="resErros">0</span></p>
     <p><strong>Pontuação:</strong> <span id="resPontuacao">0%</span></p>
-    <div style="margin-top:12px">
-      <button class="btn" onclick="voltarMenu()">Voltar ao Menu</button>
-    </div>
+    <div style="margin-top:12px"><button class="btn" onclick="voltarMenu()">Voltar ao Menu</button></div>
   </div>
 </div>
 
-<!-- ADMIN (modal-like area) com SOMENTE o Conversor -->
-<div id="adminModal" class="hidden" style="position:fixed;left:0;top:0;right:0;bottom:0;
-display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:9999;padding:18px">
-  <div id="adminPanel" style="width:100%;max-width:1100px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <h3>🔐 Painel Administrador</h3>
+<!-- admin modal -->
+<div id="adminModal" class="hidden">
+  <div id="adminPanel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div><strong>🔐 Painel Administrador</strong></div>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn ghost" onclick="fecharAdministrador()">Fechar</button>
+        <button class="btn ghost" onclick="fecharAdministrador()">Fechar Painel</button>
       </div>
     </div>
 
-    <!-- Login de senha -->
+    <!-- login -->
     <div id="adminLogin">
-      <div style="margin-bottom:8px">Protegido por senha. Digite a senha para continuar.</div>
+      <p style="margin-bottom:6px">Protegido por senha. (Senha padrão: <strong>admin123</strong>)</p>
       <div style="display:flex;gap:8px;align-items:center">
         <input id="adminSenha" type="password" placeholder="Senha" style="padding:8px;border-radius:6px;border:1px solid #cfd8e3" />
         <button class="btn" onclick="validarAdmin()">Entrar</button>
       </div>
-      <div class="small-muted" style="margin-top:8px">Senha padrão: <strong>admin123</strong> (altere no código se desejar)</div>
     </div>
 
-    <!-- Painel real (após autenticação) - APENAS O CONVERSOR AQUI -->
-    <div id="adminContent" class="hidden" style="margin-top:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div><strong>Conversor JSON - SABER 3.2</strong></div>
-        <div class="small-muted">Cole o JSON antigo à esquerda, clique em Converter — o resultado aparece à direita.</div>
+    <!-- content -->
+    <div id="adminContent" class="hidden" style="margin-top:10px">
+      <div class="tab-btns">
+        <div id="tabTextoBtn" class="tab-btn">Texto → JSON</div>
+        <div id="tabConversorBtn" class="tab-btn">Conversor JSON</div>
+        <div style="margin-left:auto" class="kv">Fechar conversor: <button class="btn ghost small" onclick="fecharConversor()">Fechar Conversor</button></div>
       </div>
 
-      <!-- Conversor embutido (único conteúdo do admin) -->
-      <div id="conversorBox" style="margin-top:10px">
+      <!-- Texto -> JSON (padrão aberto ao entrar no admin) -->
+      <div id="tabTexto" class="tab">
+        <div class="admin-grid">
+          <div>
+            <h4>Texto base (cole aqui)</h4>
+            <textarea id="origTexto" class="code" placeholder="Cole texto da prova, enunciados e alternativas aqui. Pode ser texto livre, será detectado automaticamente."></textarea>
+          </div>
+          <div>
+            <h4>JSON SABER (gerado)</h4>
+            <textarea id="jsonTexto" class="code" readonly placeholder="O JSON gerado aparecerá aqui"></textarea>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn" onclick="converterTexto()">Converter Texto → JSON</button>
+          <button class="btn" onclick="copiarTextoJson()">Copiar</button>
+          <button class="btn" onclick="baixarTextoJson()">Baixar .json</button>
+          <button class="btn ghost" onclick="limparTextoConversor()">Limpar</button>
+          <div style="margin-left:auto;color:#333;font-size:.9rem">Detecta JSON embutido ou gera do texto livre</div>
+        </div>
+      </div>
+
+      <!-- Conversor JSON -->
+      <div id="tabConversor" class="tab hidden" style="margin-top:12px">
         <div class="admin-grid">
           <div>
             <h4>JSON Original</h4>
-            <textarea id="origJson" class="code" placeholder='Cole aqui seu JSON antigo (ex.: array ou {"questoes":[...]})'></textarea>
+            <textarea id="origJson" class="code" placeholder='Cole aqui JSON (array ou {"questoes":[...]})'></textarea>
           </div>
           <div>
             <h4>JSON Convertido (SABER)</h4>
             <textarea id="convJson" class="code" readonly placeholder="Resultado aparecerá aqui"></textarea>
           </div>
         </div>
-
-        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-          <div class="controls">
-            <button class="btn" onclick="converterAdmin()">Converter</button>
-            <button class="btn" onclick="copiarConvertido()">Copiar Convertido</button>
-            <button class="btn" onclick="baixarConvertido()">Baixar .json</button>
-            <button class="btn ghost" onclick="limparConversor()">Limpar</button>
-          </div>
-          <div style="margin-left:auto" class="kv">Dica: transforma alternativas objeto (A,B,...) em array e converte letras (A,B,C) em índices (0,1,2).</div>
+        <div class="controls">
+          <button class="btn" onclick="converterAdmin()">Converter</button>
+          <button class="btn" onclick="copiarConvertido()">Copiar</button>
+          <button class="btn" onclick="baixarConvertido()">Baixar</button>
+          <button class="btn ghost" onclick="limparConversor()">Limpar</button>
+          <div style="margin-left:auto;color:#333;font-size:.9rem">Converte alternativas objeto → array e letras → índices</div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
 
 <script>
-/* ==========================
-   Variáveis globais e utilitários
-   ========================== */
-let simulados = {};
-let questoesFiltradas = [];
-let simuladoAtual = null;
-let questaoAtual = 0;
-let respostas = {}; // respostas locais indexadas por indice da questão (0-based) (salvas em localStorage por simulado)
-const ADMIN_PASSWORD = 'admin123'; // altere aqui se desejar
+/* ====== Variáveis e config ====== */
+const ADMIN_PASSWORD = 'admin123';
+let simulados = {}, questoesFiltradas = [], simuladoAtual = null, questaoAtual = 0, respostas = {};
 
-/* ========== Carregar manifest ========== */
-async function carregarManifest() {
+/* ====== Funções básicas (manifest, menu) ====== */
+async function carregarManifest(){
   try {
-    const resp = await fetch('data/simulados-manifest.json');
-    if (!resp.ok) throw new Error('Manifest não encontrado (HTTP ' + resp.status + ')');
-    simulados = await resp.json();
+    const r = await fetch('data/simulados-manifest.json');
+    if(!r.ok) throw new Error('Manifest não encontrado (HTTP '+r.status+')');
+    simulados = await r.json();
     montarMenu();
-  } catch (e) {
-    console.error('Erro ao carregar manifest:', e);
-    document.getElementById('menuSimulados').innerHTML = '<div style="color:white;padding:12px;background:rgba(0,0,0,.15);border-radius:8px">Erro ao carregar simulados. Verifique data/simulados-manifest.json</div>';
+  } catch(e) {
+    console.error(e);
+    document.getElementById('menuSimulados').innerHTML = '<div style="color:white;padding:10px">Erro ao carregar manifest.</div>';
   }
 }
-
-/* ========== Montar cards dos simulados ========== */
-function montarMenu() {
+function montarMenu(){
   const menu = document.getElementById('menuSimulados');
   menu.innerHTML = '';
-  for (const [id, s] of Object.entries(simulados)) {
+  for(const [id,s] of Object.entries(simulados)){
     const card = document.createElement('div');
     card.className = 'card-simulado';
-    card.innerHTML = `<h3>📋 ${s.nome}</h3><div class="info"><strong>${s.total||'--'} Questões</strong><br>${s.descricao||''}</div><div style="display:flex;gap:8px"><button class="btn" onclick="iniciarSimulado(${id})">FAZER SIMULADO</button><button class="btn ghost" onclick="baixarArquivoSimulado('${encodeURIComponent(s.arquivo)}')">Baixar JSON</button></div>`;
+    card.innerHTML = `<h3>📋 ${s.nome}</h3><div class="info">${s.total||'--'} Questões<br>${s.descricao||''}</div><div style="margin-top:10px"><button class="btn" onclick="iniciarSimulado(${id})">Fazer</button></div>`;
     menu.appendChild(card);
   }
 }
 
-/* ========== Iniciar simulado (suporta arquivo externo ou embed) ========== */
-async function iniciarSimulado(id) {
+/* ====== Iniciar simulado (busca arquivo) ====== */
+async function iniciarSimulado(id){
   try {
     simuladoAtual = id;
     const s = simulados[id];
-    if (!s) throw new Error('Simulado não encontrado');
-    // tenta fetch do arquivo
-    if (s.arquivo) {
-      let caminho = s.arquivo;
-      if (!caminho.startsWith('data/')) caminho = 'data/' + caminho;
-      const r = await fetch(caminho);
-      if (!r.ok) throw new Error('Arquivo do simulado não encontrado: ' + caminho + ' (HTTP ' + r.status + ')');
-      const dados = await r.json();
-      if (Array.isArray(dados)) questoesFiltradas = dados;
-      else if (Array.isArray(dados.questoes)) questoesFiltradas = dados.questoes;
-      else throw new Error('Formato do JSON inválido. Deve ser array de questões ou { "questoes": [...] }');
-    } else if (s.questoes && Array.isArray(s.questoes)) {
-      questoesFiltradas = s.questoes;
-    } else {
-      throw new Error('Nenhum arquivo configurado para esse simulado.');
-    }
-
-    if (!questoesFiltradas.length) throw new Error('Sem questões neste simulado.');
-
-    const respKey = `respostas_simulado_${simuladoAtual}`;
-    const saved = localStorage.getItem(respKey);
+    if(!s) throw new Error('Simulado não encontrado');
+    let caminho = s.arquivo || s.file || '';
+    if(!caminho) throw new Error('Nenhum arquivo configurado no manifest');
+    if(!caminho.startsWith('data/')) caminho = 'data/' + caminho;
+    const r = await fetch(caminho);
+    if(!r.ok) throw new Error('Arquivo do simulado não encontrado (HTTP '+r.status+')');
+    const dados = await r.json();
+    questoesFiltradas = Array.isArray(dados) ? dados : (dados.questoes || []);
+    if(!questoesFiltradas.length) throw new Error('Sem questões no arquivo');
+    // carregar respostas salvas
+    const saved = localStorage.getItem('respostas_simulado_'+simuladoAtual);
     respostas = saved ? JSON.parse(saved) : {};
-
     document.getElementById('telaPrincipal').classList.add('hidden');
-    document.getElementById('resultadoArea').classList.add('hidden');
     document.getElementById('quizArea').classList.remove('hidden');
-    document.getElementById('tituloSimulado').textContent = s.nome || 'Simulado';
+    document.getElementById('tituloSimulado').textContent = s.nome;
     document.getElementById('descricaoSimulado').textContent = s.descricao || '';
     document.getElementById('totalQuestoes').textContent = questoesFiltradas.length;
     questaoAtual = 0;
-
     atualizarEstatisticas();
     exibirQuestao();
-  } catch (e) {
+  } catch(e) {
     console.error(e);
-    alert('Erro ao iniciar simulado: ' + (e.message || e));
+    alert('Erro ao iniciar simulado: ' + (e.message||e));
   }
 }
 
-/* ========== Exibir questão atual ========== */
-function exibirQuestao() {
+/* ====== Exibir questão, selecionar, stats ====== */
+function exibirQuestao(){
   const q = questoesFiltradas[questaoAtual];
-  if (!q) return;
-  document.getElementById('numQuestao').textContent = (questaoAtual + 1);
+  if(!q) return;
+  document.getElementById('numQuestao').textContent = questaoAtual+1;
   document.getElementById('enunciado').innerHTML = `<strong>Q${questaoAtual+1}.</strong> ${q.enunciado || q.questao || ''}`;
-  let opcoes = q.opcoes || q.alternativas || q.options || [];
-  if (!Array.isArray(opcoes) && typeof opcoes === 'object') {
-    opcoes = Object.values(opcoes);
-  }
-  q.opcoes = opcoes;
 
-  const opCont = document.getElementById('opcoes');
-  opCont.innerHTML = '';
-  opcoes.forEach((texto, idx) => {
+  // normaliza opcoes: se objeto A:..,B:.. -> array
+  let op = q.opcoes || q.alternativas || q.options || [];
+  if(!Array.isArray(op) && typeof op === 'object') op = Object.values(op);
+  q.opcoes = op;
+
+  const cont = document.getElementById('opcoes');
+  cont.innerHTML = '';
+  op.forEach((txt, idx) => {
     const d = document.createElement('div');
     d.className = 'opcao';
-    d.textContent = `${String.fromCharCode(65 + idx)}) ${texto}`;
+    d.textContent = `${String.fromCharCode(65+idx)}) ${txt}`;
     d.onclick = () => selecionarOpcao(idx);
-    opCont.appendChild(d);
+    cont.appendChild(d);
   });
 
-  document.getElementById('explicacao').style.display = 'none';
-  if (typeof q.explicacao === 'string' && q.explicacao.trim()) {
-    document.getElementById('explicacao').innerHTML = `<strong>Explicação:</strong><br>${q.explicacao}`;
+  // explicacao
+  const expEl = document.getElementById('explicacao');
+  if(q.explicacao) {
+    expEl.innerHTML = `<strong>Explicação:</strong><br>${q.explicacao}`;
+    expEl.style.display = 'none'; // mostra só após responder
   } else {
-    document.getElementById('explicacao').innerHTML = '';
+    expEl.innerHTML = '';
+    expEl.style.display = 'none';
   }
 
+  // carregar nota
   carregarNotaTela();
+
+  // mostrar respostas já dadas (pinta correta/incorreta)
+  const resp = respostas[questaoAtual];
+  if(resp !== undefined && resp !== null) {
+    marcarOpcoesVisuais(resp, q);
+  }
 }
 
-/* ========== Selecionar opção ========== */
-function selecionarOpcao(indice) {
+function selecionarOpcao(indice){
   const q = questoesFiltradas[questaoAtual];
-  if (!q) return;
-  let gabarito = q.gabarito ?? q.resposta ?? q.resposta_correta ?? null;
-  if (typeof gabarito === 'string') {
-    const idx = gabarito.trim().toUpperCase().charCodeAt(0) - 65;
-    gabarito = isNaN(idx) ? null : idx;
+  if(!q) return;
+  // normaliza gabarito se for letra
+  let g = q.gabarito ?? q.resposta ?? q.resposta_correta ?? null;
+  if(typeof g === 'string') {
+    const idx = g.trim().toUpperCase().charCodeAt(0)-65;
+    g = isNaN(idx) ? null : idx;
   }
-  q.gabarito = (gabarito === null || gabarito === undefined) ? q.gabarito : gabarito;
+  q.gabarito = (g===null||g===undefined) ? q.gabarito : g;
 
   respostas[questaoAtual] = indice;
-  salvarRespostasLocal();
+  localStorage.setItem('respostas_simulado_'+simuladoAtual, JSON.stringify(respostas));
 
-  document.querySelectorAll('.opcao').forEach((el, idx) => {
-    el.disabled = true;
-    el.classList.remove('correta','incorreta');
-    if (q.gabarito !== null && q.gabarito !== undefined && idx === q.gabarito) el.classList.add('correta');
-    if (idx === indice && idx !== q.gabarito) el.classList.add('incorreta');
-  });
-
-  if (q.explicacao) document.getElementById('explicacao').style.display = 'block';
+  marcarOpcoesVisuais(indice, q);
+  if(q.explicacao) document.getElementById('explicacao').style.display = 'block';
   atualizarEstatisticas();
 }
 
-/* ========== Estatísticas / Desempenho ==========
-   Cada questão vale 1 ponto. Calcula acertos/erros/pontos.
-   */ 
-function atualizarEstatisticas() {
-  let ac = 0, er = 0;
+function marcarOpcoesVisuais(indice, q) {
+  document.querySelectorAll('.opcao').forEach((el, idx) => {
+    el.classList.remove('correta','incorreta');
+    el.disabled = true;
+    if(q.gabarito !== null && q.gabarito !== undefined && idx === q.gabarito) el.classList.add('correta');
+    if(idx === indice && idx !== q.gabarito) el.classList.add('incorreta');
+  });
+}
+
+function atualizarEstatisticas(){
+  let ac=0, er=0;
   questoesFiltradas.forEach((q, idx) => {
     const resp = respostas[idx];
+    if(resp === undefined || resp === null) return;
     let g = q.gabarito ?? q.resposta ?? q.resposta_correta ?? null;
-    if (typeof g === 'string') {
-      const idxg = g.trim().toUpperCase().charCodeAt(0) - 65;
-      g = isNaN(idxg) ? null : idxg;
-    }
-    if (resp === undefined || resp === null) return;
-    if (g !== null && resp === g) ac++;
-    else er++;
+    if(typeof g === 'string') { const idxg = g.trim().toUpperCase().charCodeAt(0)-65; g = isNaN(idxg)?null:idxg; }
+    if(g !== null && resp === g) ac++; else er++;
   });
-  const pontos = ac;
+  const pts = ac;
   document.getElementById('acertos').textContent = ac;
   document.getElementById('erros').textContent = er;
-  document.getElementById('pontos').textContent = pontos;
+  document.getElementById('pontos').textContent = pts;
   document.getElementById('resAcertos').textContent = ac;
   document.getElementById('resErros').textContent = er;
-  const perc = questoesFiltradas.length ? Math.round((ac / questoesFiltradas.length) * 100) : 0;
-  document.getElementById('resPontuacao').textContent = perc + '%';
+  document.getElementById('resPontuacao').textContent = questoesFiltradas.length ? Math.round((ac/questoesFiltradas.length)*100) + '%' : '0%';
 }
 
-/* ========== Navegação ========== */
-function questaoProxima() {
-  if (questaoAtual < questoesFiltradas.length - 1) {
-    questaoAtual++;
-    exibirQuestao();
-  } else {
-    finalizarSimulado();
-  }
-}
-function questaoAnterior() {
-  if (questaoAtual > 0) {
-    questaoAtual--;
-    exibirQuestao();
-  }
-}
+/* navegação */
+function questaoProxima(){ if(questaoAtual < questoesFiltradas.length-1) { questaoAtual++; exibirQuestao(); } else finalizarSimulado(); }
+function questaoAnterior(){ if(questaoAtual>0) { questaoAtual--; exibirQuestao(); } }
+function finalizarSimulado(){ atualizarEstatisticas(); document.getElementById('quizArea').classList.add('hidden'); document.getElementById('resultadoArea').classList.remove('hidden'); }
+function voltarMenu(){ document.getElementById('quizArea').classList.add('hidden'); document.getElementById('resultadoArea').classList.add('hidden'); document.getElementById('telaPrincipal').classList.remove('hidden'); }
 
-/* ========== Finalizar ========== */
-function finalizarSimulado() {
-  atualizarEstatisticas();
-  document.getElementById('quizArea').classList.add('hidden');
-  document.getElementById('resultadoArea').classList.remove('hidden');
-}
-
-/* ========== Voltar ao Menu ========== */
-function voltarMenu() {
-  document.getElementById('quizArea').classList.add('hidden');
-  document.getElementById('resultadoArea').classList.add('hidden');
-  document.getElementById('telaPrincipal').classList.remove('hidden');
-}
-
-/* ========== LocalStorage: Respostas e Notas ========== */
-function salvarRespostasLocal() {
-  if (!simuladoAtual) return;
-  const key = `respostas_simulado_${simuladoAtual}`;
-  localStorage.setItem(key, JSON.stringify(respostas));
-}
-
-function salvarNotaLocal(texto) {
-  const key = `nota_simulado_${simuladoAtual}_q${questaoAtual}`;
-  localStorage.setItem(key, texto);
-}
-
+/* ====== Notas por questão (localStorage) ====== */
 function carregarNotaTela() {
   const key = `nota_simulado_${simuladoAtual}_q${questaoAtual}`;
   const t = localStorage.getItem(key) || '';
   document.getElementById('notaTexto').value = t;
-  document.getElementById('notaInfo').textContent = t ? 'Anotação salva.' : 'Sem anotação salva para esta questão.';
+  document.getElementById('notaInfo').textContent = t ? 'Anotação salva.' : 'Sem anotação para esta questão.';
 }
-
-function gravarNota() {
-  const texto = document.getElementById('notaTexto').value.trim();
-  salvarNotaLocal(texto);
+function gravarNota(){
+  const key = `nota_simulado_${simuladoAtual}_q${questaoAtual}`;
+  const txt = document.getElementById('notaTexto').value || '';
+  localStorage.setItem(key, txt);
   document.getElementById('notaInfo').textContent = 'Anotação salva.';
   alert('Anotação salva localmente.');
 }
-function excluirNota() {
+function excluirNota(){
   const key = `nota_simulado_${simuladoAtual}_q${questaoAtual}`;
   localStorage.removeItem(key);
   document.getElementById('notaTexto').value = '';
@@ -414,130 +368,250 @@ function excluirNota() {
   alert('Anotação excluída.');
 }
 
-/* ========== Limpar dados locais (admin actions) ========== */
-function limparTodasAnotacoes() {
-  if (!confirm('Confirma apagar todas as anotações locais?')) return;
-  Object.keys(localStorage).forEach(k => {
-    if (k.startsWith('nota_simulado_')) localStorage.removeItem(k);
-  });
-  alert('Todas as anotações locais foram removidas.');
-}
-function limparRespostasLocal() {
-  if (!confirm('Confirma apagar todas as respostas locais?')) return;
-  Object.keys(localStorage).forEach(k => {
-    if (k.startsWith('respostas_simulado_')) localStorage.removeItem(k);
-  });
-  alert('Todas as respostas locais foram removidas.');
-}
-
-/* ========== Baixar/Obter arquivo do simulado (utilitário) ========== */
-function baixarArquivoSimulado(encodedPath) {
-  try {
-    const path = decodeURIComponent(encodedPath);
-    fetch(path).then(r => {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.blob();
-    }).then(blob => {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = path.split('/').pop();
-      a.click();
-    }).catch(e => alert('Erro ao baixar: ' + e.message));
-  } catch (e) { alert('Erro: ' + e.message); }
-}
-
-/* ============================
-   ADMIN: abrir/fechar e validar
-   ============================ */
-function abrirAdministrador() {
+/* ====== Admin open/close/tab logic ====== */
+function abrirAdministrador(){
   document.getElementById('adminModal').classList.remove('hidden');
-  document.getElementById('adminSenha').value = '';
   document.getElementById('adminLogin').classList.remove('hidden');
   document.getElementById('adminContent').classList.add('hidden');
+  // set default tab Texto->JSON active visually
+  setTabActive('texto');
 }
-function fecharAdministrador() {
-  document.getElementById('adminModal').classList.add('hidden');
-}
-function validarAdmin() {
+function fecharAdministrador(){ document.getElementById('adminModal').classList.add('hidden'); }
+function validarAdmin(){
   const s = document.getElementById('adminSenha').value;
-  if (s === ADMIN_PASSWORD) {
+  if(s === ADMIN_PASSWORD){
     document.getElementById('adminLogin').classList.add('hidden');
     document.getElementById('adminContent').classList.remove('hidden');
-    // abrir automaticamente o conversor
-    document.getElementById('conversorBox').scrollIntoView({behavior:'smooth'});
-  } else {
-    alert('Senha incorreta.');
+    // abrir aba Texto por padrão
+    setTabActive('texto');
+  } else alert('Senha incorreta.');
+}
+function setTabActive(name){
+  // name: 'texto' or 'conversor'
+  document.getElementById('tabTextoBtn').classList.toggle('active', name === 'texto');
+  document.getElementById('tabConversorBtn').classList.toggle('active', name === 'conversor');
+  document.getElementById('tabTexto').classList.toggle('hidden', name !== 'texto');
+  document.getElementById('tabConversor').classList.toggle('hidden', name !== 'conversor');
+  // if admin content visible and texto open, focus
+  if(!document.getElementById('adminContent').classList.contains('hidden')) {
+    if(name === 'texto') document.getElementById('origTexto').focus();
+    else document.getElementById('origJson').focus();
   }
 }
+document.getElementById('tabTextoBtn').addEventListener('click', ()=>setTabActive('texto'));
+document.getElementById('tabConversorBtn').addEventListener('click', ()=>setTabActive('conversor'));
 
-/* ========== Conversor Admin (conforme solicitado) ========== */
-function converterAdmin() {
-  const origStr = document.getElementById('origJson').value.trim();
-  if (!origStr) { alert('Cole o JSON original à esquerda.'); return; }
+/* fechar apenas o conversor (esconder admin modal content, mas manter admin aberto) */
+function fecharConversor(){
+  // fechar o painel inteiro do conversor/administrador (fecha modal)
+  fecharAdministrador();
+}
+
+/* ====== Conversor JSON (Admin) - mantém comportamento anterior ====== */
+function converterAdmin(){
+  const raw = document.getElementById('origJson').value.trim();
+  if(!raw){ alert('Cole o JSON original antes de converter.'); return; }
   try {
-    const dados = JSON.parse(origStr);
+    const dados = JSON.parse(raw);
     const arr = Array.isArray(dados) ? dados : (dados.questoes || []);
-    const convertido = arr.map((q, i) => {
+    const convertido = arr.map((q,i) => {
       const enunciado = q.questao || q.pergunta || q.enunciado || q.texto || '';
       let opcoes = q.alternativas || q.opcoes || q.options || [];
-      if (!Array.isArray(opcoes) && typeof opcoes === 'object') opcoes = Object.values(opcoes);
+      if(!Array.isArray(opcoes) && typeof opcoes === 'object') opcoes = Object.values(opcoes);
       let g = q.gabarito ?? q.resposta ?? q.resposta_correta ?? null;
-      if (typeof g === 'string') {
-        const idx = g.trim().toUpperCase().charCodeAt(0) - 65;
-        g = isNaN(idx) ? null : idx;
-      }
+      if(typeof g === 'string'){ const idx = g.trim().toUpperCase().charCodeAt(0)-65; g = isNaN(idx) ? null : idx; }
       return {
-        id: i + 1,
-        disciplina: q.disciplina || q.assunto || 'Geral',
-        enunciado: enunciado,
-        opcoes: opcoes,
+        id: i+1,
+        disciplina: q.disciplina || 'Geral',
+        enunciado,
+        opcoes,
         gabarito: g,
         explicacao: q.comentario || q.comentário || q.explicacao || q.explicacao_professor || '',
         dica: q.dica || ''
       };
     });
     document.getElementById('convJson').value = JSON.stringify(convertido, null, 2);
-  } catch (e) {
-    alert('Erro ao converter JSON: ' + e.message);
+  } catch(e){
+    alert('JSON inválido: ' + e.message);
   }
 }
-function copiarConvertido() {
-  const t = document.getElementById('convJson').value;
-  if (!t) return alert('Nada para copiar.');
-  navigator.clipboard.writeText(t).then(()=>alert('Convertido copiado.'));
-}
-function baixarConvertido() {
-  const t = document.getElementById('convJson').value;
-  if (!t) return alert('Nada para baixar.');
-  const blob = new Blob([t], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'simulado_convertido.json';
-  a.click();
-}
-function limparConversor() {
-  document.getElementById('origJson').value = '';
-  document.getElementById('convJson').value = '';
+function copiarConvertido(){ const t = document.getElementById('convJson').value; if(!t) return alert('Nada para copiar'); navigator.clipboard.writeText(t).then(()=>alert('Convertido copiado')); }
+function baixarConvertido(){ const t = document.getElementById('convJson').value; if(!t) return alert('Nada para baixar'); const blob = new Blob([t], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'simulado_convertido.json'; a.click(); }
+function limparConversor(){ document.getElementById('origJson').value=''; document.getElementById('convJson').value=''; }
+
+/* ====== Texto -> JSON Inteligente ====== */
+function converterTexto(){
+  const text = document.getElementById('origTexto').value;
+  if(!text.trim()){ alert('Cole algum texto antes.'); return; }
+
+  // 1) tentar extrair JSON válido dentro do texto (procura por primeiro bloco que possa ser JSON)
+  const jsonFromText = extrairJsonDoTexto(text);
+  if(jsonFromText) {
+    // formatar e exibir
+    const arr = Array.isArray(jsonFromText) ? jsonFromText : (jsonFromText.questoes || []);
+    document.getElementById('jsonTexto').value = JSON.stringify(arr, null, 2);
+    alert('JSON detectado e formatado.');
+    return;
+  }
+
+  // 2) nenhum JSON detectado => realizar parsing heurístico por blocos
+  const gerado = gerarJsonDeTextoLivre(text);
+  document.getElementById('jsonTexto').value = JSON.stringify(gerado, null, 2);
+  alert('Texto convertido para JSON SABER (verifique e salve).');
 }
 
-/* ========== Teste: carregar manifest ao abrir ========== */
-document.addEventListener('DOMContentLoaded', () => {
+/* tenta encontrar e parsear JSON dentro do texto (retorna objeto/array ou null) */
+function extrairJsonDoTexto(text){
+  // procura por chaves que pareçam JSON: primeiro "{"..."}" ou "["..."]"
+  // vamos buscar pelo primeiro '[' que contenha objeto ou primeira '{' que contenha "quest" ou "enunciado"
+  const firstBracket = text.indexOf('[');
+  const firstBrace = text.indexOf('{');
+  const possibleStarts = [];
+  if(firstBracket !== -1) possibleStarts.push(firstBracket);
+  if(firstBrace !== -1) possibleStarts.push(firstBrace);
+  possibleStarts.sort((a,b)=>a-b);
+  for(const start of possibleStarts){
+    // tenta encontrar o fechamento correspondente (simples: tentar até o final e parsear pela primeira substring que parse)
+    for(let end = text.length; end>start; end--){
+      const candidate = text.substring(start, end);
+      try {
+        const parsed = JSON.parse(candidate);
+        // se parseou e é array ou objeto com questoes, retorna
+        if(Array.isArray(parsed) || (parsed && typeof parsed === 'object')) return parsed;
+      } catch(_) { /* ignora */ }
+    }
+  }
+  return null;
+}
+
+/* heurística para converter texto livre em array de questões */
+function gerarJsonDeTextoLivre(text){
+  // separa em blocos por duas quebras de linha (ou mais)
+  const blocks = text.split(/\n{2,}/).map(b => b.trim()).filter(Boolean);
+  const resultado = [];
+  let idCounter = 1;
+  for(const block of blocks){
+    // tentar extrair questão + alternativas
+    // linhas do bloco
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if(!lines.length) continue;
+    // detectar se o bloco é um JSON parcial (por segurança)
+    const firstLine = lines[0];
+    // se primeira linha começar com número seguido de ponto, remover numeracao
+    const enunciadoLine = firstLine.replace(/^\d+\.\s*/, '').replace(/^[\-\•]\s*/, '').trim();
+    // coletar linhas que parecem alternativas (começam com A) B) A. B. ou letra parêntese)
+    const opsi = [];
+    for(let i=1;i<lines.length;i++){
+      const ln = lines[i];
+      const m = ln.match(/^[A-Ea-e][\)\.\-]\s*(.+)$/);
+      if(m){
+        opsi.push(m[1].trim());
+      } else {
+        // também aceitar linhas que começam com letras maiúsculas + espaço "A " or "A)" etc
+        const m2 = ln.match(/^([A-Ea-e])\s+(.+)$/);
+        if(m2) opsi.push(m2[2].trim());
+        else {
+          // talvez alternativa sem marcador: se a linha contiver 'A)' no meio, tente dividir
+          const splitByLetter = ln.split(/\s{2,}/).map(s=>s.trim()).filter(Boolean);
+          if(splitByLetter.length>1 && splitByLetter.every(s => s.length>0)) {
+            // se parece com várias partes, adicionar as partes como opcoes
+            splitByLetter.forEach(s=> opsi.push(s));
+          } else {
+            // se não for alternativa, pode ser continuação do enunciado - anexar
+            // se ainda não coletamos opcoes, pode ser parte do enunciado
+          }
+        }
+      }
+    }
+    // se não encontrou alternativas usando marcadores, tentar detectar linhas que parecem alternativas por " - " ou por linhas separadas (se houver >=2 linhas depois)
+    if(opsi.length===0 && lines.length>1){
+      // assumir que as linhas 2.. são opções
+      for(let i=1;i<lines.length;i++) opsi.push(lines[i]);
+    }
+
+    // se zero opcoes e apenas uma linha, pular (não é questão)
+    if(opsi.length===0 && lines.length===1) {
+      // pode ser blocos longos que contêm várias questões - tentar separar por padrão nas linhas com "A)" etc (fallback)
+      const altCandidates = block.split(/(?=\n[A-Ea-e][\)\.])/).map(s=>s.trim()).filter(Boolean);
+      if(altCandidates.length>1){
+        // processar cada como sub-bloco recursivamente
+        altCandidates.forEach(sub => {
+          const subJson = gerarJsonDeTextoLivre(sub);
+          subJson.forEach(q=> resultado.push(q));
+        });
+        continue;
+      } else {
+        // tratar como enunciado sem opções: criar questão vazia (sem opcoes)
+        resultado.push({
+          id: idCounter++,
+          disciplina: "Geral",
+          enunciado: enunciadoLine,
+          opcoes: [],
+          gabarito: null,
+          explicacao: "",
+          dica: ""
+        });
+        continue;
+      }
+    }
+
+    // limpar opcoes (remover prefixos tipo "A) ", "B. ")
+    const opClean = opsi.map(o => o.replace(/^[A-Ea-e][\)\.\-\s]*\s*/, '').trim());
+    // remover linhas vazias
+    const opFinal = opClean.filter(Boolean);
+    resultado.push({
+      id: idCounter++,
+      disciplina: "Geral",
+      enunciado: enunciadoLine,
+      opcoes: opFinal,
+      gabarito: null,
+      explicacao: "",
+      dica: ""
+    });
+  }
+
+  // se resultado vazio, tentar separar por linhas simples (fallback)
+  if(resultado.length===0){
+    const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+    for(let i=0;i<lines.length;i++){
+      resultado.push({
+        id: i+1,
+        disciplina: "Geral",
+        enunciado: lines[i],
+        opcoes: [],
+        gabarito: null,
+        explicacao: "",
+        dica: ""
+      });
+    }
+  }
+
+  return resultado;
+}
+
+/* utilitários para copiar/baixar texto JSON gerado */
+function copiarTextoJson(){ const t = document.getElementById('jsonTexto').value; if(!t) return alert('Nada para copiar'); navigator.clipboard.writeText(t).then(()=>alert('JSON copiado')); }
+function baixarTextoJson(){ const t = document.getElementById('jsonTexto').value; if(!t) return alert('Nada para baixar'); const blob = new Blob([t], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'simulado_gerado.json'; a.click(); }
+function limparTextoConversor(){ document.getElementById('origTexto').value=''; document.getElementById('jsonTexto').value=''; }
+
+/* utilitários conversor anterior (JSON) */
+function copiarConvertido(){ const t = document.getElementById('convJson').value; if(!t) return alert('Nada para copiar'); navigator.clipboard.writeText(t).then(()=>alert('Convertido copiado')); }
+function baixarConvertido(){ const t = document.getElementById('convJson').value; if(!t) return alert('Nada para baixar'); const blob = new Blob([t], {type:'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'simulado_convertido.json'; a.click(); }
+function limparConversor(){ document.getElementById('origJson').value=''; document.getElementById('convJson').value=''; }
+
+/* fechar apenas o conversor (solicitação do usuário): aqui fecha o modal inteiro */
+function fecharConversor(){ fecharAdministrador(); }
+
+/* fechar admin */
+function fecharAdministrador(){ document.getElementById('adminModal').classList.add('hidden'); }
+
+/* inicialização */
+document.addEventListener('DOMContentLoaded', ()=> {
   carregarManifest();
+  // ao abrir o admin, por padrão ativar 'Texto' (listeners já configurados via setTabActive)
+  document.getElementById('tabTextoBtn').addEventListener('click', ()=> setTabActive('texto'));
+  document.getElementById('tabConversorBtn').addEventListener('click', ()=> setTabActive('conversor'));
 });
-
-/* ========== Utilitários extras ========== */
-function baixarTexto(nome, conteudo) {
-  const blob = new Blob([conteudo], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = nome;
-  a.click();
-}
-
-/* ========== Expor funções no console para debug rapido (opcional) ========== */
-window._SABER = {
-  carregarManifest, montarMenu, iniciarSimulado, salvarNotaLocal, limparTodasAnotacoes, limparRespostasLocal
-};
 </script>
 </body>
 </html>
