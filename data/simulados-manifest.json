@@ -63,6 +63,7 @@
     "nome": "Legislação Específica",
     "descricao": "Questões sobre legislação específica",
     "total": 40,
-    "arquivo": "LEGISLAÇÃO-ESPECÍFICA.json"
+    "arquivo": "data/LEGISLAÇÃO-ESPECÍFICA.json"
   }
 }
+
