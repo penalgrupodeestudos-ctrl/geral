@@ -798,19 +798,24 @@ throw new Error(errorMessage);
             const list = document.getElementById('simulado-list');
             
             try {
-                // Tenta carregar uma lista de arquivos de um manifest JSON (recomendado para projetos maiores)
-                const manifestUrl = DATA_FOLDER + 'simulados_manifest.json';
-                const response = await fetch(manifestUrl);
-
-                if (!response.ok) {
-                    throw new Error(`Não foi possível carregar o arquivo manifest. Tentando fallback.`);
-                }
-                
-                const simuladoFilenames = await response.json(); 
+                // Lista de simulados fornecida pelo usuário, implementada diretamente para garantir o carregamento.
+                const simuladoFilenames = [
+                    "SIMULADO-DIREITOS-HUMANOS.json",
+                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
+                    "SIMULADO-POLICIA-PENAL02.json",
+                    "SIMULADO-POLICIA-PENAL.json", 
+                    "QUESTOES-GERAIS.json",
+                    "QUESTOES-AREA-POLICIAL.json", 
+                    "SIMULADO-IDCAP-60-QUESTOES.json",
+                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
+                    "SIMULADO-03-IDCAP-60-QUESTOES.json",
+                    "ESTRATEGIA.json",
+                    "LEGISLAÇÃO-ESPECÍFICA.json"
+                ];
 
                 list.innerHTML = '';
-                if (!Array.isArray(simuladoFilenames) || simuladoFilenames.length === 0) {
-                    list.innerHTML = '<li>Nenhum simulado encontrado no manifest.</li>';
+                if (simuladoFilenames.length === 0) {
+                    list.innerHTML = '<li>Nenhum simulado configurado.</li>';
                     return;
                 }
 
@@ -825,28 +830,8 @@ throw new Error(errorMessage);
                 });
                 
             } catch (error) {
-                console.error("Erro ao carregar simulados, usando lista de testes (fallback):", error);
-                
-                // Lista estática de fallback (Ajuste esta lista com seus nomes de arquivo JSON reais!)
-                const fallbackFiles = [
-                    "SIMULADO-POLICIA-PENAL-JSON.json", 
-                    "SIMULADO-02-IDCAP-60-QUESTOES.json",
-                    "SIMULADO-DIREITOS-HUMANOS-JSON.json",
-                    "SIMULADO-IASES-JSON-COM-GABARITO.json",
-                    "QUESTOES-AREA-POLICIAL.json",
-                    "simulado_100_questoes.json",
-                    "100-QUESTOES-POLICIAL.json",
-                    "QUESTOES-GERAIS.json.json"
-                ];
-                
-                list.innerHTML = '';
-                fallbackFiles.forEach(filename => {
-                    const cleanName = filename.replace(/\\.json$/i, ''); 
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a onclick="loadAndRenderQuiz('${filename}')">${cleanName}</a>`;
-                    list.appendChild(li);
-                });
-                list.innerHTML += '<li><small style="color:#adb5bd;">(Lista de testes carregada)</small></li>';
+                console.error("Erro ao carregar simulados:", error);
+                list.innerHTML = '<li><small style="color:var(--danger-color);">Falha ao carregar lista de simulados. Verifique o console.</small></li>';
             }
         }
 
