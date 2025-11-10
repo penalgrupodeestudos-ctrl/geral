@@ -7,14 +7,14 @@
     {
       "numero": 1,
       "disciplina": "LC 1.059/2023",
-      "questao": "A Lei Complementar nº 1.059/2023 criou o cargo de Policial Penal do Espírito Santo. De acordo com a lei, os servidores dessa carreira:",
-      "opcoes": {
+      "enunciado": "A Lei Complementar nº 1.059/2023 criou o cargo de Policial Penal do Espírito Santo. De acordo com a lei, os servidores dessa carreira:",
+      "opcoes": [
         "A": "Integram o quadro da Secretaria de Justiça (SEJUS).",
         "B": "Serão organizados em carreira própria denominada Carreira Policial Penal.",
         "C": "Possuem regime jurídico celetista.",
         "D": "Estão vinculados ao Poder Judiciário estadual.",
         "E": "Podem acumular o cargo com qualquer outro cargo público."
-      },
+      ],
       "resposta_correta": "B",
       "explicacao_professor": "A LC 1.059/2023 cria o cargo de Policial Penal e organiza os servidores em Carreira Policial Penal (Art. 1º). Embora integrem a SEJUS, o ponto mais específico da criação é a carreira própria."
     },
@@ -286,3 +286,4 @@
     }
   ]
 }
+
