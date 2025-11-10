@@ -22,11 +22,11 @@ async function carregarManifest() {
         montarMenuPrincipal();
     } catch (erro) {
         console.error('Erro ao carregar manifest:', erro);
-        alert('Erro ao carregar os simulados. Verifique o arquivo /data/simulados_manifest.json');
+        alert('⚠️ Não foi possível carregar os simulados.\nVerifique se o arquivo data/simulados_manifest.json existe no GitHub.');
     }
 }
 
-// Montar os cards dinamicamente a partir do manifest
+// Montar cards do menu principal dinamicamente
 function montarMenuPrincipal() {
     const menu = document.querySelector('#telaPrincipal .menu-principal');
     let html = '';
@@ -44,8 +44,8 @@ function montarMenuPrincipal() {
         `;
     });
 
-    // Mantém os cards padrão (disciplinas, desempenho, ajuda)
-    menu.innerHTML = html + `
+    // Mantém os cards extras originais
+    html += `
         <div class="card-simulado" onclick="abrirDisciplinas()">
             <h3>📚 Estudar por Disciplina</h3>
             <div class="info"><strong>Estudo Focado</strong><br>Escolha a disciplina e aprofunde seus conhecimentos</div>
@@ -62,16 +62,18 @@ function montarMenuPrincipal() {
             <button class="btn" style="background:linear-gradient(135deg,#f39c12 0%,#d68910 100%);">TUTORIAL</button>
         </div>
     `;
+
+    menu.innerHTML = html;
 }
 
 // Iniciar simulado selecionado
-async function iniciarSimulado(num) {
+async function iniciarSimulado(id) {
     try {
-        const sim = simulados[num];
+        const sim = simulados[id];
         const resp = await fetch(sim.arquivo);
         questoesFiltradas = await resp.json();
 
-        simuladoAtual = num;
+        simuladoAtual = id;
         questaoAtual = 0;
         respostas = {};
         marcadas = new Set();
@@ -81,19 +83,21 @@ async function iniciarSimulado(num) {
         document.getElementById('telaPrincipal').classList.add('hidden');
         document.getElementById('quizContainer').classList.remove('hidden');
         document.getElementById('resultadoContainer').classList.remove('ativo');
+
         iniciarTimer();
         exibirQuestao();
     } catch (erro) {
         console.error('Erro ao iniciar simulado:', erro);
-        alert('Erro ao carregar questões do simulado.');
+        alert('⚠️ Erro ao carregar as questões do simulado.');
     }
 }
 
-// === As funções abaixo são mantidas do seu código original ===
-// (exibirQuestao, selecionarOpcao, mostrarDica, navegação, marcar, finalizarSimulado, etc.)
-// Basta mantê-las iguais ao seu arquivo atual — nada muda nelas.
+// === Suas funções originais ===
+// manter as funções exibirQuestao(), selecionarOpcao(), mostrarDica(),
+// navegação, marcarParaRevisao(), finalizarSimulado(), etc.
+// Não altere layout ou estrutura delas.
 
 </script>
 <script>
-carregarManifest(); // inicializa ao abrir a página
+carregarManifest();
 </script>
