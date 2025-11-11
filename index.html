@@ -100,12 +100,13 @@ textarea.code{width:100%;height:320px;font-family:monospace;padding:12px;border-
       <div style="font-size:.9rem;color:#666;margin-top:8px" id="notaInfo"></div>
     </div>
 
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:12px">
-      <button class="btn" onclick="questaoAnterior()">← Anterior</button>
-      <button class="btn" onclick="questaoProxima()">Próxima →</button>
-      <button class="btn secondary" onclick="finalizarSimulado()">Finalizar</button>
-      <button class="btn ghost" onclick="voltarMenu()">Voltar</button>
-    </div>
+<div style="display:flex;gap:10px;justify-content:center;margin-top:12px">
+	      <button class="btn" onclick="questaoAnterior()">← Anterior</button>
+	      <button class="btn" onclick="questaoProxima()">Próxima →</button>
+	      <button class="btn secondary" onclick="finalizarSimulado()">Finalizar</button>
+	      <button class="btn ghost" style="background:#e74c3c;color:#fff" onclick="limparSimulado()">Limpar Simulado</button>
+	      <button class="btn ghost" onclick="voltarMenu()">Voltar</button>
+	    </div>
   </div>
 </div>
 
@@ -345,6 +346,24 @@ function questaoProxima(){ if(questaoAtual < questoesFiltradas.length-1) { quest
 function questaoAnterior(){ if(questaoAtual>0) { questaoAtual--; exibirQuestao(); } }
 function finalizarSimulado(){ atualizarEstatisticas(); document.getElementById('quizArea').classList.add('hidden'); document.getElementById('resultadoArea').classList.remove('hidden'); }
 function voltarMenu(){ document.getElementById('quizArea').classList.add('hidden'); document.getElementById('resultadoArea').classList.add('hidden'); document.getElementById('telaPrincipal').classList.remove('hidden'); }
+
+	function limparSimulado(){
+	  if(!confirm('Tem certeza que deseja limpar o progresso deste simulado e reiniciar do zero?')) return;
+	  // 1. Limpar respostas do localStorage
+	  localStorage.removeItem('respostas_simulado_'+simuladoAtual);
+	  // 2. Limpar notas pessoais (opcional, mas recomendado para um "reset total")
+	  // Como as notas são salvas por questão, vamos iterar e remover.
+	  for(let i=0; i<questoesFiltradas.length; i++){
+	    localStorage.removeItem(`nota_simulado_${simuladoAtual}_q${i}`);
+	  }
+	  // 3. Resetar variáveis de estado
+	  respostas = {};
+	  questaoAtual = 0;
+	  // 4. Recarregar a questão atual (que será a primeira) e atualizar estatísticas
+	  atualizarEstatisticas();
+	  exibirQuestao();
+	  alert('Simulado limpo e reiniciado com sucesso!');
+	}
 
 /* ====== Notas por questão (localStorage) ====== */
 function carregarNotaTela() {
